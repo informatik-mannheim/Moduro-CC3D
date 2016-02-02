@@ -1,4 +1,3 @@
-from Core.CellType import CellType
 from Core.ExecConfig import ExecConfig
 from ModuroModel.CMInDae import CMInDae
 

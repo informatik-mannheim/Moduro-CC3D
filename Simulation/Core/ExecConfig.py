@@ -1,5 +1,7 @@
 from XMLUtils import ElementCC3D
 from math import pi as PI
+from Core.ParameterStore import ParameterStore
+
 
 class ExecConfig(object):
     def __init__(self,
@@ -9,7 +11,7 @@ class ExecConfig(object):
                  MCSperDay=24 * 60,
                  piffInitial="Simulation/CellsInit.piff",
                  simDurationDays=720,
-                 sampleIntervalInDays = 0.5,
+                 sampleIntervalInDays=0.5,
                  fluctuationAmplitude=1.0,
                  flip2DimRatio=0.5,
                  neighborOrder=1,
@@ -38,13 +40,13 @@ class ExecConfig(object):
         self.xLength = xLength
         self.yLength = yLength
         self.zLength = zLength
-        self.voxelDensity = voxelDensity # 1 voxel / 1 mu
+        self.voxelDensity = voxelDensity  # 1 voxel / 1 mu
         self.dimensions = 2 if zLength <= 0 else 3
         self.xDimension = self.calcPixelFromMuMeter(xLength)
         self.yDimension = self.calcPixelFromMuMeter(yLength)
         self.zDimension = 1 if self.dimensions == 2 else self.calcPixelFromMuMeter(zLength)
         self.MCSperDay = MCSperDay
-        #self.deltaT = self.MCSperDay # deprecated
+        # self.deltaT = self.MCSperDay # deprecated
         self.piffInitial = piffInitial
         self.simDurationDays = simDurationDays
         self.sampleIntervalInDays = sampleIntervalInDays
@@ -57,6 +59,7 @@ class ExecConfig(object):
         self.debugOutputFrequency = debugOutputFrequency
         self.SEED = SEED
         self.__cc3d = None
+        self.parameterStore = ParameterStore()
 
     def initPotts(self):
         self.__cc3d = ElementCC3D("CompuCell3D", {"version": "3.7.3"})
@@ -104,10 +107,6 @@ class ExecConfig(object):
         # TODO correct?
         SecretionDataElmnt.ElementCC3D("Secretion", {"Type": cellType.name}, secretionRateNutr * self.MCSperDay)
 
-    def initFieldx(self):
-        PIFInitializer = self.__cc3d.ElementCC3D("Steppable", {"Type": "PIFInitializer"})
-        PIFInitializer.ElementCC3D("PIFName", {}, self.piffInitial)
-
     def initField(self, pifText):
         fileName = "Simulation\CellsInit.piff"
         filePath = self.srcDir + "\\" + fileName
@@ -129,7 +128,7 @@ class ExecConfig(object):
         return (mcs == 0) or (mcs % self.sampleIntervalInMCS == 0)
 
     def addParameter(self, key, value):
-        #TODO: ghj
+        # TODO: ghj
         return None
 
     def calcPixelFromMuMeter(self, mum):
@@ -143,15 +142,15 @@ class ExecConfig(object):
 
     def calculateVolume(self, diameter):
         if self.dimensions == 2:
-            return PI * (diameter / 2.0) ** 2 # Area
+            return PI * (diameter / 2.0) ** 2  # Area
         else:
-            return 4.0 / 3.0 * PI * (diameter / 2.0) ** 3 # Volume
+            return 4.0 / 3.0 * PI * (diameter / 2.0) ** 3  # Volume
 
     def calculateSurface(self, diameter):
         if self.dimensions == 2:
-            return 2 * PI * (diameter / 2.0) # Circumference
+            return 2 * PI * (diameter / 2.0)  # Circumference
         else:
-            return 4 * PI * (diameter / 2.0) ** 2 # Surface
+            return 4 * PI * (diameter / 2.0) ** 2  # Surface
 
     def calcVoxelVolumeFromVolume(self, volume):
         """
@@ -161,15 +160,15 @@ class ExecConfig(object):
         :param volume: physical volume in mu m^3.
         :return: Voxel volume.
         """
-        r = (3 * volume / (4 * PI)) ** (1.0 / 3) # Radius of a sphere with known volume.
-        rDimension = self.calcPixelFromMuMeter(r) # Convert it to a pixel unit.
+        r = (3 * volume / (4 * PI)) ** (1.0 / 3)  # Radius of a sphere with known volume.
+        rDimension = self.calcPixelFromMuMeter(r)  # Convert it to a pixel unit.
         if self.dimensions == 2:
-            #a = self.__truncateToVoxel(PI * (rDimension ** 2))
-            #if volume > 0:
+            # a = self.__truncateToVoxel(PI * (rDimension ** 2))
+            # if volume > 0:
             #    print "volume=", volume, ", rDim=", rDimension, ", r=", r, ", A=", a
-            return self.__truncate(PI * (rDimension ** 2)) # Area of a circle.
+            return self.__truncate(PI * (rDimension ** 2))  # Area of a circle.
         else:
-            return self.__truncate(4.0 / 3 * PI * (rDimension ** 3)) # Volume of a sphere.
+            return self.__truncate(4.0 / 3 * PI * (rDimension ** 3))  # Volume of a sphere.
 
     def calcVoxelSurfaceFromVoxelVolume(self, voxelVolume):
         """
@@ -179,14 +178,14 @@ class ExecConfig(object):
         :return: Surface in pixel^2 ^(3D) or pixel (2).
         """
         if self.dimensions == 2:
-            return self.__truncate(2 * (PI * voxelVolume) ** (1.0 / 2)) # Circumference.
+            return self.__truncate(2 * (PI * voxelVolume) ** (1.0 / 2))  # Circumference.
         else:
-            return self.__truncate(4 * PI * (3 * voxelVolume / (4 * PI)) ** (2.0 / 3)) # Surface.
+            return self.__truncate(4 * PI * (3 * voxelVolume / (4 * PI)) ** (2.0 / 3))  # Surface.
 
     def __truncate(self, value):
         res = int(value)
         if res < 1:
-            return 1 # Ensure that size is at least 1.
+            return 1  # Ensure that size is at least 1.
         else:
             return res
 

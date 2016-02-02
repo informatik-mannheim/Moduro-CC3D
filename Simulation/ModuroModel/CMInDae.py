@@ -9,7 +9,6 @@ from Steppable.OptimumSearchSteppable import OptimumSearchSteppable
 from Steppable.TransformationSteppable import TransformationSteppable
 from Steppable.UrinationSteppable import UrinationSteppable
 
-
 class CMInDae(ModelConfig):
     def __init__(self, sim, simthread):
         ModelConfig.__init__(self, sim, simthread)
@@ -23,6 +22,9 @@ class CMInDae(ModelConfig):
         self.adhFactor = 0.5 # average adhesion = 0.5
         self.energyMatrix = self._createEnergyMatrix()
         super(CMInDae, self).run(srcDir)  # TODO could be in constrctor?!
+        # Example for setting a parameter.
+        self.execConfig.parameterStore.setParameter("CMInDae", "dae", True)
+
 
     def _createCellTypes(self):
         cellTypes = []
@@ -78,7 +80,7 @@ class CMInDae(ModelConfig):
         steppableList.append(GrowthSteppable(self.sim, self.execConfig, self))
         steppableList.append(GrowthMitosisSteppable(self.sim, self.execConfig, self))
         steppableList.append(TransformationSteppable(self.sim, self.execConfig, self))
-        steppableList.append(UrinationSteppable(self.sim, self.execConfig, self))
+        steppableList.append(UrinationSteppable(self.sim, self.execConfig, self, prop=0.02))
         steppableList.append(DeathSteppable(self.sim, self.execConfig, self))
         steppableList.append(OptimumSearchSteppable(self.sim, self.execConfig, self))
 

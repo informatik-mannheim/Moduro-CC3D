@@ -13,4 +13,4 @@ sim, simthread = CompuCellSetup.getCoreSimulationObjects()
 from ModuroModel.CMInDae2 import CMInDae2
 model = CMInDae2(sim, simthread)
 # srcDir is required to know where CellsInit.piff is.
-model.run("c:\Users\Markus\Local-Docs\src\cc3d\moduro\CC3D\CM\CM-IN-DAE")
+model.run("c:\Users\Markus\Local-Docs\src\cc3d\Moduro-CC3D")
