@@ -1,0 +1,4 @@
+<Simulation version="3.7.3">
+   <PythonScript Type="Python">Simulation/Main.py</PythonScript>
+   <PIFFile Type="PIFFile">Simulation/Anfangsbedingung2D.piff</PIFFile>
+</Simulation>
