@@ -8,11 +8,11 @@ class ExecConfig(object):
                  srcDir="",
                  xLength=150, yLength=200, zLength=1,
                  voxelDensity=1,
-                 MCSperDay=24 * 60,
+                 MCSperDay=500,
                  piffInitial="Simulation/CellsInit.piff",
                  simDurationDays=720,
                  sampleIntervalInDays=0.5,
-                 fluctuationAmplitude=5.0,
+                 fluctuationAmplitude=10.0,
                  flip2DimRatio=0.5,
                  neighborOrder=1,
                  boundary_x="Periodic",
@@ -44,7 +44,7 @@ class ExecConfig(object):
         self.dimensions = 2 if zLength <= 0 else 3
         self.xDimension = self.calcPixelFromMuMeter(xLength)
         self.yDimension = self.calcPixelFromMuMeter(yLength)
-        self.zDimension = 1 if self.dimensions == 2 else self.calcPixelFromMuMeter(zLength)
+        self.zDimension = 1 if self.dimensions == 2 else self.calcPixelFromMuMeterMin1(zLength)
         self.MCSperDay = MCSperDay
         # self.deltaT = self.MCSperDay # deprecated
         self.piffInitial = piffInitial
@@ -131,7 +131,17 @@ class ExecConfig(object):
         # TODO: ghj
         return None
 
+
     def calcPixelFromMuMeter(self, mum):
+        """
+        Convert a length in micro meter to a pixel length.
+        This is influenced by the voxelDensity.
+        :param mum:
+        :return:
+        """
+        return int(self.voxelDensity * mum)
+
+    def calcPixelFromMuMeterMin1(self, mum):
         """
         Convert a length in micro meter to a pixel length.
         This is influenced by the voxelDensity.
@@ -140,14 +150,6 @@ class ExecConfig(object):
         """
         return self.__truncate(self.voxelDensity * mum)
 
-    def calcExactPixelFromMuMeter(self, mum):
-        """
-        Convert a length in micro meter to a pixel length.
-        This is influenced by the voxelDensity.
-        :param mum:
-        :return:
-        """
-        return int(self.voxelDensity * mum)
 
     def calculateVolume(self, diameter):
         if self.dimensions == 2:
@@ -193,7 +195,7 @@ class ExecConfig(object):
 
     def __truncate(self, value):
         res = int(value)
-        if res < 1:
+        if res <= 1:
             return 1  # Ensure that size is at least 1.
         else:
             return res

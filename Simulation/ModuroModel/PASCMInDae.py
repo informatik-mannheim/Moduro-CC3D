@@ -8,23 +8,18 @@ from Steppable.GrowthSteppable import GrowthSteppable
 from Steppable.OptimumSearchSteppable import OptimumSearchSteppable
 from Steppable.TransformationSteppable import TransformationSteppable
 from Steppable.UrinationSteppable import UrinationSteppable
+from ModuroModel.CMInDae import CMInDae
 
 
-class CMInDae(ModelConfig):
+class PASCMInDae(CMInDae):
     def __init__(self, sim, simthread):
         ModelConfig.__init__(self, sim, simthread)
 
     def run(self, srcDir):
-        self.name = "CM"
-        self._nutrient = False
-        self._dae = True
-        # Must be invoked again as _dae has changed:
-        self.cellTypes = self._createCellTypes()
-        self.adhFactor = 0.8  # average adhesion = 0.5
-        self.energyMatrix = self._createEnergyMatrix()
-        super(CMInDae, self).run(srcDir)  # TODO could be in constructor?!
+        self.name = "PASCM"
+        super(PASCMInDae, self).run(srcDir)  # TODO could be in constructor?!
         # Example for setting a parameter.
-        self.execConfig.parameterStore.setParameter("CMInDae", "dae", True)
+        self.execConfig.parameterStore.setParameter("PASCMInDae", "dae", True)
 
     def _createCellTypes(self):
         cellTypes = []
@@ -39,53 +34,28 @@ class CMInDae(ModelConfig):
         cellTypes.append(CellType(name="Stem", minDiameter=8, maxDiameter=10,
                                   growthVolumePerDay=10 * self.calcVolume(10),
                                   nutrientRequirement=1.0, apoptosisTimeInDays=180000,
-                                  volFit=0.9, surFit=0.1, differentiates=True, asym=1.0))
+                                  volFit=0.9, surFit=0.1, differentiates=False,
+                                  asym=0.90, idenSym=0.05, diffSym=0.05))
 
         cellTypes.append(CellType(name="Basal", minDiameter=10, maxDiameter=12,
                                   growthVolumePerDay=10 * self.calcVolume(12),
                                   nutrientRequirement=1.0, apoptosisTimeInDays=90,
-                                  volFit=0.9, surFit=0.1, differentiates=True, asym=0.0))
+                                  volFit=0.9, surFit=0.1, differentiates=True))
 
         cellTypes.append(CellType(name="Intermediate", minDiameter=12, maxDiameter=15,
                                   growthVolumePerDay=10 * self.calcVolume(15),
                                   nutrientRequirement=1.0, apoptosisTimeInDays=90,
-                                  volFit=0.9, surFit=0.1, differentiates=True, asym=0.0))
+                                  volFit=0.9, surFit=0.1, differentiates=True))
 
         cellTypes.append(CellType(name="Umbrella", minDiameter=15, maxDiameter=19,
                                   growthVolumePerDay=10 * self.calcVolume(19),
                                   nutrientRequirement=1.0, apoptosisTimeInDays=90,
-                                  volFit=0.9, surFit=0.1, differentiates=True, asym=0.0))
+                                  volFit=0.9, surFit=0.1, differentiates=True))
 
         return cellTypes
 
-    def _createEnergyMatrix(self):
-        energyMatrix = [[0, 14, 14, 14, 14, 4],
-                        [0, -1, 1, 3, 12, 12],
-                        [0, 0, 6, 4, 8, 14],
-                        [0, 0, 0, 5, 8, 12],
-                        [0, 0, 0, 0, 6, 4],
-                        [0, 0, 0, 0, 0, 2]]
-
-        return energyMatrix
-
-    def withNutrient(self):
-        return self._nutrient
-
-    def withDAE(self):
-        return self._dae
-
-    def _getSteppables(self):
-        steppableList = []
-        steppableList.append(ConstraintInitializerSteppable(self.sim, self))
-        steppableList.append(GrowthSteppable(self.sim, self))
-        steppableList.append(GrowthMitosisSteppable(self.sim, self))
-        steppableList.append(TransformationSteppable(self.sim, self))
-        steppableList.append(UrinationSteppable(self.sim, self, prop=0.02))
-        steppableList.append(DeathSteppable(self.sim, self))
-        steppableList.append(OptimumSearchSteppable(self.sim, self))
-
-        return steppableList
-
     def _createExecConfig(self, srcDir):
         return ExecConfig(srcDir=srcDir,
-                          xLength=150, yLength=100, zLength=0, voxelDensity=1)
+                          xLength=200, yLength=100, zLength=50, voxelDensity=0.8,
+                          MCSperDay=500,
+                          SEED=123)

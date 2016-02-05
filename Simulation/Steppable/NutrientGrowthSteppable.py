@@ -1,8 +1,8 @@
 from Steppable.GrowthSteppable import GrowthSteppable
 
 class NutrientGrowthSteppable(GrowthSteppable):
-    def __init__(self, simulator, execConfig, model, _frequency=1):
-        GrowthSteppable.__init__(self, simulator, execConfig, model, _frequency)
+    def __init__(self, simulator, model, _frequency=1):
+        GrowthSteppable.__init__(self, simulator, model, _frequency)
 
     def moduroStep(self, mcs):
         self.scalarField = self.getConcentrationField('Nutrients')

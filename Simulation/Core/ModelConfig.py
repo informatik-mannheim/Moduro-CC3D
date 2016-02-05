@@ -78,12 +78,12 @@ class ModelConfig(object):
 
         def addCubicCell(id, typename, xPos, yPos, zPos, xLength, yLength, zLength):
             # TODO exact?
-            xPosDim = self.execConfig.calcExactPixelFromMuMeter(xPos)
-            yPosDim = self.execConfig.calcExactPixelFromMuMeter(yPos)
-            zPosDim = self.execConfig.calcExactPixelFromMuMeter(zPos)
-            xLengthDim = self.execConfig.calcPixelFromMuMeter(xLength)
-            yLengthDim = self.execConfig.calcPixelFromMuMeter(yLength)
-            zLengthDim = self.execConfig.calcPixelFromMuMeter(zLength)
+            xPosDim = self.execConfig.calcPixelFromMuMeter(xPos)
+            yPosDim = self.execConfig.calcPixelFromMuMeter(yPos)
+            zPosDim = self.execConfig.calcPixelFromMuMeter(zPos)
+            xLengthDim = self.execConfig.calcPixelFromMuMeterMin1(xLength)
+            yLengthDim = self.execConfig.calcPixelFromMuMeterMin1(yLength)
+            zLengthDim = self.execConfig.calcPixelFromMuMeterMin1(zLength)
             fileHandle.write("%(id)s %(name)s  %(x1)s   %(x2)s  %(y1)s   %(y2)s   %(z1)s   %(z2)s \n"
                              % {"id": id, "name": typename,
                                 "x1": xPosDim, "x2": xPosDim + xLengthDim - 1,
@@ -92,7 +92,7 @@ class ModelConfig(object):
 
         # Add the basal membrane:
         addCubicCell(0, "BasalMembrane", 0, 0, 0,
-                     self.execConfig.xLength, 1, self.execConfig.zLength)
+                     self.execConfig.xLength, 2, self.execConfig.zLength)
         cellDiameter = self.cellTypes[2].getAvgDiameter()
         stemCellFactor = 8 * cellDiameter
         if self.execConfig.dimensions == 2:
@@ -104,9 +104,9 @@ class ModelConfig(object):
             xPos = random.uniform(cellDiameter, self.execConfig.xLength - cellDiameter)
             zPos = random.uniform(cellDiameter, self.execConfig.zLength - cellDiameter)
             if self.execConfig.dimensions == 2:
-                addCubicCell(s, "Stem", xPos, 1, 0, cellDiameter, cellDiameter, 0)
+                addCubicCell(s, "Stem", xPos, 2, 0, cellDiameter, cellDiameter, 0)
             else:
-                addCubicCell(s, "Stem", xPos, 1, zPos, cellDiameter, cellDiameter, cellDiameter)
+                addCubicCell(s, "Stem", xPos, 2, zPos, cellDiameter, cellDiameter, cellDiameter)
 
     def _getPIFText2(self):
         import StringIO
@@ -150,15 +150,18 @@ class ModelConfig(object):
         :param lifeTimeParent:
         :return:
         """
+        # cellDict = cell.getDictionaryAttribute(cell)
         cellType = self.cellTypes[cell.type]
         cellDict['min_max_volume'] = [self.execConfig.calcVoxelVolumeFromVolume(cellType.minVol),
                                       self.execConfig.calcVoxelVolumeFromVolume(cellType.maxVol)]
         cellDict['surface_lambda'] = self.execConfig.calcSurLambdaFromSurFit(cellType.surFit)
         cellDict['volume_lambda'] = self.execConfig.calcVolLambdaFromVolFit(cellType.volFit)
-        cellDict['target_Volume'] = [random.uniform(cellDict['min_max_volume'][0],
-                                                    cellDict['min_max_volume'][1])]
+        cellDict['target_Volume'] = random.uniform(cellDict['min_max_volume'][0],
+                                                   cellDict['min_max_volume'][1])
         cellDict['growth_factor'] = []
-        cellDict['life_time'] = [lifeTimeParent]
-        cellDict['necrosis'] = [False]
-        cellDict['DNA'] = [100]
+        cellDict['life_time'] = lifeTimeParent  # How many MCS is this cell alive?
+        expLiveTime = self.execConfig.calcMCSfromDays(cellType.apoptosisTimeInDays)
+        cellDict['exp_life_time'] = random.gauss(expLiveTime, expLiveTime / 10.0)
+        cellDict['necrosis'] = False
+        cellDict['DNA'] = [100]  # TODO remove list
         cellDict['TurnOver'] = [False]

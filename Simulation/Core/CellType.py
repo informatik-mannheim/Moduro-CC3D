@@ -11,7 +11,7 @@ class CellType(object):
     def __init__(self, name="CellType", frozen=False, minDiameter=10, maxDiameter=10,
                  growthVolumePerDay=500, nutrientRequirement=1.0, apoptosisTimeInDays=180000,
                  volFit=1.0, surFit=0.0,
-                 differentiates=True, asym=1.0, idenSym=0.0, diffSym=0.0):
+                 differentiates=True, asym=0.0, idenSym=0.0, diffSym=0.0):
         """
 
         :param name:
@@ -45,7 +45,7 @@ class CellType(object):
         self.asym = asym
         self.idenSym = idenSym
         self.diffSym = diffSym
-        if asym + idenSym + diffSym == 0.0:
+        if asym + idenSym + diffSym < 1.0: # Round errors?
             self.divides = False
         else:
             self.divides = True
