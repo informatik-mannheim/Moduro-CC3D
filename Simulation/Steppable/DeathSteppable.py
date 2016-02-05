@@ -13,7 +13,7 @@ class DeathSteppable(ModuroSteppable):
                 if cell.targetVolume > 5:
                     #TODO: find an equation for timeless cell reduction
                     targetVolume = float(cellDict['target_Volume'][0])
-                    deltaVolDimPerMCS = 10.0 * targetVolume / self.execConfig.MCSperDay
+                    deltaVolDimPerMCS = 100.0 * targetVolume / self.execConfig.MCSperDay
                     if deltaVolDimPerMCS < 1.0: # The change may be too small for one MCS.
                         deltaVolDimPerMCS = 1 if deltaVolDimPerMCS >= random.random() else 0
                     cell.targetVolume -= deltaVolDimPerMCS

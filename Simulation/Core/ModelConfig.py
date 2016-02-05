@@ -36,8 +36,8 @@ class ModelConfig(object):
     def _configureSimulation(self):
         self.execConfig.initPotts()
         self.execConfig.initCellTypes(self.cellTypes)
-        # TODO why 20 * ...
-        self.execConfig.initEnergyMatrix(self.cellTypes, self.energyMatrix, 20 * self.adhFactor)
+        # TODO why 10 * ...
+        self.execConfig.initEnergyMatrix(self.cellTypes, self.energyMatrix, 15 * self.adhFactor)
         self.execConfig.initPlugins("Volume", "Surface", "PixelTracker", "NeighborTracker",
                                     "ExternalPotential")
         # self.execConfig.initDiffusion(self, self.cellTypes[1], 0.1, 0.000015)
@@ -98,8 +98,8 @@ class ModelConfig(object):
         cellType = self.cellTypes[cell.type]
         cellDict['min_max_volume'] = [self.execConfig.calcVoxelVolumeFromVolume(cellType.minVol),
                                       self.execConfig.calcVoxelVolumeFromVolume(cellType.maxVol)]
-        cellDict['surface_lambda'] = [cellType.surFit]
-        cellDict['volume_lambda'] = [cellType.volFit]
+        cellDict['surface_lambda'] = self.execConfig.calcSurLambdaFromSurFit(cellType.surFit)
+        cellDict['volume_lambda'] = self.execConfig.calcVolLambdaFromVolFit(cellType.volFit)
         cellDict['target_Volume'] = [random.uniform(cellDict['min_max_volume'][0],
                                                     cellDict['min_max_volume'][1])]
         cellDict['growth_factor'] = []

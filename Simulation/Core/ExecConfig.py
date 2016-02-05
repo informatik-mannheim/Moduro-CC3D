@@ -12,7 +12,7 @@ class ExecConfig(object):
                  piffInitial="Simulation/CellsInit.piff",
                  simDurationDays=720,
                  sampleIntervalInDays=0.5,
-                 fluctuationAmplitude=1.0,
+                 fluctuationAmplitude=5.0,
                  flip2DimRatio=0.5,
                  neighborOrder=1,
                  boundary_x="Periodic",
@@ -178,7 +178,7 @@ class ExecConfig(object):
         :return: Surface in pixel^2 ^(3D) or pixel (2).
         """
         if self.dimensions == 2:
-            return self.__truncate(2 * (PI * voxelVolume) ** (1.0 / 2))  # Circumference.
+            return self.__truncate(2 * (PI * voxelVolume) ** (1.0 / 2.0))  # Circumference.
         else:
             return self.__truncate(4 * PI * (3 * voxelVolume / (4 * PI)) ** (2.0 / 3))  # Surface.
 
@@ -204,3 +204,9 @@ class ExecConfig(object):
         :return:
         """
         return mcs / (1.0 * self.MCSperDay)
+
+    def calcSurLambdaFromSurFit(self, surFit):
+        return 0.05 * surFit
+
+    def calcVolLambdaFromVolFit(self, volFit):
+        return 1.0 * volFit

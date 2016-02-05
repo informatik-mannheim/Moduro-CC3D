@@ -19,7 +19,7 @@ class CMInDae(ModelConfig):
         self._dae = True
         # Must be invoked again as _dae has changed:
         self.cellTypes = self._createCellTypes()
-        self.adhFactor = 0.5 # average adhesion = 0.5
+        self.adhFactor = 0.8 # average adhesion = 0.5
         self.energyMatrix = self._createEnergyMatrix()
         super(CMInDae, self).run(srcDir)  # TODO could be in constrctor?!
         # Example for setting a parameter.
@@ -30,30 +30,30 @@ class CMInDae(ModelConfig):
         cellTypes = []
         cellTypes.append(CellType(name="Medium", frozen=True, minDiameter=0, maxDiameter=0,
                                   growthVolumePerDay=0, nutrientRequirement=0, apoptosisTimeInDays=0,
-                                  volFit=1.0, surFit=1.0, differentiates=False, asym=0.0))
+                                  volFit=0.9, surFit=1.0, differentiates=False, asym=0.0))
 
         cellTypes.append(CellType(name="BasalMembrane", frozen=True, minDiameter=0, maxDiameter=0,
                                   growthVolumePerDay=0, nutrientRequirement=0, apoptosisTimeInDays=180000,
-                                  volFit=1.0, surFit=1.0, differentiates=False, asym=0.0))
+                                  volFit=0.9, surFit=0.1, differentiates=False, asym=0.0))
 
         cellTypes.append(CellType(name="Stem", minDiameter=8, maxDiameter=10,
                                   growthVolumePerDay=10 * self.calcVolume(10),
                                   nutrientRequirement=1.0, apoptosisTimeInDays=180000,
-                                  volFit=0.9, surFit=0.5, differentiates=True, asym=1.0))
+                                  volFit=0.9, surFit=0.1, differentiates=True, asym=1.0))
 
         cellTypes.append(CellType(name="Basal", minDiameter=10, maxDiameter=12,
                                   growthVolumePerDay=10 * self.calcVolume(12),
                                   nutrientRequirement=1.0, apoptosisTimeInDays=90,
-                                  volFit=0.9, surFit=0.5, differentiates=True, asym=0.0))
+                                  volFit=0.9, surFit=0.1, differentiates=True, asym=0.0))
 
         cellTypes.append(CellType(name="Intermediate", minDiameter=12, maxDiameter=15,
-                                  growthVolumePerDay=20 * self.calcVolume(15),
-                                  nutrientRequirement=1.0, apoptosisTimeInDays=30,
+                                  growthVolumePerDay=10 * self.calcVolume(15),
+                                  nutrientRequirement=1.0, apoptosisTimeInDays=90,
                                   volFit=0.9, surFit=0.1, differentiates=True, asym=0.0))
 
         cellTypes.append(CellType(name="Umbrella", minDiameter=15, maxDiameter=19,
                                   growthVolumePerDay=10 * self.calcVolume(19),
-                                  nutrientRequirement=1.0, apoptosisTimeInDays=10,
+                                  nutrientRequirement=1.0, apoptosisTimeInDays=90,
                                   volFit=0.9, surFit=0.1, differentiates=True, asym=0.0))
 
         return cellTypes

@@ -22,11 +22,12 @@ class GrowthMitosisSteppable(ModuroMitosisSteppable):
         childCell = self.mitosisSteppable.childCell
         parentCell.targetVolume = parentCell.targetVolume / 2
         childCell.targetVolume = parentCell.targetVolume / 2
-        prob = random.random()
+        prob = 0 #random.random()
         probOfAsym = self.model.cellTypes[parentCell.type].asym
         probOfIdenSym = self.model.cellTypes[parentCell.type].idenSym
         probOfDiffSym = self.model.cellTypes[parentCell.type].diffSym
 
+        childCell.type = parentCell.type
         if prob < probOfAsym:
             childCell.type = parentCell.type + 1
         elif prob < probOfAsym + probOfIdenSym:
@@ -37,5 +38,7 @@ class GrowthMitosisSteppable(ModuroMitosisSteppable):
 
         cellDict = self.getDictionaryAttribute(childCell)
         self.model.setCellAttributes(cellDict, childCell, 0)
-        childCell.lambdaVolume = cellDict['volume_lambda'][0]
-        childCell.lambdaSurface = cellDict['surface_lambda'][0]
+        childCell.lambdaVolume = \
+            self.execConfig.calcVolLambdaFromVolFit(cellDict['volume_lambda'])
+        childCell.lambdaSurface = \
+            self.execConfig.calcSurLambdaFromSurFit(cellDict['surface_lambda'])
