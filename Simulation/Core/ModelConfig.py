@@ -13,8 +13,8 @@ class ModelConfig(object):
         self._nutrient = False
         self.cellTypes = []
         self.energyMatrix = None
-        self.adhFactor = 0.5 # Average adhesion strength compared to vol./surf. fits.
-        self.adhEnergy = 1.0 # Some reference value.
+        self.adhFactor = 0.5  # Average adhesion strength compared to vol./surf. fits.
+        self.adhEnergy = 1.0  # Some reference value.
         self.name = "ModelName"
 
     def run(self, srcDir):
@@ -41,7 +41,8 @@ class ModelConfig(object):
         self.execConfig.initPlugins("Volume", "Surface", "PixelTracker", "NeighborTracker",
                                     "ExternalPotential")
         # self.execConfig.initDiffusion(self, self.cellTypes[1], 0.1, 0.000015)
-        self.execConfig.initField(self._getPIFText())
+        self.execConfig.initField(self._getPIFText2())
+        # self._initCells() # not yet possible.
 
         return self.execConfig.getCC3D()
 
@@ -60,6 +61,60 @@ class ModelConfig(object):
 
     def _createExecConfig(self, srcDir):
         return ExecConfig(self, srcDir)
+
+    def _initCells(self, fileHandle):
+        def addCubicCell2(typename, xPos, yPos, zPos, xLength, yLength, zLength):
+            cell = self.sim.newCell(typename)
+            xPosDim = self.execConfig.calcPixelFromMuMeter(xPos)
+            yPosDim = self.execConfig.calcPixelFromMuMeter(yPos)
+            zPosDim = self.execConfig.calcPixelFromMuMeter(zPos)
+            xLengthDim = self.execConfig.calcPixelFromMuMeter(xLength)
+            yLengthDim = self.execConfig.calcPixelFromMuMeter(yLength)
+            zLengthDim = self.execConfig.calcPixelFromMuMeter(zLength)
+            # size of cell will be SIZExSIZEx1
+            self.sim.cellField[xPosDim:xPosDim + xLengthDim - 1,
+            yPosDim:yPosDim + yLengthDim - 1,
+            zPosDim:zPosDim + zLengthDim - 1] = cell
+
+        def addCubicCell(id, typename, xPos, yPos, zPos, xLength, yLength, zLength):
+            # TODO exact?
+            xPosDim = self.execConfig.calcExactPixelFromMuMeter(xPos)
+            yPosDim = self.execConfig.calcExactPixelFromMuMeter(yPos)
+            zPosDim = self.execConfig.calcExactPixelFromMuMeter(zPos)
+            xLengthDim = self.execConfig.calcPixelFromMuMeter(xLength)
+            yLengthDim = self.execConfig.calcPixelFromMuMeter(yLength)
+            zLengthDim = self.execConfig.calcPixelFromMuMeter(zLength)
+            fileHandle.write("%(id)s %(name)s  %(x1)s   %(x2)s  %(y1)s   %(y2)s   %(z1)s   %(z2)s \n"
+                             % {"id": id, "name": typename,
+                                "x1": xPosDim, "x2": xPosDim + xLengthDim - 1,
+                                "y1": yPosDim, "y2": yPosDim + yLengthDim - 1,
+                                "z1": zPosDim, "z2": zPosDim + zLengthDim - 1})
+
+        # Add the basal membrane:
+        addCubicCell(0, "BasalMembrane", 0, 0, 0,
+                     self.execConfig.xLength, 1, self.execConfig.zLength)
+        cellDiameter = self.cellTypes[2].getAvgDiameter()
+        stemCellFactor = 8 * cellDiameter
+        if self.execConfig.dimensions == 2:
+            noStemCells = int(self.execConfig.xLength / stemCellFactor)
+        else:
+            noStemCells = int(self.execConfig.xLength * self.execConfig.yLength /
+                              (stemCellFactor * stemCellFactor))
+        for s in range(1, noStemCells + 1, 1):
+            xPos = random.uniform(cellDiameter, self.execConfig.xLength - cellDiameter)
+            zPos = random.uniform(cellDiameter, self.execConfig.zLength - cellDiameter)
+            if self.execConfig.dimensions == 2:
+                addCubicCell(s, "Stem", xPos, 1, 0, cellDiameter, cellDiameter, 0)
+            else:
+                addCubicCell(s, "Stem", xPos, 1, zPos, cellDiameter, cellDiameter, cellDiameter)
+
+    def _getPIFText2(self):
+        import StringIO
+        fileHandle = StringIO.StringIO()
+        self._initCells(fileHandle)
+        text = fileHandle.getvalue()
+        fileHandle.close()
+        return text
 
     def _getPIFText(self):
         import StringIO

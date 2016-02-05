@@ -140,6 +140,15 @@ class ExecConfig(object):
         """
         return self.__truncate(self.voxelDensity * mum)
 
+    def calcExactPixelFromMuMeter(self, mum):
+        """
+        Convert a length in micro meter to a pixel length.
+        This is influenced by the voxelDensity.
+        :param mum:
+        :return:
+        """
+        return int(self.voxelDensity * mum)
+
     def calculateVolume(self, diameter):
         if self.dimensions == 2:
             return PI * (diameter / 2.0) ** 2  # Area
