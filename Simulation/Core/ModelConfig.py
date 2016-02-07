@@ -12,6 +12,7 @@ class ModelConfig(object):
         self._dae = False
         self._nutrient = False
         self.cellTypes = []
+        self.cellLineage = []
         self.energyMatrix = None
         self.adhFactor = 0.5 # Average adhesion strength compared to vol./surf. fits.
         self.adhEnergy = 1.0 # Some reference value.

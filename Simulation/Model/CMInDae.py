@@ -8,6 +8,7 @@ from Steppable.GrowthSteppable import GrowthSteppable
 from Steppable.OptimumSearchSteppable import OptimumSearchSteppable
 from Steppable.TransformationSteppable import TransformationSteppable
 from Steppable.UrinationSteppable import UrinationSteppable
+from CellLineage.CMLineage import CMLineage
 
 class CMInDae(ModelConfig):
     def __init__(self, sim, simthread):
@@ -19,6 +20,7 @@ class CMInDae(ModelConfig):
         self._dae = True
         # Must be invoked again as _dae has changed:
         self.cellTypes = self._createCellTypes()
+        self.cellLineage = CMLineage(self)
         self.adhFactor = 0.5 # average adhesion = 0.5
         self.energyMatrix = self._createEnergyMatrix()
         super(CMInDae, self).run(srcDir)  # TODO could be in constrctor?!

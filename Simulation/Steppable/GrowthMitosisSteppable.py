@@ -5,6 +5,7 @@ from Steppable.ModuroMitosisSteppable import ModuroMitosisSteppable
 class GrowthMitosisSteppable(ModuroMitosisSteppable):
     def __init__(self, _simulator, execConfig, model, _frequency=1):
         ModuroMitosisSteppable.__init__(self, _simulator, execConfig, model, _frequency)
+        self.model = model
 
     def moduroStep(self, mcs):
         cells_to_divide = []
@@ -15,6 +16,7 @@ class GrowthMitosisSteppable(ModuroMitosisSteppable):
                     cell.volume > 1.3 * cellDict['target_Volume'][0] and \
                     not cellDict['necrosis'][0]:
                 cells_to_divide.append(cell)
+                print "cell type: ", cell.type
                 self.divideCellRandomOrientation(cell)
 
     def updateAttributes(self):
@@ -22,18 +24,10 @@ class GrowthMitosisSteppable(ModuroMitosisSteppable):
         childCell = self.mitosisSteppable.childCell
         parentCell.targetVolume = parentCell.targetVolume / 2
         childCell.targetVolume = parentCell.targetVolume / 2
-        prob = random.random()
-        probOfAsym = self.model.cellTypes[parentCell.type].asym
-        probOfIdenSym = self.model.cellTypes[parentCell.type].idenSym
-        probOfDiffSym = self.model.cellTypes[parentCell.type].diffSym
 
-        if prob < probOfAsym:
-            childCell.type = parentCell.type + 1
-        elif prob < probOfAsym + probOfIdenSym:
-            childCell.type = parentCell.type
-        elif prob < probOfAsym + probOfIdenSym + probOfDiffSym:
-            childCell.type = parentCell.type + 1
-            parentCell.type += 1
+        descendents = self.model.cellLineage.getDescendants(self.model.cellTypes[parentCell.type])
+        parentCell.type = descendents[0]
+        childCell.type = descendents[1]
 
         cellDict = self.getDictionaryAttribute(childCell)
         self.model.setCellAttributes(cellDict, childCell, 0)

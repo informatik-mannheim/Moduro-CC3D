@@ -1,5 +1,5 @@
 from Core.ExecConfig import ExecConfig
-from ModuroModel.CMInDae import CMInDae
+from Model.CMInDae import CMInDae
 
 class CMInDae2(CMInDae):
 

@@ -10,7 +10,8 @@ sys.path.append(environ["PYTHON_MODULE_PATH"])
 sim, simthread = CompuCellSetup.getCoreSimulationObjects()
 
 # Now load the model to simulate!
-from ModuroModel.CMInDae2 import CMInDae2
+from Model.CMInDae2 import CMInDae2
 model = CMInDae2(sim, simthread)
 # srcDir is required to know where CellsInit.piff is.
-model.run("c:\Users\Markus\Local-Docs\src\cc3d\Moduro-CC3D")
+#model.run("c:\Users\Markus\Local-Docs\src\cc3d\Moduro-CC3D")
+model.run("D:\workspace\Moduro-CC3D")
