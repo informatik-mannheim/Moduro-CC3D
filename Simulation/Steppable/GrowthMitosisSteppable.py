@@ -27,7 +27,7 @@ class GrowthMitosisSteppable(ModuroMitosisSteppable):
         #probOfDiffSym = self.model.cellTypes[parentCell.type].diffSym
 
         prob = random.random()
-        print "! MIT ! prob=", prob, ", asym=", probOfAsym, ", idensym=", probOfIdenSym
+        #print "! MIT ! prob=", prob, ", asym=", probOfAsym, ", idensym=", probOfIdenSym
         if prob <= probOfAsym:
             childCell.type = parentCell.type + 1 # A -> A + B
         elif prob <= probOfAsym + probOfIdenSym:
@@ -36,6 +36,7 @@ class GrowthMitosisSteppable(ModuroMitosisSteppable):
             childCell.type = parentCell.type + 1
             parentCell.type += 1
 
+        # Now set the attributes for the two daughter cells:
         cellDict = self.getDictionaryAttribute(childCell)
         self.model.setCellAttributes(cellDict, childCell, 0)
         childCell.lambdaVolume = \
