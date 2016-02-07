@@ -1,10 +1,10 @@
 from Core.ExecConfig import ExecConfig
-from ModuroModel.CMInDae import CMInDae
+from ModuroModel.CMInDa import CMInDa
 
-class CMInDae2(CMInDae):
+class CMInDa2(CMInDa):
 
-    def __init__(self, sim, simthread):
-        CMInDae.__init__(self, sim, simthread)
+    def __init__(self, sim, simthread, srcDir):
+        CMInDa.__init__(self, sim, simthread, srcDir)
 
     def _createExecConfig(self, srcDir):
         return ExecConfig(srcDir=srcDir,

@@ -11,7 +11,6 @@ class ConstraintInitializerSteppable(ModuroSteppable):
         """
         for cell in self.cellList:
             cellDict = self.getDictionaryAttribute(cell)
-            print"!!!!!!!!!!!", cell.type
             cellType = self.model.cellTypes[cell.type]
             cell.targetVolume = self.execConfig.calcVoxelVolumeFromVolume(cellType.minVol)
             cell.lambdaVolume = self.execConfig.calcVolLambdaFromVolFit(cellType.volFit)

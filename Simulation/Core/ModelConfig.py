@@ -5,21 +5,27 @@ from ExecConfig import ExecConfig
 
 
 class ModelConfig(object):
-    def __init__(self, sim, simthread):
+    def __init__(self, sim, simthread, srcDir):
         self.sim = sim
         self.simthread = simthread
-        # dae must be declared before _createEnergyMatrix() is invoked as it used here.
-        self._dae = False
-        self._nutrient = False
-        self.cellTypes = []
-        self.energyMatrix = None
+        self.srcDir = srcDir
         self.adhFactor = 0.5  # Average adhesion strength compared to vol./surf. fits.
-        self.adhEnergy = 1.0  # Some reference value.
+        self.adhEnergy = 2.0  # Some reference value.
+        self.execConfig = self._createExecConfig(self.srcDir)
+        self._initModel()
+
+    def _initModel(self):
+        self.cellTypes = self._createCellTypes()
+        self.energyMatrix = self._createEnergyMatrix()
         self.name = "ModelName"
+        self._run()
 
-    def run(self, srcDir):
-        self.execConfig = self._createExecConfig(srcDir)
-
+    def _run(self):
+        """
+        Start the simulation.
+        :param srcDir: Absolute path to source file. Required for dynamic piff init.
+        :return:
+        """
         CompuCellSetup.setSimulationXMLDescription(self._configureSimulation())
         CompuCellSetup.initializeSimulationObjects(self.sim, self.simthread)
 
@@ -36,12 +42,12 @@ class ModelConfig(object):
     def _configureSimulation(self):
         self.execConfig.initPotts()
         self.execConfig.initCellTypes(self.cellTypes)
-        # TODO why 10 * ...
+        # TODO why 15 * ...
         self.execConfig.initEnergyMatrix(self.cellTypes, self.energyMatrix, 15 * self.adhFactor)
         self.execConfig.initPlugins("Volume", "Surface", "PixelTracker", "NeighborTracker",
                                     "ExternalPotential")
         # self.execConfig.initDiffusion(self, self.cellTypes[1], 0.1, 0.000015)
-        self.execConfig.initField(self._getPIFText2())
+        self.execConfig.initField(self._getPIFText())
         # self._initCells() # not yet possible.
 
         return self.execConfig.getCC3D()
@@ -108,7 +114,7 @@ class ModelConfig(object):
             else:
                 addCubicCell(s, "Stem", xPos, 2, zPos, cellDiameter, cellDiameter, cellDiameter)
 
-    def _getPIFText2(self):
+    def _getPIFText(self):
         import StringIO
         fileHandle = StringIO.StringIO()
         self._initCells(fileHandle)
@@ -116,32 +122,9 @@ class ModelConfig(object):
         fileHandle.close()
         return text
 
-    def _getPIFText(self):
-        import StringIO
-        fileHandle = StringIO.StringIO()
-        membraneHeightDim = self.execConfig.calcPixelFromMuMeter(2)
-        # 2D for now. TODO
-        cellDiameter = self.cellTypes[2].getAvgDiameter()
-        # print "cellDiameter", cellDiameter
-        fileHandle.write("0 BasalMembrane 0   %(x2)s 0   %(y1)s   0   0 \n"
-                         % {"x2": self.execConfig.xDimension - 1, "y1": membraneHeightDim})
-        noStemCells = int(self.execConfig.xLength / (8 * cellDiameter))
-        cellDiameterDim = self.execConfig.calcPixelFromMuMeter(0.8 * cellDiameter)
-        deltaX = self.execConfig.xLength / noStemCells
-        for s in range(1, noStemCells + 1, 1):
-            xPosDim = self.execConfig.calcPixelFromMuMeter(deltaX * s - deltaX / 2)
-            fileHandle.write("%(id)s Stem  %(x1)s   %(x2)s  %(y1)s   %(y2)s   0   0 \n"
-                             % {"id": s, "x1": xPosDim, "x2": xPosDim + cellDiameterDim,
-                                "y1": membraneHeightDim + 1,
-                                "y2": membraneHeightDim + 1 + cellDiameterDim})
-        text = fileHandle.getvalue()
-        fileHandle.close()
-        return text
-
     def calcVolume(self, diameter):
         return 4.0 / 3.0 * PI * (diameter / 2.0) ** 3
 
-    # Assigns the attributes to each cell type: *0=MinVolume, *1=MaxVol, *2=SurfaceLambda, *3=VolumeLambda, *4=GrowthRate, *5=NutrientsRequirement, *6=ApoptosisTime, *7=MitosisSize, *8=DegradationRate, *9=TransformationSize
     def setCellAttributes(self, cellDict, cell, lifeTimeParent):
         """
         Set attributes for a cell's dictionary.

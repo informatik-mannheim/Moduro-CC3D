@@ -15,7 +15,7 @@ class ParameterStore(object):
         :return:
         """
         # clazz_ = clazz.__class__.__name__ # Name of the calling class.
-        self.params[clazz] = "Foo"
+        # self.params[clazz] = "Foo"
         return None
 
     def getParameters(self, clazz):

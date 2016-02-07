@@ -46,7 +46,6 @@ class ExecConfig(object):
         self.yDimension = self.calcPixelFromMuMeter(yLength)
         self.zDimension = 1 if self.dimensions == 2 else self.calcPixelFromMuMeterMin1(zLength)
         self.MCSperDay = MCSperDay
-        # self.deltaT = self.MCSperDay # deprecated
         self.piffInitial = piffInitial
         self.simDurationDays = simDurationDays
         self.sampleIntervalInDays = sampleIntervalInDays

@@ -10,21 +10,18 @@ from Steppable.TransformationSteppable import TransformationSteppable
 from Steppable.UrinationSteppable import UrinationSteppable
 
 
-class CMInDae(ModelConfig):
-    def __init__(self, sim, simthread):
-        ModelConfig.__init__(self, sim, simthread)
+class CMInUa(ModelConfig):
+    def __init__(self, sim, simthread, srcDir):
+        ModelConfig.__init__(self, sim, simthread, srcDir)
 
-    def run(self, srcDir):
-        self.name = "CM"
-        self._nutrient = False
-        self._dae = True
-        # Must be invoked again as _dae has changed:
+    def _initModel(self):
+        self.name = "CMInUa"
+        self.adhFactor = 0.5  # average adhesion = 0.5
         self.cellTypes = self._createCellTypes()
-        self.adhFactor = 0.8  # average adhesion = 0.5
         self.energyMatrix = self._createEnergyMatrix()
-        super(CMInDae, self).run(srcDir)  # TODO could be in constructor?!
-        # Example for setting a parameter.
-        self.execConfig.parameterStore.setParameter("CMInDae", "dae", True)
+        self.execConfig.parameterStore.setParameter("CMInUa", "dae", True)
+        self._run() # Must be the last statement.
+
 
     def _createCellTypes(self):
         cellTypes = []
@@ -57,22 +54,6 @@ class CMInDae(ModelConfig):
                                   volFit=0.9, surFit=0.1, differentiates=True, asym=0.0))
 
         return cellTypes
-
-    def _createEnergyMatrix(self):
-        energyMatrix = [[0, 14, 14, 14, 14, 4],
-                        [0, -1, 1, 3, 12, 12],
-                        [0, 0, 6, 4, 8, 14],
-                        [0, 0, 0, 5, 8, 12],
-                        [0, 0, 0, 0, 6, 4],
-                        [0, 0, 0, 0, 0, 2]]
-
-        return energyMatrix
-
-    def withNutrient(self):
-        return self._nutrient
-
-    def withDAE(self):
-        return self._dae
 
     def _getSteppables(self):
         steppableList = []
