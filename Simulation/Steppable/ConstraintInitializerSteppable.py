@@ -9,6 +9,8 @@ class ConstraintInitializerSteppable(ModuroSteppable):
         Initialize all cells.
         :return:
         """
+        self.execConfig.parameterStore.writeParameterfile("ParameterDump.dat")
+
         for cell in self.cellList:
             cellDict = self.getDictionaryAttribute(cell)
             cellType = self.model.cellTypes[cell.type]

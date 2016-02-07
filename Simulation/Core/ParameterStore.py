@@ -33,7 +33,16 @@ class ParameterStore(object):
         :param filename:
         :return:
         """
-        return None
+        try:
+            import CompuCellSetup
+            fileHandle, fullFileName = CompuCellSetup.openFileInSimulationOutputDirectory(filename, "a")
+        except IOError:
+            print "Could not open file ", filename, \
+                " for writing. Check if you have necessary permissions."
+        fileHandle.write("startTime: %s \n" % "2014-12-11 15:12:32.063000")
+        fileHandle.write("SEED: %s \n" % "100578200")
+        fileHandle.write("\n")
+        fileHandle.close()
 
     def readParameterfile(self, filename):
         """

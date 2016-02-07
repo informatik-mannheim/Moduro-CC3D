@@ -10,6 +10,7 @@ from Steppable.TransformationSteppable import TransformationSteppable
 from Steppable.UrinationSteppable import UrinationSteppable
 from Logger.VolumeFitnessSteppable import VolumeFitnessSteppable
 from Logger.ArrangementFitnessSteppable import ArrangementFitnessSteppable
+from Logger.DummyFitnessSteppable import DummyFitnessSteppable
 
 
 class CMInUa(ModelConfig):
@@ -68,6 +69,7 @@ class CMInUa(ModelConfig):
         #steppableList.append(OptimumSearchSteppable(self.sim, self))
         steppableList.append(VolumeFitnessSteppable(self.sim, self))
         steppableList.append(ArrangementFitnessSteppable(self.sim, self))
+        steppableList.append(DummyFitnessSteppable(self.sim, self))
 
         return steppableList
 
