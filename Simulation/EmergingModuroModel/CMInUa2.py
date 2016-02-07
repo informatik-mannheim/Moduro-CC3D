@@ -8,6 +8,6 @@ class CMInUa2(CMInUa):
 
     def _createExecConfig(self, srcDir):
         return ExecConfig(srcDir=srcDir,
-                          xLength=800, yLength=100, zLength=0, voxelDensity=0.8,
+                          xLength=300, yLength=100, zLength=0, voxelDensity=0.8,
                           MCSperDay=500,
                           fluctuationAmplitude=10.0)

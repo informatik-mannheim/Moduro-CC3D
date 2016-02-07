@@ -45,6 +45,7 @@ class ExecConfig(object):
         self.xDimension = self.calcPixelFromMuMeter(xLength)
         self.yDimension = self.calcPixelFromMuMeter(yLength)
         self.zDimension = 1 if self.dimensions == 2 else self.calcPixelFromMuMeterMin1(zLength)
+        self.latticeSizeInVoxel = self.xDimension * self.yDimension * self.zDimension
         self.MCSperDay = MCSperDay
         self.piffInitial = piffInitial
         self.simDurationDays = simDurationDays
