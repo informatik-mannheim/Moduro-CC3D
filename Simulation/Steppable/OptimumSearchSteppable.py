@@ -1,13 +1,13 @@
 from Steppable.ModuroSteppable import ModuroSteppable
 
 class OptimumSearchSteppable(ModuroSteppable):
-    def __init__(self, simulator, execConfig, model, _frequency=1):
-        ModuroSteppable.__init__(self, simulator, execConfig, model, _frequency)
-        self.idealUrotheliumVol = execConfig.xDimension * 85 * execConfig.zDimension
+    def __init__(self, simulator, model, _frequency=1):
+        ModuroSteppable.__init__(self, simulator, model, _frequency)
+        self.idealUrotheliumVol = self.execConfig.xDimension * 85 * self.execConfig.zDimension
         self.idealBasalStemCellsVol = 0.1 * self.idealUrotheliumVol
         self.idealIntermediateCellsVol = 0.67 * self.idealUrotheliumVol
         self.idealUmbrellaCellsVol = 0.23 * self.idealUrotheliumVol
-        self.latticeSize = execConfig.xDimension * execConfig.yDimension * execConfig.zDimension
+        self.latticeSize = self.execConfig.xDimension * self.execConfig.yDimension * self.execConfig.zDimension
         self.optimum = []
 
     # step is overwritten

@@ -8,11 +8,11 @@ class ExecConfig(object):
                  srcDir="",
                  xLength=150, yLength=200, zLength=1,
                  voxelDensity=1,
-                 MCSperDay=24 * 60,
+                 MCSperDay=500,
                  piffInitial="Simulation/CellsInit.piff",
                  simDurationDays=720,
                  sampleIntervalInDays=0.5,
-                 fluctuationAmplitude=1.0,
+                 fluctuationAmplitude=10.0,
                  flip2DimRatio=0.5,
                  neighborOrder=1,
                  boundary_x="Periodic",
@@ -44,9 +44,9 @@ class ExecConfig(object):
         self.dimensions = 2 if zLength <= 0 else 3
         self.xDimension = self.calcPixelFromMuMeter(xLength)
         self.yDimension = self.calcPixelFromMuMeter(yLength)
-        self.zDimension = 1 if self.dimensions == 2 else self.calcPixelFromMuMeter(zLength)
+        self.zDimension = 1 if self.dimensions == 2 else self.calcPixelFromMuMeterMin1(zLength)
+        self.latticeSizeInVoxel = self.xDimension * self.yDimension * self.zDimension
         self.MCSperDay = MCSperDay
-        # self.deltaT = self.MCSperDay # deprecated
         self.piffInitial = piffInitial
         self.simDurationDays = simDurationDays
         self.sampleIntervalInDays = sampleIntervalInDays
@@ -131,6 +131,7 @@ class ExecConfig(object):
         # TODO: ghj
         return None
 
+
     def calcPixelFromMuMeter(self, mum):
         """
         Convert a length in micro meter to a pixel length.
@@ -138,7 +139,17 @@ class ExecConfig(object):
         :param mum:
         :return:
         """
+        return int(self.voxelDensity * mum)
+
+    def calcPixelFromMuMeterMin1(self, mum):
+        """
+        Convert a length in micro meter to a pixel length.
+        This is influenced by the voxelDensity.
+        :param mum:
+        :return:
+        """
         return self.__truncate(self.voxelDensity * mum)
+
 
     def calculateVolume(self, diameter):
         if self.dimensions == 2:
@@ -178,13 +189,13 @@ class ExecConfig(object):
         :return: Surface in pixel^2 ^(3D) or pixel (2).
         """
         if self.dimensions == 2:
-            return self.__truncate(2 * (PI * voxelVolume) ** (1.0 / 2))  # Circumference.
+            return self.__truncate(2 * (PI * voxelVolume) ** (1.0 / 2.0))  # Circumference.
         else:
             return self.__truncate(4 * PI * (3 * voxelVolume / (4 * PI)) ** (2.0 / 3))  # Surface.
 
     def __truncate(self, value):
         res = int(value)
-        if res < 1:
+        if res <= 1:
             return 1  # Ensure that size is at least 1.
         else:
             return res
@@ -204,3 +215,9 @@ class ExecConfig(object):
         :return:
         """
         return mcs / (1.0 * self.MCSperDay)
+
+    def calcSurLambdaFromSurFit(self, surFit):
+        return 0.05 * surFit
+
+    def calcVolLambdaFromVolFit(self, volFit):
+        return 1.0 * volFit

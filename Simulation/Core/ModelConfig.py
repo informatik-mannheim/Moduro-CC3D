@@ -5,22 +5,27 @@ from ExecConfig import ExecConfig
 
 
 class ModelConfig(object):
-    def __init__(self, sim, simthread):
+    def __init__(self, sim, simthread, srcDir):
         self.sim = sim
         self.simthread = simthread
-        # dae must be declared before _createEnergyMatrix() is invoked as it used here.
-        self._dae = False
-        self._nutrient = False
-        self.cellTypes = []
-        self.cellLineage = []
-        self.energyMatrix = None
-        self.adhFactor = 0.5 # Average adhesion strength compared to vol./surf. fits.
-        self.adhEnergy = 1.0 # Some reference value.
+        self.srcDir = srcDir
+        self.adhFactor = 0.5  # Average adhesion strength compared to vol./surf. fits.
+        self.adhEnergy = 2.0  # Some reference value.
+        self.execConfig = self._createExecConfig(self.srcDir)
+        self._initModel()
+
+    def _initModel(self):
+        self.cellTypes = self._createCellTypes()
+        self.energyMatrix = self._createEnergyMatrix()
         self.name = "ModelName"
+        self._run()
 
-    def run(self, srcDir):
-        self.execConfig = self._createExecConfig(srcDir)
-
+    def _run(self):
+        """
+        Start the simulation.
+        :param srcDir: Absolute path to source file. Required for dynamic piff init.
+        :return:
+        """
         CompuCellSetup.setSimulationXMLDescription(self._configureSimulation())
         CompuCellSetup.initializeSimulationObjects(self.sim, self.simthread)
 
@@ -37,12 +42,13 @@ class ModelConfig(object):
     def _configureSimulation(self):
         self.execConfig.initPotts()
         self.execConfig.initCellTypes(self.cellTypes)
-        # TODO why 20 * ...
-        self.execConfig.initEnergyMatrix(self.cellTypes, self.energyMatrix, 20 * self.adhFactor)
+        # TODO why 15 * ...
+        self.execConfig.initEnergyMatrix(self.cellTypes, self.energyMatrix, 15 * self.adhFactor)
         self.execConfig.initPlugins("Volume", "Surface", "PixelTracker", "NeighborTracker",
                                     "ExternalPotential")
         # self.execConfig.initDiffusion(self, self.cellTypes[1], 0.1, 0.000015)
         self.execConfig.initField(self._getPIFText())
+        # self._initCells() # not yet possible.
 
         return self.execConfig.getCC3D()
 
@@ -62,24 +68,56 @@ class ModelConfig(object):
     def _createExecConfig(self, srcDir):
         return ExecConfig(self, srcDir)
 
+    def _initCells(self, fileHandle):
+        def addCubicCell2(typename, xPos, yPos, zPos, xLength, yLength, zLength):
+            cell = self.sim.newCell(typename)
+            xPosDim = self.execConfig.calcPixelFromMuMeter(xPos)
+            yPosDim = self.execConfig.calcPixelFromMuMeter(yPos)
+            zPosDim = self.execConfig.calcPixelFromMuMeter(zPos)
+            xLengthDim = self.execConfig.calcPixelFromMuMeter(xLength)
+            yLengthDim = self.execConfig.calcPixelFromMuMeter(yLength)
+            zLengthDim = self.execConfig.calcPixelFromMuMeter(zLength)
+            # size of cell will be SIZExSIZEx1
+            self.sim.cellField[xPosDim:xPosDim + xLengthDim - 1,
+            yPosDim:yPosDim + yLengthDim - 1,
+            zPosDim:zPosDim + zLengthDim - 1] = cell
+
+        def addCubicCell(id, typename, xPos, yPos, zPos, xLength, yLength, zLength):
+            # TODO exact?
+            xPosDim = self.execConfig.calcPixelFromMuMeter(xPos)
+            yPosDim = self.execConfig.calcPixelFromMuMeter(yPos)
+            zPosDim = self.execConfig.calcPixelFromMuMeter(zPos)
+            xLengthDim = self.execConfig.calcPixelFromMuMeterMin1(xLength)
+            yLengthDim = self.execConfig.calcPixelFromMuMeterMin1(yLength)
+            zLengthDim = self.execConfig.calcPixelFromMuMeterMin1(zLength)
+            fileHandle.write("%(id)s %(name)s  %(x1)s   %(x2)s  %(y1)s   %(y2)s   %(z1)s   %(z2)s \n"
+                             % {"id": id, "name": typename,
+                                "x1": xPosDim, "x2": xPosDim + xLengthDim - 1,
+                                "y1": yPosDim, "y2": yPosDim + yLengthDim - 1,
+                                "z1": zPosDim, "z2": zPosDim + zLengthDim - 1})
+
+        # Add the basal membrane:
+        addCubicCell(0, "BasalMembrane", 0, 0, 0,
+                     self.execConfig.xLength, 2, self.execConfig.zLength)
+        cellDiameter = self.cellTypes[2].getAvgDiameter()
+        stemCellFactor = 8 * cellDiameter
+        if self.execConfig.dimensions == 2:
+            noStemCells = int(self.execConfig.xLength / stemCellFactor)
+        else:
+            noStemCells = int(self.execConfig.xLength * self.execConfig.yLength /
+                              (stemCellFactor * stemCellFactor))
+        for s in range(1, noStemCells + 1, 1):
+            xPos = random.uniform(cellDiameter, self.execConfig.xLength - cellDiameter)
+            zPos = random.uniform(cellDiameter, self.execConfig.zLength - cellDiameter)
+            if self.execConfig.dimensions == 2:
+                addCubicCell(s, "Stem", xPos, 2, 0, cellDiameter, cellDiameter, 0)
+            else:
+                addCubicCell(s, "Stem", xPos, 2, zPos, cellDiameter, cellDiameter, cellDiameter)
+
     def _getPIFText(self):
         import StringIO
         fileHandle = StringIO.StringIO()
-        membraneHeightDim = self.execConfig.calcPixelFromMuMeter(2)
-        # 2D for now. TODO
-        cellDiameter = self.cellTypes[2].getAvgDiameter()
-        # print "cellDiameter", cellDiameter
-        fileHandle.write("0 BasalMembrane 0   %(x2)s 0   %(y1)s   0   0 \n"
-                         % {"x2": self.execConfig.xDimension - 1, "y1": membraneHeightDim})
-        noStemCells = int(self.execConfig.xLength / (8 * cellDiameter))
-        cellDiameterDim = self.execConfig.calcPixelFromMuMeter(0.8 * cellDiameter)
-        deltaX = self.execConfig.xLength / noStemCells
-        for s in range(1, noStemCells + 1, 1):
-            xPosDim = self.execConfig.calcPixelFromMuMeter(deltaX * s - deltaX / 2)
-            fileHandle.write("%(id)s Stem  %(x1)s   %(x2)s  %(y1)s   %(y2)s   0   0 \n"
-                             % {"id": s, "x1": xPosDim, "x2": xPosDim + cellDiameterDim,
-                                "y1": membraneHeightDim + 1,
-                                "y2": membraneHeightDim + 1 + cellDiameterDim})
+        self._initCells(fileHandle)
         text = fileHandle.getvalue()
         fileHandle.close()
         return text
@@ -96,15 +134,18 @@ class ModelConfig(object):
         :param lifeTimeParent:
         :return:
         """
+        # cellDict = cell.getDictionaryAttribute(cell)
         cellType = self.cellTypes[cell.type]
         cellDict['min_max_volume'] = [self.execConfig.calcVoxelVolumeFromVolume(cellType.minVol),
                                       self.execConfig.calcVoxelVolumeFromVolume(cellType.maxVol)]
-        cellDict['surface_lambda'] = [cellType.surFit]
-        cellDict['volume_lambda'] = [cellType.volFit]
-        cellDict['target_Volume'] = [random.uniform(cellDict['min_max_volume'][0],
-                                                    cellDict['min_max_volume'][1])]
+        cellDict['surface_lambda'] = self.execConfig.calcSurLambdaFromSurFit(cellType.surFit)
+        cellDict['volume_lambda'] = self.execConfig.calcVolLambdaFromVolFit(cellType.volFit)
+        cellDict['target_Volume'] = random.uniform(cellDict['min_max_volume'][0],
+                                                   cellDict['min_max_volume'][1])
         cellDict['growth_factor'] = []
-        cellDict['life_time'] = [lifeTimeParent]
-        cellDict['necrosis'] = [False]
-        cellDict['DNA'] = [100]
+        cellDict['life_time'] = lifeTimeParent  # How many MCS is this cell alive?
+        expLiveTime = self.execConfig.calcMCSfromDays(cellType.apoptosisTimeInDays)
+        cellDict['exp_life_time'] = random.gauss(expLiveTime, expLiveTime / 10.0)
+        cellDict['necrosis'] = False
+        cellDict['DNA'] = [100]  # TODO remove list
         cellDict['TurnOver'] = [False]

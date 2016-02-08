@@ -1,11 +1,9 @@
-import random
 from Steppable.ModuroMitosisSteppable import ModuroMitosisSteppable
 
 
 class GrowthMitosisSteppable(ModuroMitosisSteppable):
-    def __init__(self, _simulator, execConfig, model, _frequency=1):
-        ModuroMitosisSteppable.__init__(self, _simulator, execConfig, model, _frequency)
-        self.model = model
+    def __init__(self, _simulator, model, _frequency=1):
+        ModuroMitosisSteppable.__init__(self, _simulator, model, _frequency)
 
     def moduroStep(self, mcs):
         cells_to_divide = []
@@ -15,10 +13,9 @@ class GrowthMitosisSteppable(ModuroMitosisSteppable):
 
             # TODO: extract the constant 1.3 out of code into central place
             if cellType.divides and \
-                    cell.volume > 1.3 * cellDict['target_Volume'][0] and \
-                    not cellDict['necrosis'][0]:
+                    cell.volume > 1.3 * cellDict['target_Volume'] and \
+                    not cellDict['necrosis']:
                 cells_to_divide.append(cell)
-                print "cell type: ", cell.type
                 self.divideCellRandomOrientation(cell)
 
     def updateAttributes(self):
@@ -31,7 +28,18 @@ class GrowthMitosisSteppable(ModuroMitosisSteppable):
         parentCell.type = descendents[0]
         childCell.type = descendents[1]
 
+        # Now set the attributes for the two daughter cells:
         cellDict = self.getDictionaryAttribute(childCell)
         self.model.setCellAttributes(cellDict, childCell, 0)
-        childCell.lambdaVolume = cellDict['volume_lambda'][0]
-        childCell.lambdaSurface = cellDict['surface_lambda'][0]
+        childCell.lambdaVolume = \
+            self.execConfig.calcVolLambdaFromVolFit(cellDict['volume_lambda'])
+        childCell.lambdaSurface = \
+            self.execConfig.calcSurLambdaFromSurFit(cellDict['surface_lambda'])
+
+        self.model.setCellAttributes(cellDict, parentCell, 0)
+        #TODO: is it correct to get childCell dictionary or was it meant to be parentCell
+        cellDict = self.getDictionaryAttribute(childCell)
+        parentCell.lambdaVolume = \
+            self.execConfig.calcVolLambdaFromVolFit(cellDict['volume_lambda'])
+        parentCell.lambdaSurface = \
+            self.execConfig.calcSurLambdaFromSurFit(cellDict['surface_lambda'])

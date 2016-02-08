@@ -10,10 +10,10 @@ from Steppable.TransformationSteppable import TransformationSteppable
 from Steppable.UrinationSteppable import UrinationSteppable
 
 
-class CMNuDae(ModelConfig):
+class CMNuDa(ModelConfig):
     def __init__(self, sim, simthread):
         ModelConfig.__init__(self, sim, simthread)
-        self.name = "CM"
+        self.name = "CMNuDa"
         self._nutrient = True
         self._dae = True
         # Must be invoked again as _dae has changed:
