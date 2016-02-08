@@ -5,11 +5,10 @@ class TransformationSteppable(ModuroSteppable):
         ModuroSteppable.__init__(self, _simulator, execConfig, model, _frequency)
 
     def moduroStep(self, mcs):
-        cellLineage = self.model.cellLineage
         for cell in self.cellList:
             cellDict = self.getDictionaryAttribute(cell)
             cellType = self.model.cellTypes[cell.type]
-            if cellType.differentiates and not cellType.divides:
+            if cellType.transforms and not cellType.divides:
                 if cell.type == self.BASAL:
                     contactBasalMembrane = 0
                     for neighbor, commonSurfaceArea in self.getCellNeighborDataList(cell):

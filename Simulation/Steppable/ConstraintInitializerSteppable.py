@@ -15,7 +15,7 @@ class ConstraintInitializerSteppable(ModuroSteppable):
             cell.targetVolume = self.execConfig.calcVoxelVolumeFromVolume(cellType.minVol)
             cell.lambdaVolume = float(cellType.volFit)
             cell.lambdaSurface = float(cellType.surFit)
-            print "!!!!!!!!!! type=", cellType, "tvol=", cell.targetVolume
+            #print "!!!!!!!!!! type=", cellType, "tvol=", cell.targetVolume
             self.model.setCellAttributes(cellDict, cell, 0)
 
 

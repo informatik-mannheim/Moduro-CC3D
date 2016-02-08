@@ -8,7 +8,6 @@ from Steppable.GrowthSteppable import GrowthSteppable
 from Steppable.OptimumSearchSteppable import OptimumSearchSteppable
 from Steppable.TransformationSteppable import TransformationSteppable
 from Steppable.UrinationSteppable import UrinationSteppable
-from CellLineage.CMLineage import CMLineage
 
 class CMInDae(ModelConfig):
     def __init__(self, sim, simthread):
@@ -20,7 +19,7 @@ class CMInDae(ModelConfig):
         self._dae = True
         # Must be invoked again as _dae has changed:
         self.cellTypes = self._createCellTypes()
-        self.cellLineage = CMLineage(self)
+        self.cellTypeID = {cellType.name: cellType.id for cellType in self.cellTypes}
         self.adhFactor = 0.5 # average adhesion = 0.5
         self.energyMatrix = self._createEnergyMatrix()
         super(CMInDae, self).run(srcDir)  # TODO could be in constrctor?!
@@ -30,33 +29,39 @@ class CMInDae(ModelConfig):
 
     def _createCellTypes(self):
         cellTypes = []
-        cellTypes.append(CellType(name="Medium", frozen=True, minDiameter=0, maxDiameter=0,
+        medium = CellType(name="Medium", frozen=True, minDiameter=0, maxDiameter=0,
                                   growthVolumePerDay=0, nutrientRequirement=0, apoptosisTimeInDays=0,
-                                  volFit=1.0, surFit=1.0, differentiates=False, asym=0.0))
+                                  volFit=1.0, surFit=1.0)
 
-        cellTypes.append(CellType(name="BasalMembrane", frozen=True, minDiameter=0, maxDiameter=0,
+        basalmembrane = CellType(name="BasalMembrane", frozen=True, minDiameter=0, maxDiameter=0,
                                   growthVolumePerDay=0, nutrientRequirement=0, apoptosisTimeInDays=180000,
-                                  volFit=1.0, surFit=1.0, differentiates=False, asym=0.0))
+                                  volFit=1.0, surFit=1.0)
 
-        cellTypes.append(CellType(name="Stem", minDiameter=8, maxDiameter=10,
+        stem = CellType(name="Stem", minDiameter=8, maxDiameter=10,
                                   growthVolumePerDay=10 * self.calcVolume(10),
                                   nutrientRequirement=1.0, apoptosisTimeInDays=180000,
-                                  volFit=0.9, surFit=0.5, differentiates=True, asym=1.0))
+                                  volFit=0.9, surFit=0.5, divides=True)
 
-        cellTypes.append(CellType(name="Basal", minDiameter=10, maxDiameter=12,
+        basal = CellType(name="Basal", minDiameter=10, maxDiameter=12,
                                   growthVolumePerDay=10 * self.calcVolume(12),
                                   nutrientRequirement=1.0, apoptosisTimeInDays=90,
-                                  volFit=0.9, surFit=0.5, differentiates=True, asym=0.0))
+                                  volFit=0.9, surFit=0.5, divides=False, transforms=True)
 
-        cellTypes.append(CellType(name="Intermediate", minDiameter=12, maxDiameter=15,
+        intermediate = CellType(name="Intermediate", minDiameter=12, maxDiameter=15,
                                   growthVolumePerDay=20 * self.calcVolume(15),
                                   nutrientRequirement=1.0, apoptosisTimeInDays=30,
-                                  volFit=0.9, surFit=0.1, differentiates=True, asym=0.0))
+                                  volFit=0.9, surFit=0.1, divides=False, transforms=True)
 
-        cellTypes.append(CellType(name="Umbrella", minDiameter=15, maxDiameter=19,
+        umbrella = CellType(name="Umbrella", minDiameter=15, maxDiameter=19,
                                   growthVolumePerDay=10 * self.calcVolume(19),
                                   nutrientRequirement=1.0, apoptosisTimeInDays=10,
-                                  volFit=0.9, surFit=0.1, differentiates=True, asym=0.0))
+                                  volFit=0.9, surFit=0.1)
+
+        stem.setDescendants(1.0, [stem, basal])
+        basal.setDescendants(1.0, [intermediate])
+        intermediate.setDescendants(1.0, [umbrella])
+
+        cellTypes.extend((medium, basalmembrane, stem, basal, intermediate, umbrella))
 
         return cellTypes
 

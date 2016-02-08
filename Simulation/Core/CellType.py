@@ -1,4 +1,5 @@
 from math import pi as PI
+import random
 
 class CellType(object):
     """
@@ -10,8 +11,7 @@ class CellType(object):
     # TODO explain parameter
     def __init__(self, name="CellType", frozen=False, minDiameter=10, maxDiameter=10,
                  growthVolumePerDay=500, nutrientRequirement=1.0, apoptosisTimeInDays=180000,
-                 volFit=1.0, surFit=0.0,
-                 differentiates=True, asym=1.0, idenSym=0.0, diffSym=0.0):
+                 volFit=1.0, surFit=0.0, divides=False, transforms=False):
         """
 
         :param name:
@@ -23,10 +23,7 @@ class CellType(object):
         :param apoptosisTimeInDays:
         :param volFit:
         :param surFit:
-        :param differentiates:
-        :param asym:
-        :param idenSym:
-        :param diffSym:
+        :param transforms:
         :return:
         """
         self.id = CellType.__typeCount
@@ -41,14 +38,9 @@ class CellType(object):
         self.apoptosisTimeInDays = apoptosisTimeInDays
         self.volFit = volFit
         self.surFit = surFit
-        self.differentiates = differentiates
-        self.asym = asym
-        self.idenSym = idenSym
-        self.diffSym = diffSym
-        if asym + idenSym + diffSym == 0.0:
-            self.divides = False
-        else:
-            self.divides = True
+        self.divides = divides
+        self.transforms = transforms
+        self.descendants = []
         CellType.__typeCount += 1
 
     def getAvgVolume(self):
@@ -56,3 +48,26 @@ class CellType(object):
 
     def getAvgDiameter(self):
         return (self.minDiameter + self.maxDiameter) / 2.0
+
+    def getDescendants(self):
+        if self.divides or self.transforms:
+            prob = random.random()
+            for x in self.descendants:
+                if self.__isLower(prob, x[0]):
+                    return [x[1][0].id, x[1][1].id] if self.divides else [x[1][0].id]
+                else:
+                    prob -= x[0]
+        else:
+            return []
+
+    def setDescendants(self, probability, descendants):
+        #TODO: check if probability is higher than 1.0 and normalize
+        cellLineageOfCellType = [probability, descendants]
+        self.descendants.append(cellLineageOfCellType)
+
+    def __isLower(self, prob1, prob2):
+        if prob1 <= prob2:
+            return True
+        else:
+            return False
+
