@@ -154,3 +154,4 @@ class ModelConfig(object):
         cellDict['necrosis'] = False
         cellDict['DNA'] = [100]  # TODO remove list
         cellDict['TurnOver'] = [False]
+        cellDict['label'] = 0

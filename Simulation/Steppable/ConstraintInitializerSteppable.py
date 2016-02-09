@@ -12,6 +12,7 @@ class ConstraintInitializerSteppable(ModuroSteppable):
         # Required here! Otherwise CC3D will not create the file.
         #self.execConfig.parameterStore.saveParameterfile("ParameterDump.dat")
 
+        id = 1
         for cell in self.cellList:
             cellDict = self.getDictionaryAttribute(cell)
             cellType = self.model.cellTypes[cell.type]
@@ -19,6 +20,10 @@ class ConstraintInitializerSteppable(ModuroSteppable):
             cell.lambdaVolume = self.execConfig.calcVolLambdaFromVolFit(cellType.volFit)
             cell.lambdaSurface = self.execConfig.calcSurLambdaFromSurFit(cellType.surFit)
             # print "!!!!!!!!!! type=", cellType, "tvol=", cell.targetVolume
+            if cell.type == self.STEM:
+                cellDict["label"] = id
+                id =+ 1
+
             self.model.setCellAttributes(cellDict, cell, 0)
 
 

@@ -25,7 +25,7 @@ class ExecConfig(object):
         :param yLength:
         :param zLength:
         :param voxelDensity:
-        :param MCSperHour: MC steps per Hour. Default is 60, i.e. 1 MCS = 1 min.
+        :param MCSperDay: MC steps per Day. Default is 500, i.e. 500 MCS = 1 day.
         :param piffInitial:
         :param simDurationDays:
         :param fluctuationAmplitude:
