@@ -28,7 +28,7 @@ class ParameterStore(object):
         parameters = (x for x in self.params if x[0] == clazz)
         return parameters
 
-    def openParameterfile(self, filename):
+    def __openParameterfile(self, filename):
         """
         Writes all parameters to a file.
         :param filename:
@@ -42,7 +42,10 @@ class ParameterStore(object):
             print "Could not open file ", filename, \
                 " for writing. Check if you have necessary permissions."
 
-    def closeParameterfile(self):
+    def saveParameterfile(self, filename):
+        self.__openParameterfile(filename)
+        self.__fileHandle.write("startTime: %s \n" % "2014-12-11 15:12:32.063000")
+        self.__fileHandle.write("SEED: %s \n" % "100578200")
         for x in self.params:
             self.__fileHandle.write("In '{0}', '{1}' is set to: '{2}' \n".format(x[0], x[1], x[2]))
         self.__fileHandle.close()

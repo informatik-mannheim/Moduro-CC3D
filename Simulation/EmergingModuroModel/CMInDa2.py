@@ -8,6 +8,6 @@ class CMInDa2(CMInDa):
 
     def _createExecConfig(self, srcDir):
         return ExecConfig(srcDir=srcDir,
-                          xLength=800, yLength=120, zLength=0, voxelDensity=0.8,
+                          xLength=100, yLength=120, zLength=50, voxelDensity=1,
                           MCSperDay=500,
                           fluctuationAmplitude=10.0)

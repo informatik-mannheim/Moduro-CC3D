@@ -37,8 +37,7 @@ class GrowthMitosisSteppable(ModuroMitosisSteppable):
             self.execConfig.calcSurLambdaFromSurFit(cellDict['surface_lambda'])
 
         self.model.setCellAttributes(cellDict, parentCell, 0)
-        #TODO: is it correct to get childCell dictionary or was it meant to be parentCell
-        cellDict = self.getDictionaryAttribute(childCell)
+        cellDict = self.getDictionaryAttribute(parentCell)
         parentCell.lambdaVolume = \
             self.execConfig.calcVolLambdaFromVolFit(cellDict['volume_lambda'])
         parentCell.lambdaSurface = \

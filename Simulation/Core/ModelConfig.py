@@ -36,6 +36,7 @@ class ModelConfig(object):
         for steppable in self._getSteppables():
             steppableRegistry.registerSteppable(steppable)
 
+        self.execConfig.parameterStore.saveParameterfile("ParameterDump2.dat") # geht nicht!
         CompuCellSetup.mainLoop(self.sim, self.simthread, steppableRegistry)
 
     # TODO move configure stuff to ExecConfig?
