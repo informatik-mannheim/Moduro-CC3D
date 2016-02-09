@@ -5,7 +5,6 @@ from Steppable.ConstraintInitializerSteppable import ConstraintInitializerSteppa
 from Steppable.DeathSteppable import DeathSteppable
 from Steppable.GrowthMitosisSteppable import GrowthMitosisSteppable
 from Steppable.GrowthSteppable import GrowthSteppable
-from Steppable.OptimumSearchSteppable import OptimumSearchSteppable
 from Steppable.TransformationSteppable import TransformationSteppable
 from Steppable.UrinationSteppable import UrinationSteppable
 from Logger.VolumeFitnessSteppable import VolumeFitnessSteppable

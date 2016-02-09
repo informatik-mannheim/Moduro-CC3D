@@ -9,7 +9,7 @@ class ConstraintInitializerSteppable(ModuroSteppable):
         Initialize all cells.
         :return:
         """
-        self.execConfig.parameterStore.writeParameterfile("ParameterDump.dat")
+        #self.execConfig.parameterStore.openParameterfile("ParameterDump.dat")
 
         for cell in self.cellList:
             cellDict = self.getDictionaryAttribute(cell)

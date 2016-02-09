@@ -42,7 +42,6 @@ class ModelConfig(object):
     def _configureSimulation(self):
         self.execConfig.initPotts()
         self.execConfig.initCellTypes(self.cellTypes)
-        # TODO why 15 * ...
         self.execConfig.initEnergyMatrix(self.cellTypes, self.energyMatrix, 15 * self.adhFactor)
         self.execConfig.initPlugins("Volume", "Surface", "PixelTracker", "NeighborTracker",
                                     "ExternalPotential")

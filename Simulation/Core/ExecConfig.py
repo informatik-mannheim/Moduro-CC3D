@@ -57,9 +57,36 @@ class ExecConfig(object):
         self.neighborOrder = neighborOrder
         self.boundary_x = boundary_x
         self.debugOutputFrequency = debugOutputFrequency
+        #TODO: change the seed value of every random number used in Moduro project
         self.SEED = SEED
         self.__cc3d = None
         self.parameterStore = ParameterStore()
+        self.parameterStore.openParameterfile("ParameterDump.dat")
+        self.parameterStore.setParameter("ExecConfig", "srcDir", self.srcDir)
+        self.parameterStore.setParameter("ExecConfig", "xLength", self.xLength)
+        self.parameterStore.setParameter("ExecConfig", "yLength", self.yLength)
+        self.parameterStore.setParameter("ExecConfig", "zLength", self.zLength)
+        self.parameterStore.setParameter("ExecConfig", "voxelDensity", self.voxelDensity)
+        self.parameterStore.setParameter("ExecConfig", "dimensions", self.dimensions)
+        self.parameterStore.setParameter("ExecConfig", "xDimension", self.xDimension)
+        self.parameterStore.setParameter("ExecConfig", "yDimension", self.yDimension)
+        self.parameterStore.setParameter("ExecConfig", "zDimension", self.zDimension)
+        self.parameterStore.setParameter("ExecConfig", "latticeSizeInVoxel", self.latticeSizeInVoxel)
+        self.parameterStore.setParameter("ExecConfig", "MCSperDay", self.MCSperDay)
+        self.parameterStore.setParameter("ExecConfig", "piffInitial", self.piffInitial)
+        self.parameterStore.setParameter("ExecConfig", "simDurationDays", self.simDurationDays)
+        self.parameterStore.setParameter("ExecConfig", "sampleIntervalInDays", self.sampleIntervalInDays)
+        self.parameterStore.setParameter("ExecConfig", "sampleIntervalInMCS", self.sampleIntervalInMCS)
+        self.parameterStore.setParameter("ExecConfig", "maxSteps", self.maxSteps)
+        self.parameterStore.setParameter("ExecConfig", "fluctuationAmplitude", self.fluctuationAmplitude)
+        self.parameterStore.setParameter("ExecConfig", "flip2DimRatio", self.flip2DimRatio)
+        self.parameterStore.setParameter("ExecConfig", "neighborOrder", self.neighborOrder)
+        self.parameterStore.setParameter("ExecConfig", "boundary_x", self.boundary_x)
+        self.parameterStore.setParameter("ExecConfig", "debugOutputFrequency", self.debugOutputFrequency)
+        self.parameterStore.setParameter("ExecConfig", "SEED", self.SEED)
+        print(self.parameterStore.getParameters("ExecConfig"))
+        self.parameterStore.closeParameterfile()
+
 
     def initPotts(self):
         self.__cc3d = ElementCC3D("CompuCell3D", {"version": "3.7.3"})
