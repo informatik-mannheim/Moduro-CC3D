@@ -11,6 +11,7 @@ class ConstraintInitializerSteppable(ModuroSteppable):
         """
         # Required here! Otherwise CC3D will not create the file.
         #self.execConfig.parameterStore.saveParameterfile("ParameterDump.dat")
+        self.execConfig.parameterStore.saveAllObjs("ParameterDump.dat")
 
         id = 1
         for cell in self.cellList:

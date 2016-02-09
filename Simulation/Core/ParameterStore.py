@@ -1,4 +1,4 @@
-import inspect
+import datetime
 
 class ParameterStore(object):
     """
@@ -22,7 +22,7 @@ class ParameterStore(object):
         self.params.append([clazz, name, value])
 
     def addObj(self, obj):
-        self.objs.append(object)
+        self.objs.append(obj)
 
 
     def getParameters(self, clazz):
@@ -67,11 +67,12 @@ class ParameterStore(object):
 
     def saveAllObjs(self, filename):
         self.__openParameterfile(filename)
-        self.__fileHandle.write("startTime: %s \n" % "2014-12-11 15:12:32.063000")
-        self.__fileHandle.write("SEED: %s \n" % "100578200")
+        self.__fileHandle.write("startTime: %s \n" % str(datetime.datetime.now()))
+        self.__fileHandle.write("SEED: %s \n" % "100")
         for obj in self.objs:
-            self.__fileHandle.write(obj.__name__)
-            for property, value in vars(obj).iteritems():
-                self.__fileHandle.write(property, ": ", value)
-            #print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + str([a for a in dir(self) if not a.startswith('_') and not callable(getattr(self,a))])
-            #print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + str([getattr(self, a) for a in dir(self) if not a.startswith('_') and not callable(getattr(self,a))])
+            self.__fileHandle.write("\n" + str(obj.__class__.__name__) + ":\n")
+            for a in dir(obj):
+                if not a.startswith('_') and not callable(getattr(obj, a)) \
+                        and a not in ['parameterStore', 'cellTypes', 'execConfig', 'simthread', 'sim']:
+                    self.__fileHandle.write(a + ": " + str(getattr(obj, a)) + "\n")
+        self.__fileHandle.close()

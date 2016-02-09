@@ -31,6 +31,9 @@ class ModelConfig(object):
         :return:
         """
         self.execConfig.parameterStore.addObj(self)
+        for cellType in self.cellTypes:
+            self.execConfig.parameterStore.addObj(cellType)
+
 
         CompuCellSetup.setSimulationXMLDescription(self._configureSimulation())
         CompuCellSetup.initializeSimulationObjects(self.sim, self.simthread)
