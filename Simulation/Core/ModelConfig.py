@@ -11,7 +11,11 @@ class ModelConfig(object):
         self.srcDir = srcDir
         self.adhFactor = 0.5  # Average adhesion strength compared to vol./surf. fits.
         self.adhEnergy = 2.0  # Some reference value.
+        self.cellTypes = []
+        self.energyMatrix = []
         self.execConfig = self._createExecConfig(self.srcDir)
+        self.name = ""
+        random.seed(self.execConfig.SEED)
         self._initModel()
 
     def _initModel(self):
@@ -26,6 +30,8 @@ class ModelConfig(object):
         :param srcDir: Absolute path to source file. Required for dynamic piff init.
         :return:
         """
+        self.execConfig.parameterStore.addObj(self)
+
         CompuCellSetup.setSimulationXMLDescription(self._configureSimulation())
         CompuCellSetup.initializeSimulationObjects(self.sim, self.simthread)
 
@@ -36,7 +42,6 @@ class ModelConfig(object):
         for steppable in self._getSteppables():
             steppableRegistry.registerSteppable(steppable)
 
-        self.execConfig.parameterStore.saveParameterfile("ParameterDump2.dat") # geht nicht!
         CompuCellSetup.mainLoop(self.sim, self.simthread, steppableRegistry)
 
     # TODO move configure stuff to ExecConfig?

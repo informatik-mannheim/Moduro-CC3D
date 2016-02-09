@@ -1,5 +1,6 @@
 from math import pi as PI
 import random
+from Core.ParameterStore import ParameterStore
 
 class CellType(object):
     """
@@ -53,8 +54,8 @@ class CellType(object):
         if self.divides or self.transforms:
             prob = random.random()
             for x in self.descendants:
-                if self.__isLower(prob, x[0]):
-                    return [x[1][0].id, x[1][1].id] if self.divides else [x[1][0].id]
+                if prob < x[0]:
+                    return [x[1][0], x[1][1]] if self.divides else [x[1][0]]
                 else:
                     prob -= x[0]
         else:
@@ -65,9 +66,5 @@ class CellType(object):
         cellLineageOfCellType = [probability, descendants]
         self.descendants.append(cellLineageOfCellType)
 
-    def __isLower(self, prob1, prob2):
-        if prob1 <= prob2:
-            return True
-        else:
-            return False
+
 

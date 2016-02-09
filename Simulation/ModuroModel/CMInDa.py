@@ -10,7 +10,6 @@ class CMInDa(CMInUa):
         self.adhFactor = 0.5  # average adhesion = 0.5
         self.cellTypes = self._createCellTypes()
         self.energyMatrix = self._createEnergyMatrix()
-        self.execConfig.parameterStore.setParameter("CMInDa", "dae", True)
         self._run()  # Must be the last statement.
 
     def _createEnergyMatrix(self):

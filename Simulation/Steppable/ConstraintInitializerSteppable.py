@@ -10,7 +10,7 @@ class ConstraintInitializerSteppable(ModuroSteppable):
         :return:
         """
         # Required here! Otherwise CC3D will not create the file.
-        self.execConfig.parameterStore.saveParameterfile("ParameterDump.dat")
+        #self.execConfig.parameterStore.saveParameterfile("ParameterDump.dat")
 
         for cell in self.cellList:
             cellDict = self.getDictionaryAttribute(cell)

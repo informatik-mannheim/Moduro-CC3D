@@ -12,6 +12,6 @@ sim, simthread = CompuCellSetup.getCoreSimulationObjects()
 
 # Now load the model to simulate!
 from ModuroModel.CMInUa import CMInUa
-#model = CMInUa(sim, simthread,"c:\Users\Markus\Local-Docs\src\cc3d\Moduro-CC3D")
-model = CMInUa(sim, simthread,"D:\workspace\Moduro-CC3D")
+import Settings.DirectoryPath
+model = CMInUa(sim, simthread,Settings.DirectoryPath.getSrcPath())
 # srcDir is required to know where CellsInit.piff is.

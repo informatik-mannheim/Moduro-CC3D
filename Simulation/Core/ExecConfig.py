@@ -61,6 +61,7 @@ class ExecConfig(object):
         self.SEED = SEED
         self.__cc3d = None
         self.parameterStore = ParameterStore()
+        self.parameterStore.addObj(self)
         self.parameterStore.setParameter("ExecConfig", "srcDir", self.srcDir)
         self.parameterStore.setParameter("ExecConfig", "xLength", self.xLength)
         self.parameterStore.setParameter("ExecConfig", "yLength", self.yLength)
@@ -83,8 +84,6 @@ class ExecConfig(object):
         self.parameterStore.setParameter("ExecConfig", "boundary_x", self.boundary_x)
         self.parameterStore.setParameter("ExecConfig", "debugOutputFrequency", self.debugOutputFrequency)
         self.parameterStore.setParameter("ExecConfig", "SEED", self.SEED)
-        print(self.parameterStore.getParameters("ExecConfig"))
-        self.parameterStore.saveParameterfile("ParameterDump.dat")
 
 
     def initPotts(self):

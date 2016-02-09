@@ -21,7 +21,6 @@ class CMInUa(ModelConfig):
         self.adhFactor = 0.5  # average adhesion = 0.5
         self.cellTypes = self._createCellTypes()
         self.energyMatrix = self._createEnergyMatrix()
-        self.execConfig.parameterStore.setParameter(self.name, "adhFactor", self.adhFactor)
         self._run() # Must be the last statement.
 
 

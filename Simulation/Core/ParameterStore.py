@@ -1,3 +1,5 @@
+import inspect
+
 class ParameterStore(object):
     """
     Saves and restores parameter for simulations.
@@ -5,6 +7,7 @@ class ParameterStore(object):
 
     def __init__(self):
         self.params = []
+        self.objs = []
         self.__fileHandle = None
         self.__fullFileName = None
 
@@ -17,6 +20,10 @@ class ParameterStore(object):
         :return:
         """
         self.params.append([clazz, name, value])
+
+    def addObj(self, obj):
+        self.objs.append(object)
+
 
     def getParameters(self, clazz):
         """
@@ -57,3 +64,14 @@ class ParameterStore(object):
         :return:
         """
         return None
+
+    def saveAllObjs(self, filename):
+        self.__openParameterfile(filename)
+        self.__fileHandle.write("startTime: %s \n" % "2014-12-11 15:12:32.063000")
+        self.__fileHandle.write("SEED: %s \n" % "100578200")
+        for obj in self.objs:
+            self.__fileHandle.write(obj.__name__)
+            for property, value in vars(obj).iteritems():
+                self.__fileHandle.write(property, ": ", value)
+            #print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + str([a for a in dir(self) if not a.startswith('_') and not callable(getattr(self,a))])
+            #print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + str([getattr(self, a) for a in dir(self) if not a.startswith('_') and not callable(getattr(self,a))])

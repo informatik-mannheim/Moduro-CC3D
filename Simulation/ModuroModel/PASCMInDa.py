@@ -45,6 +45,7 @@ class PASCMInDa(CMInDa):
                                   nutrientRequirement=1.0, apoptosisTimeInDays=10,
                                   volFit=0.9, surFit=0.1)
 
+
         stem.setDescendants(0.98, [stem, basal])
         stem.setDescendants(0.01, [stem, stem])
         stem.setDescendants(0.01, [basal, basal])
@@ -53,6 +54,7 @@ class PASCMInDa(CMInDa):
 
         cellTypes.extend((medium, basalmembrane, stem, basal, intermediate, umbrella))
 
+        print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + str([a for a in dir(cellTypes[0]) if not a.startswith('_') and not callable(getattr(cellTypes[0],a))])
         return cellTypes
 
     def _createExecConfig(self, srcDir):
