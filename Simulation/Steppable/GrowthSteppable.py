@@ -15,7 +15,7 @@ class GrowthSteppable(ModuroSteppable):
             cellDict['life_time'] += 1
             apoptosisMCS = self.execConfig.calcMCSfromDays(cellType.apoptosisTimeInDays)
             if cellDict['life_time'] >= apoptosisMCS:
-                cellDict['necrosis'] = [True]
+                cellDict['necrosis'] = True
             elif cellType.divides or cellType.transforms and \
                             cell.targetVolume <= cellDict['target_Volume']:
                 cell.targetSurface = self.execConfig.calcVoxelSurfaceFromVoxelVolume(cell.volume)
