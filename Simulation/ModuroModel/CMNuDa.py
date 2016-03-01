@@ -6,7 +6,7 @@ from Steppable.DeathSteppable import DeathSteppable
 from Steppable.GrowthMitosisSteppable import GrowthMitosisSteppable
 from Steppable.NutrientGrowthSteppable import NutrientGrowthSteppable
 from Steppable.OptimumSearchSteppable import OptimumSearchSteppable
-from Steppable.TransformationSteppable import TransformationSteppable
+from Steppable.CMTransformationSteppable import CMTransformationSteppable
 from Steppable.UrinationSteppable import UrinationSteppable
 
 
@@ -70,7 +70,7 @@ class CMNuDa(ModelConfig):
         steppableList.append(ConstraintInitializerSteppable(self.sim, self.execConfig, self))
         steppableList.append(NutrientGrowthSteppable(self.sim, self.execConfig, self))
         steppableList.append(GrowthMitosisSteppable(self.sim, self.execConfig, self))
-        steppableList.append(TransformationSteppable(self.sim, self.execConfig, self))
+        steppableList.append(CMTransformationSteppable(self.sim, self.execConfig, self))
         steppableList.append(UrinationSteppable(self.sim, self.execConfig, self))
         steppableList.append(DeathSteppable(self.sim, self.execConfig, self))
         steppableList.append(OptimumSearchSteppable(self.sim, self.execConfig, self))

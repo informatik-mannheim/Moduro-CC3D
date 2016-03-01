@@ -23,15 +23,15 @@ class NutrientGrowthSteppable(GrowthSteppable):
                     #TODO: bring the consumption per cell constant into central place
                     if self.scalarField[pixelTrackerData.pixel.x,
                                         pixelTrackerData.pixel.y,
-                                        pixelTrackerData.pixel.z] > 0.003 / self.execConfig.MCSperDay:
+                                        pixelTrackerData.pixel.z] > cellType.consumPerCell / self.execConfig.MCSperDay:
                         self.scalarField[pixelTrackerData.pixel.x,
                                          pixelTrackerData.pixel.y,
-                                         pixelTrackerData.pixel.z] -= 0.003 / self.execConfig.MCSperDay
+                                         pixelTrackerData.pixel.z] -= cellType.consumPerCell / self.execConfig.MCSperDay
                     else:
                         self.scalarField[pixelTrackerData.pixel.x,
                                          pixelTrackerData.pixel.y,
                                          pixelTrackerData.pixel.z] = 0
-            if cellType.divides or cellType.differentiates and cell.targetVolume <= cellDict['target_Volume']:
+            if cellType.divides or cell.targetVolume <= cellDict['target_Volume']:
                 cell.targetSurface = self.execConfig.calcVoxelSurfaceFromVoxelVolume(cell.volume)
                 #TODO: necrosis trigger if to little nutrients
                 if totalNutrients >= cellType.nutrientRequirement * cell.volume:
