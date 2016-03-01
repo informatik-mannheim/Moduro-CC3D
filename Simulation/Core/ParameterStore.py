@@ -52,7 +52,6 @@ class ParameterStore(object):
     def saveParameterfile(self, filename):
         self.__openParameterfile(filename)
         self.__fileHandle.write("startTime: %s \n" % "2014-12-11 15:12:32.063000")
-        self.__fileHandle.write("SEED: %s \n" % "100578200")
         for x in self.params:
             self.__fileHandle.write("In '{0}', '{1}' is set to: '{2}' \n".format(x[0], x[1], x[2]))
         self.__fileHandle.close()
@@ -68,7 +67,6 @@ class ParameterStore(object):
     def saveAllObjs(self, filename):
         self.__openParameterfile(filename)
         self.__fileHandle.write("startTime: %s \n" % str(datetime.datetime.now()))
-        self.__fileHandle.write("SEED: %s \n" % "100")
         for obj in self.objs:
             self.__fileHandle.write("\n" + str(obj.__class__.__name__) + ":\n")
             for a in dir(obj):

@@ -54,7 +54,7 @@ class CMInUa(ModelConfig):
                                   nutrientRequirement=1.0, apoptosisTimeInDays=10,
                                   volFit=0.9, surFit=0.1)
 
-        stem.setDescendants(1.0, [stem, basal])
+        stem.setDescendants(1.0, [stem.id, basal.id])
 
         cellTypes.extend((medium, basalmembrane, stem, basal, intermediate, umbrella))
 

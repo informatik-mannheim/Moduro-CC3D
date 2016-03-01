@@ -10,7 +10,7 @@ class UrinationSteppable(ModuroSteppable):
 
     def moduroStep(self, mcs):
         if mcs > 2 * self.urinationMCS and mcs % self.urinationMCS == 0:
-            print "URINATION !!!!!!!!!!!!!!!!!!!! at ", mcs
+            # print "URINATION !!!!!!!!!!!!!!!!!!!! at ", mcs
             self._removeCells()
 
     def _removeCells(self):
@@ -21,7 +21,7 @@ class UrinationSteppable(ModuroSteppable):
                 if not neighbor:
                     totalArea += commonSurfaceArea
             if totalArea > 0 and random.random() < self.prop:
-                print "WEG!!!!!!!!!!!!!!!!!!!"
+                # print "WEG!!!!!!!!!!!!!!!!!!!"
                 cellDict = self.getDictionaryAttribute(cell)
                 # TODO was happens here?
                 cell.lambdaVecY = 0 # -500

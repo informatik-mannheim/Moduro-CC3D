@@ -45,14 +45,13 @@ class VolumeFitnessSteppable(TissueFitnessSteppable):
                 fitness_U = self._fit(self.idealUmbrellaCellsVol, umbrellaVolume)
 
                 fitness_v = (fitness_B + fitness_I + fitness_U) / 3.0
-                print "!R!R!R!R!RR! lattice=", self.latticeSize, ", idealL=", self.idealVol, \
-                ", tVoxel=", totalVolume
-                print "!!!!!! B ", self.idealBasalStemCellsVol, " = ", basalStemVolume
-                print "!!!!!! I ", self.idealIntermediateCellsVol, " = ", intermediateVolume
-                print "!!!!!! U ", self.idealUmbrellaCellsVol, " = ", umbrellaVolume
-                print "!!!!!! fB = ", fitness_B,", fI = ", fitness_I,", fU = ", fitness_U
+                # print "!R!R!R!R!RR! lattice=", self.latticeSize, ", idealL=", self.idealVol, ", tVoxel=", totalVolume
+                # print "!!!!!! B ", self.idealBasalStemCellsVol, " = ", basalStemVolume
+                # print "!!!!!! I ", self.idealIntermediateCellsVol, " = ", intermediateVolume
+                # print "!!!!!! U ", self.idealUmbrellaCellsVol, " = ", umbrellaVolume
+                # print "!!!!!! fB = ", fitness_B,", fI = ", fitness_I,", fU = ", fitness_U
 
-                self._addLine(mcs, fitness_v)
+            self._addLine(mcs, fitness_v)
 
     def _fit(self, volOpt, vol):
         return 1.0 / (self.a * ((volOpt - vol) / volOpt) ** 2.0 + 1.0)

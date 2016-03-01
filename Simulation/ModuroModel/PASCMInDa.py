@@ -45,9 +45,9 @@ class PASCMInDa(CMInDa):
                                   nutrientRequirement=1.0, apoptosisTimeInDays=10,
                                   volFit=0.9, surFit=0.1)
 
-        stem.setDescendants(0.98, [stem, basal])
-        stem.setDescendants(0.01, [stem, stem])
-        stem.setDescendants(0.01, [basal, basal])
+        stem.setDescendants(0.98, [stem.id, basal.id])
+        stem.setDescendants(0.01, [stem.id, stem.id])
+        stem.setDescendants(0.01, [basal.id, basal.id])
 
         cellTypes.extend((medium, basalmembrane, stem, basal, intermediate, umbrella))
 

@@ -22,7 +22,7 @@ class GrowthSteppable(ModuroSteppable):
 
                 # TODO: necrosis trigger if to little nutrients
                 # Growth (mu m^3 ) per MCS:
-                deltaVolPerMCS = 1.0 * cellType.growthVolumePerDay / self.execConfig.MCSperDay
+                # deltaVolPerMCS = 1.0 * cellType.growthVolumePerDay / self.execConfig.MCSperDay
                 # Volume/surface change in voxel per day.
                 deltaVolDimPerDay = self.execConfig.calcVoxelVolumeFromVolume(cellType.growthVolumePerDay)
                 deltaVolDimPerMCS = 1.0 * deltaVolDimPerDay / self.execConfig.MCSperDay
