@@ -17,14 +17,15 @@ class UrinationSteppable(ModuroSteppable):
         for cell in self.cellList:
             totalArea = 0
             cell.lambdaVecX = 0
-            for neighbor, commonSurfaceArea in self.getCellNeighborDataList(cell):
-                if not neighbor:
-                    totalArea += commonSurfaceArea
-            if totalArea > 0 and random.random() < self.prop:
-                # print "WEG!!!!!!!!!!!!!!!!!!!"
-                cellDict = self.getDictionaryAttribute(cell)
-                # TODO was happens here?
-                cell.lambdaVecY = 0 # -500
-                apoptosisDays = self.model.cellTypes[cell.type].apoptosisTimeInDays
-                killTime = self.execConfig.calcMCSfromDays(apoptosisDays)
-                cellDict['life_time'] = killTime - self.deathIntervalMCS
+            if random.random() < self.prop:
+                for neighbor, commonSurfaceArea in self.getCellNeighborDataList(cell):
+                    if not neighbor:
+                        totalArea += commonSurfaceArea
+                if totalArea > 0:
+                    # print "WEG!!!!!!!!!!!!!!!!!!!"
+                    cellDict = self.getDictionaryAttribute(cell)
+                    # TODO was happens here?
+                    cell.lambdaVecY = 0 # -500
+                    apoptosisDays = self.model.cellTypes[cell.type].apoptosisTimeInDays
+                    killTime = self.execConfig.calcMCSfromDays(apoptosisDays)
+                    cellDict['life_time'] = killTime - self.deathIntervalMCS

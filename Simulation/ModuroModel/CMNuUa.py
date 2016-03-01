@@ -4,20 +4,20 @@ from Core.ModelConfig import ModelConfig
 from Steppable.ConstraintInitializerSteppable import ConstraintInitializerSteppable
 from Steppable.DeathSteppable import DeathSteppable
 from Steppable.GrowthMitosisSteppable import GrowthMitosisSteppable
-from Steppable.GrowthSteppable import GrowthSteppable
+from Steppable.NutrientGrowthSteppable import NutrientGrowthSteppable
 from Steppable.CMTransformationSteppable import CMTransformationSteppable
-from Steppable.UrinationSteppable import UrinationSteppable
+from Steppable.UrinationWithNutrientsSteppable import UrinationWithNutrientsSteppable
 from Logger.VolumeFitnessSteppable import VolumeFitnessSteppable
 from Logger.ArrangementFitnessSteppable import ArrangementFitnessSteppable
 from Logger.DummyFitnessSteppable import DummyFitnessSteppable
 
 
-class CMInUa(ModelConfig):
+class CMNuUa(ModelConfig):
     def __init__(self, sim, simthread, srcDir):
         ModelConfig.__init__(self, sim, simthread, srcDir)
 
     def _initModel(self):
-        self.name = "CMInUa"
+        self.name = "CMNuUa"
         self.cellTypes = self._createCellTypes()
         self.energyMatrix = self._createEnergyMatrix()
         self._run() # Must be the last statement.
@@ -62,10 +62,10 @@ class CMInUa(ModelConfig):
     def _getSteppables(self):
         steppableList = []
         steppableList.append(ConstraintInitializerSteppable(self.sim, self))
-        steppableList.append(GrowthSteppable(self.sim, self))
+        steppableList.append(NutrientGrowthSteppable(self.sim, self))
         steppableList.append(GrowthMitosisSteppable(self.sim, self))
         steppableList.append(CMTransformationSteppable(self.sim, self))
-        steppableList.append(UrinationSteppable(self.sim, self, prop=0.02))
+        steppableList.append(UrinationWithNutrientsSteppable(self.sim, self, prop=0.02))
         steppableList.append(DeathSteppable(self.sim, self))
         #steppableList.append(OptimumSearchSteppable(self.sim, self))
         steppableList.append(VolumeFitnessSteppable(self.sim, self))
@@ -76,4 +76,4 @@ class CMInUa(ModelConfig):
 
     def _createExecConfig(self, srcDir):
         return ExecConfig(srcDir=srcDir,
-                          xLength=150, yLength=100, zLength=0, voxelDensity=1)
+                          xLength=150, yLength=100, zLength=0, voxelDensity=1, initNutrientDiffusion=True)

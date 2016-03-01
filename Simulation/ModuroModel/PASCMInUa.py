@@ -1,27 +1,17 @@
 from Core.CellType import CellType
 from Core.ExecConfig import ExecConfig
-from Core.ModelConfig import ModelConfig
-from Steppable.ConstraintInitializerSteppable import ConstraintInitializerSteppable
-from Steppable.DeathSteppable import DeathSteppable
-from Steppable.GrowthMitosisSteppable import GrowthMitosisSteppable
-from Steppable.GrowthSteppable import GrowthSteppable
-from Steppable.CMTransformationSteppable import CMTransformationSteppable
-from Steppable.UrinationSteppable import UrinationSteppable
-from Logger.VolumeFitnessSteppable import VolumeFitnessSteppable
-from Logger.ArrangementFitnessSteppable import ArrangementFitnessSteppable
-from Logger.DummyFitnessSteppable import DummyFitnessSteppable
+from ModuroModel.CMInUa import CMInUa
 
 
-class CMInUa(ModelConfig):
+class PASCMInUa(CMInUa):
     def __init__(self, sim, simthread, srcDir):
-        ModelConfig.__init__(self, sim, simthread, srcDir)
+        CMInUa.__init__(self, sim, simthread, srcDir)
 
     def _initModel(self):
-        self.name = "CMInUa"
+        self.name = "PASCMInUa"
         self.cellTypes = self._createCellTypes()
         self.energyMatrix = self._createEnergyMatrix()
-        self._run() # Must be the last statement.
-
+        self._run()  # Must be the last statement.
 
     def _createCellTypes(self):
         cellTypes = []
@@ -53,27 +43,15 @@ class CMInUa(ModelConfig):
                                   nutrientRequirement=1.0, apoptosisTimeInDays=10,
                                   volFit=0.9, surFit=0.1)
 
-        stem.setDescendants(1.0, [stem.id, basal.id])
+        stem.setDescendants(0.98, [stem.id, basal.id])
+        stem.setDescendants(0.01, [stem.id, stem.id])
+        stem.setDescendants(0.01, [basal.id, basal.id])
 
         cellTypes.extend((medium, basalmembrane, stem, basal, intermediate, umbrella))
 
         return cellTypes
 
-    def _getSteppables(self):
-        steppableList = []
-        steppableList.append(ConstraintInitializerSteppable(self.sim, self))
-        steppableList.append(GrowthSteppable(self.sim, self))
-        steppableList.append(GrowthMitosisSteppable(self.sim, self))
-        steppableList.append(CMTransformationSteppable(self.sim, self))
-        steppableList.append(UrinationSteppable(self.sim, self, prop=0.02))
-        steppableList.append(DeathSteppable(self.sim, self))
-        #steppableList.append(OptimumSearchSteppable(self.sim, self))
-        steppableList.append(VolumeFitnessSteppable(self.sim, self))
-        steppableList.append(ArrangementFitnessSteppable(self.sim, self))
-        steppableList.append(DummyFitnessSteppable(self.sim, self))
-
-        return steppableList
-
     def _createExecConfig(self, srcDir):
         return ExecConfig(srcDir=srcDir,
-                          xLength=150, yLength=100, zLength=0, voxelDensity=1)
+                          xLength=800, yLength=100, zLength=0, voxelDensity=0.8,
+                          MCSperDay=500)

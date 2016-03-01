@@ -1,8 +1,8 @@
 from Steppable.UrinationSteppable import UrinationSteppable
 
-class UrinationSteppableWithNutrients(UrinationSteppable):
+class UrinationWithNutrientsSteppable(UrinationSteppable):
     def __init__(self, _simulator,  model, prop=0.02, _frequency=1):
-        UrinationSteppable.__init__(self, _simulator, model, _frequency)
+        UrinationSteppable.__init__(self, _simulator, model, prop, _frequency)
 
     def moduroStep(self, mcs):
         if mcs > 2 * self.urinationMCS and mcs % self.urinationMCS == 0:
@@ -11,4 +11,4 @@ class UrinationSteppableWithNutrients(UrinationSteppable):
                 cell = self.cellField[x, y, z]
                 if not cell:
                     self.scalarField[x, y, z] = 0
-            self.removeCells() # also remove cells.
+            self._removeCells() # also remove cells.

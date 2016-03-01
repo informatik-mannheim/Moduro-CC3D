@@ -19,8 +19,6 @@ class GrowthSteppable(ModuroSteppable):
             elif cellType.divides or cell.targetVolume <= cellDict['target_Volume']:
                 cell.targetSurface = self.execConfig.calcVoxelSurfaceFromVoxelVolume(cell.volume)
                 # print "! ! ! ! tSurf=", cell.targetSurface
-
-                # TODO: necrosis trigger if to little nutrients
                 # Growth (mu m^3 ) per MCS:
                 # deltaVolPerMCS = 1.0 * cellType.growthVolumePerDay / self.execConfig.MCSperDay
                 # Volume/surface change in voxel per day.

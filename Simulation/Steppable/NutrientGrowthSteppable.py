@@ -1,3 +1,4 @@
+import random
 from Steppable.GrowthSteppable import GrowthSteppable
 
 class NutrientGrowthSteppable(GrowthSteppable):
@@ -11,8 +12,8 @@ class NutrientGrowthSteppable(GrowthSteppable):
             cellDict = self.getDictionaryAttribute(cell)
             #DEPENDS ON HOW MUCH A MCS IS
             cellDict['life_time'] += 1
-            if cellDict['life_time'] >= \
-                self.execConfig.calcMCSfromDays(cellType.apoptosisTimeInDays):
+            apoptosisMCS = self.execConfig.calcMCSfromDays(cellType.apoptosisTimeInDays)
+            if cellDict['life_time'] >= apoptosisMCS:
                 cellDict['necrosis'] = [True]
             totalNutrients = 0
             if not cellType.frozen:
@@ -20,7 +21,6 @@ class NutrientGrowthSteppable(GrowthSteppable):
                 for pixelTrackerData in pixelList:
                     totalNutrients += self.scalarField[
                         pixelTrackerData.pixel.x, pixelTrackerData.pixel.y, pixelTrackerData.pixel.z]
-                    #TODO: bring the consumption per cell constant into central place
                     if self.scalarField[pixelTrackerData.pixel.x,
                                         pixelTrackerData.pixel.y,
                                         pixelTrackerData.pixel.z] > cellType.consumPerCell / self.execConfig.MCSperDay:
@@ -35,8 +35,11 @@ class NutrientGrowthSteppable(GrowthSteppable):
                 cell.targetSurface = self.execConfig.calcVoxelSurfaceFromVoxelVolume(cell.volume)
                 #TODO: necrosis trigger if to little nutrients
                 if totalNutrients >= cellType.nutrientRequirement * cell.volume:
-                    # TODO formula wrong; same story as in GrothSteppable:
-                    cell.targetVolume += cellType.growthVolumePerDay / self.execConfig.MCSperDay
+                    deltaVolDimPerDay = self.execConfig.calcVoxelVolumeFromVolume(cellType.growthVolumePerDay)
+                    deltaVolDimPerMCS = 1.0 * deltaVolDimPerDay / self.execConfig.MCSperDay
+                    if deltaVolDimPerMCS < 1.0: # The change may be too small for one MCS.
+                        deltaVolDimPerMCS = 1 if deltaVolDimPerMCS >= random.random() else 0
+                    cell.targetVolume += deltaVolDimPerMCS
 
 
 

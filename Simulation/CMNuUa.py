@@ -11,7 +11,7 @@ sys.path.append(environ["PYTHON_MODULE_PATH"])
 sim, simthread = CompuCellSetup.getCoreSimulationObjects()
 
 # Now load the model to simulate!
-from ModuroModel.CMInDa import CMInDa
+from ModuroModel.CMNuUa import CMNuUa
 import Settings.DirectoryPath
-model = CMInDa(sim, simthread, Settings.DirectoryPath.getSrcPath())
+model = CMNuUa(sim, simthread,Settings.DirectoryPath.getSrcPath())
 # srcDir is required to know where CellsInit.piff is.

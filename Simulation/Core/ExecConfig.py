@@ -8,6 +8,7 @@ class ExecConfig(object):
                  srcDir="",
                  xLength=150, yLength=200, zLength=1,
                  voxelDensity=1,
+                 initNutrientDiffusion = False,
                  MCSperDay=500,
                  piffInitial="Simulation/CellsInit.piff",
                  simDurationDays=720,
@@ -41,6 +42,7 @@ class ExecConfig(object):
         self.yLength = yLength
         self.zLength = zLength
         self.voxelDensity = voxelDensity  # 1 voxel / 1 mu
+        self.initNutrientDiffusion = initNutrientDiffusion
         self.dimensions = 2 if zLength <= 0 else 3
         self.xDimension = self.calcPixelFromMuMeter(xLength)
         self.yDimension = self.calcPixelFromMuMeter(yLength)
@@ -107,8 +109,7 @@ class ExecConfig(object):
         DiffusionDataElmnt.ElementCC3D("DiffusionConstant", {}, secretionRateNutr)
         DiffusionDataElmnt.ElementCC3D("DecayConstant", {}, decayConstantNutr)
         SecretionDataElmnt = DiffusionFieldElmnt.ElementCC3D("SecretionData")
-        # TODO correct?
-        SecretionDataElmnt.ElementCC3D("Secretion", {"Type": cellType.name}, secretionRateNutr * self.MCSperDay)
+        SecretionDataElmnt.ElementCC3D("Secretion", {"Type": cellType.name}, secretionRateNutr)
 
     def initField(self, pifText):
         fileName = "Simulation\CellsInit.piff"

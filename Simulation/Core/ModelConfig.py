@@ -54,7 +54,8 @@ class ModelConfig(object):
         self.execConfig.initEnergyMatrix(self.cellTypes, self.energyMatrix, 15 * self.adhFactor)
         self.execConfig.initPlugins("Volume", "Surface", "PixelTracker", "NeighborTracker",
                                     "ExternalPotential")
-        # self.execConfig.initDiffusion(self, self.cellTypes[1], 0.1, 0.000015)
+        if self.execConfig.initNutrientDiffusion:
+            self.execConfig.initDiffusion(self.cellTypes[1], 0.1, 0.000015)
         self.execConfig.initField(self._getPIFText())
         # self._initCells() # not yet possible.
 

@@ -1,12 +1,14 @@
-from ModuroModel.CMInUa import CMInUa
+from Core.CellType import CellType
+from Core.ExecConfig import ExecConfig
+from ModuroModel.PASCMNuUa import PASCMNuUa
 
 
-class CMInDa(CMInUa):
+class PASCMNuDa(PASCMNuUa):
     def __init__(self, sim, simthread, srcDir):
-        CMInUa.__init__(self, sim, simthread, srcDir)
+        PASCMNuUa.__init__(self, sim, simthread, srcDir)
 
     def _initModel(self):
-        self.name = "CMInDa"
+        self.name = "PASCMNuDa"
         self.cellTypes = self._createCellTypes()
         self.energyMatrix = self._createEnergyMatrix()
         self._run()  # Must be the last statement.
