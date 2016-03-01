@@ -25,8 +25,8 @@ class GrowthMitosisSteppable(ModuroMitosisSteppable):
         childCell.targetVolume = parentCell.targetVolume / 2
 
         descendents = self.model.cellTypes[parentCell.type].getDescendants()
-        parentCell.type = descendents[0].id
-        childCell.type = descendents[1].id
+        parentCell.type = descendents[0]
+        childCell.type = descendents[1]
 
         # Now set the attributes for the two daughter cells:
         cellDict = self.getDictionaryAttribute(childCell)

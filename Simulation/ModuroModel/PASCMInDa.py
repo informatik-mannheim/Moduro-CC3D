@@ -28,28 +28,26 @@ class PASCMInDa(CMInDa):
         stem = CellType(name="Stem", minDiameter=8, maxDiameter=10,
                                   growthVolumePerDay=10 * self.calcVolume(10),
                                   nutrientRequirement=1.0, apoptosisTimeInDays=180000,
-                                  volFit=0.9, surFit=0.5, divides=True)
+                                  volFit=0.9, surFit=0.5)
 
         basal = CellType(name="Basal", minDiameter=10, maxDiameter=12,
                                   growthVolumePerDay=10 * self.calcVolume(12),
                                   nutrientRequirement=1.0, apoptosisTimeInDays=90,
-                                  volFit=0.9, surFit=0.5, divides=False, transforms=True)
+                                  volFit=0.9, surFit=0.5)
 
         intermediate = CellType(name="Intermediate", minDiameter=12, maxDiameter=15,
                                   growthVolumePerDay=20 * self.calcVolume(15),
                                   nutrientRequirement=1.0, apoptosisTimeInDays=30,
-                                  volFit=0.9, surFit=0.1, divides=False, transforms=True)
+                                  volFit=0.9, surFit=0.1)
 
         umbrella = CellType(name="Umbrella", minDiameter=15, maxDiameter=19,
                                   growthVolumePerDay=10 * self.calcVolume(19),
                                   nutrientRequirement=1.0, apoptosisTimeInDays=10,
                                   volFit=0.9, surFit=0.1)
 
-        stem.setDescendants(0.98, [stem, basal])
-        stem.setDescendants(0.01, [stem, stem])
-        stem.setDescendants(0.01, [basal, basal])
-        basal.setDescendants(1.0, [intermediate])
-        intermediate.setDescendants(1.0, [umbrella])
+        stem.setDescendants(0.98, [stem.id, basal.id])
+        stem.setDescendants(0.01, [stem.id, stem.id])
+        stem.setDescendants(0.01, [basal.id, basal.id])
 
         cellTypes.extend((medium, basalmembrane, stem, basal, intermediate, umbrella))
 

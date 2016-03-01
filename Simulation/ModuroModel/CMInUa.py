@@ -5,7 +5,7 @@ from Steppable.ConstraintInitializerSteppable import ConstraintInitializerSteppa
 from Steppable.DeathSteppable import DeathSteppable
 from Steppable.GrowthMitosisSteppable import GrowthMitosisSteppable
 from Steppable.GrowthSteppable import GrowthSteppable
-from Steppable.TransformationSteppable import TransformationSteppable
+from Steppable.CMTransformationSteppable import CMTransformationSteppable
 from Steppable.UrinationSteppable import UrinationSteppable
 from Logger.VolumeFitnessSteppable import VolumeFitnessSteppable
 from Logger.ArrangementFitnessSteppable import ArrangementFitnessSteppable
@@ -37,26 +37,24 @@ class CMInUa(ModelConfig):
         stem = CellType(name="Stem", minDiameter=8, maxDiameter=10,
                                   growthVolumePerDay=10 * self.calcVolume(10),
                                   nutrientRequirement=1.0, apoptosisTimeInDays=180000,
-                                  volFit=0.9, surFit=0.5, divides=True)
+                                  volFit=0.9, surFit=0.5)
 
         basal = CellType(name="Basal", minDiameter=10, maxDiameter=12,
                                   growthVolumePerDay=10 * self.calcVolume(12),
                                   nutrientRequirement=1.0, apoptosisTimeInDays=90,
-                                  volFit=0.9, surFit=0.5, divides=False, transforms=True)
+                                  volFit=0.9, surFit=0.5)
 
         intermediate = CellType(name="Intermediate", minDiameter=12, maxDiameter=15,
                                   growthVolumePerDay=20 * self.calcVolume(15),
                                   nutrientRequirement=1.0, apoptosisTimeInDays=30,
-                                  volFit=0.9, surFit=0.1, divides=False, transforms=True)
+                                  volFit=0.9, surFit=0.1)
 
         umbrella = CellType(name="Umbrella", minDiameter=15, maxDiameter=19,
                                   growthVolumePerDay=10 * self.calcVolume(19),
                                   nutrientRequirement=1.0, apoptosisTimeInDays=10,
                                   volFit=0.9, surFit=0.1)
 
-        stem.setDescendants(1.0, [stem, basal])
-        basal.setDescendants(1.0, [intermediate])
-        intermediate.setDescendants(1.0, [umbrella])
+        stem.setDescendants(1.0, [stem.id, basal.id])
 
         cellTypes.extend((medium, basalmembrane, stem, basal, intermediate, umbrella))
 
@@ -67,7 +65,7 @@ class CMInUa(ModelConfig):
         steppableList.append(ConstraintInitializerSteppable(self.sim, self))
         steppableList.append(GrowthSteppable(self.sim, self))
         steppableList.append(GrowthMitosisSteppable(self.sim, self))
-        steppableList.append(TransformationSteppable(self.sim, self))
+        steppableList.append(CMTransformationSteppable(self.sim, self))
         steppableList.append(UrinationSteppable(self.sim, self, prop=0.02))
         steppableList.append(DeathSteppable(self.sim, self))
         #steppableList.append(OptimumSearchSteppable(self.sim, self))
