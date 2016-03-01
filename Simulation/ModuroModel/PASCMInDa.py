@@ -6,7 +6,7 @@ from ModuroModel.CMInDa import CMInDa
 
 class PASCMInDa(CMInDa):
     def __init__(self, sim, simthread, srcDir):
-        ModelConfig.__init__(self, sim, simthread, srcDir)
+        CMInDa.__init__(self, sim, simthread, srcDir)
 
     def _initModel(self):
         self.name = "PASCMInDa"

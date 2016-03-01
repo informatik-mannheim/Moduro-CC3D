@@ -9,8 +9,6 @@ class VolumeFitnessSteppable(TissueFitnessSteppable):
         self.idealBasalStemCellsVol = 0.10 * self.idealVol
         self.idealIntermediateCellsVol = 0.67 * self.idealVol
         self.idealUmbrellaCellsVol = 0.23 * self.idealVol
-        self.a = 2.0 # TODO factor quite arbitrary yet...
-        self.volMax = self.a * self.idealVol
 
     # step is overwritten
     def step(self, mcs):
@@ -55,4 +53,4 @@ class VolumeFitnessSteppable(TissueFitnessSteppable):
                 self._addLine(mcs, fitness_v)
 
     def _fit(self, volOpt, vol):
-        return 1.0 / (self.a * ((volOpt - vol) / volOpt) ** 2.0 + 1.0)
+        return 1.0 / (4.0 * ((volOpt - vol) / volOpt) ** 2.0 + 1.0)
