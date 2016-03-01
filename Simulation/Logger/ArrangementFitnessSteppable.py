@@ -10,16 +10,16 @@ class ArrangementFitnessSteppable(TissueFitnessSteppable):
     # TODO sizes do not scale yet!
     def step(self, mcs):
         if self.execConfig.interuptMCS(mcs):
+            deltaXPx = self.execConfig.calcPixelFromMuMeterMin1(20)  # 20 mu m.
+            deltaZPx = deltaXPx
             sumFitness_a = []
-            ratio = float(self.execConfig.xDimension) / float(self.execConfig.yDimension) \
-                if self.execConfig.xDimension < self.execConfig.yDimension \
-                else float(self.execConfig.yDimension) / float(self.execConfig.xDimension)
-            avgStemCellDiameter = self.model.cellTypes[2].getAvgDiameter()
-            zRange = [0] if self.execConfig.zDimension == 1 else range(0, self.execConfig.zDimension, int(ratio * self.execConfig.zDimension))
+            avgStemCellDiameterPx = \
+                self.execConfig.calcPixelFromMuMeterMin1(self.model.cellTypes[2].getAvgDiameter())
+            zRange = [0] if self.execConfig.zDimension == 1 else range(0, self.execConfig.zDimension, deltaZPx)
             for z in zRange:
-                for x in xrange(1, self.execConfig.xDimension, int(ratio * self.execConfig.xDimension)):
+                for x in xrange(1, self.execConfig.xDimension, deltaXPx):
                     cells_in_order = []
-                    for y in xrange(3, self.execConfig.yDimension, int(avgStemCellDiameter/2)):
+                    for y in xrange(3, self.execConfig.yDimension, int(avgStemCellDiameterPx / 2)):
                         # Gives the mode of a cell ID in a 3x3x3 pixels cube if 3D otherwise 3x3 rectangle
                         mode_of_cellIDs = []
                         for width in xrange(0, 2, 1):
@@ -56,11 +56,12 @@ class ArrangementFitnessSteppable(TissueFitnessSteppable):
                         for x in range(firstLayer, len(cells_in_order) - 1 - lastLayer, 1):
                             if cells_in_order[x].type != self.INTERMEDIATE:
                                 layersInBetween -= 1
-                        fitness_a = 1.0 / (
+                        lib = 0 if layers == 0 else (layers - layersInBetween) / layers
+                        fitness_a = 1.0 - (
                             (1.0 - float(firstLayer)) +
                             (1.0 - float(lastLayer)) +
-                            (layers - layersInBetween) +
-                            (1.0 - float(optimumLayers)) + 1.0)
+                            lib +
+                            (1.0 - float(optimumLayers))) / 4.0
                     sumFitness_a.append(fitness_a)
                     # print "!!!!!!!!!!!!!!!!! x: ", x, " steps: ", int(ratio * self.execConfig.xDimension), " fitness_a: ", fitness_a
 
