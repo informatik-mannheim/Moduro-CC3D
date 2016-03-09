@@ -84,6 +84,3 @@ class CellType(object):
         cellLineageOfCellType = [probability, descendants]
         self.descendants.append(cellLineageOfCellType)
         self.divides = True
-
-
-

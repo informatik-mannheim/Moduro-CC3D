@@ -22,7 +22,7 @@ from Core.ExecConfig import ExecConfig
 from ModuroModel.CMInDa import CMInDa
 from Core.CellType import CellType
 
-class CMInDa2(CMInDa):
+class CMInDa3D(CMInDa):
 
     def __init__(self, sim, simthread, srcDir):
         CMInDa.__init__(self, sim, simthread, srcDir)

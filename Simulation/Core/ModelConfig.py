@@ -54,7 +54,6 @@ class ModelConfig(object):
         for cellType in self.cellTypes:
             self.execConfig.parameterStore.addObj(cellType)
 
-
         CompuCellSetup.setSimulationXMLDescription(self._configureSimulation())
         CompuCellSetup.initializeSimulationObjects(self.sim, self.simthread)
 
@@ -71,8 +70,9 @@ class ModelConfig(object):
     def _configureSimulation(self):
         self.execConfig.initPotts()
         self.execConfig.initCellTypes(self.cellTypes)
+        # TODO why 15 * ...
         self.execConfig.initEnergyMatrix(self.cellTypes, self.energyMatrix, 15 * self.adhFactor)
-        self.execConfig.initPlugins("Volume", "Surface", "PixelTracker", "NeighborTracker",
+        self.execConfig.initPlugins("VolumeFlex", "SurfaceFlex", "PixelTracker", "NeighborTracker",
                                     "ExternalPotential")
         if self.execConfig.initNutrientDiffusion:
             self.execConfig.initDiffusion(self.cellTypes[1], 0.1, 0.000015)
@@ -97,6 +97,21 @@ class ModelConfig(object):
     def _createExecConfig(self, srcDir):
         return ExecConfig(self, srcDir)
 
+    def _addCubicCell(self, id, typename, xPos, yPos, zPos, xLength, yLength, zLength,
+                      fileHandle):
+        # TODO exact?
+        xPosDim = self.execConfig.calcPixelFromMuMeter(xPos)
+        yPosDim = self.execConfig.calcPixelFromMuMeter(yPos)
+        zPosDim = self.execConfig.calcPixelFromMuMeter(zPos)
+        xLengthDim = self.execConfig.calcPixelFromMuMeterMin1(xLength)
+        yLengthDim = self.execConfig.calcPixelFromMuMeterMin1(yLength)
+        zLengthDim = self.execConfig.calcPixelFromMuMeterMin1(zLength)
+        fileHandle.write("%(id)s %(name)s  %(x1)s   %(x2)s  %(y1)s   %(y2)s   %(z1)s   %(z2)s \n"
+                         % {"id": id, "name": typename,
+                            "x1": xPosDim, "x2": xPosDim + xLengthDim - 1,
+                            "y1": yPosDim, "y2": yPosDim + yLengthDim - 1,
+                            "z1": zPosDim, "z2": zPosDim + zLengthDim - 1})
+
     def _initCells(self, fileHandle):
         def addCubicCell2(typename, xPos, yPos, zPos, xLength, yLength, zLength):
             cell = self.sim.newCell(typename)
@@ -111,23 +126,9 @@ class ModelConfig(object):
             yPosDim:yPosDim + yLengthDim - 1,
             zPosDim:zPosDim + zLengthDim - 1] = cell
 
-        def addCubicCell(id, typename, xPos, yPos, zPos, xLength, yLength, zLength):
-            # TODO exact?
-            xPosDim = self.execConfig.calcPixelFromMuMeter(xPos)
-            yPosDim = self.execConfig.calcPixelFromMuMeter(yPos)
-            zPosDim = self.execConfig.calcPixelFromMuMeter(zPos)
-            xLengthDim = self.execConfig.calcPixelFromMuMeterMin1(xLength)
-            yLengthDim = self.execConfig.calcPixelFromMuMeterMin1(yLength)
-            zLengthDim = self.execConfig.calcPixelFromMuMeterMin1(zLength)
-            fileHandle.write("%(id)s %(name)s  %(x1)s   %(x2)s  %(y1)s   %(y2)s   %(z1)s   %(z2)s \n"
-                             % {"id": id, "name": typename,
-                                "x1": xPosDim, "x2": xPosDim + xLengthDim - 1,
-                                "y1": yPosDim, "y2": yPosDim + yLengthDim - 1,
-                                "z1": zPosDim, "z2": zPosDim + zLengthDim - 1})
-
         # Add the basal membrane:
-        addCubicCell(0, "BasalMembrane", 0, 0, 0,
-                     self.execConfig.xLength, 2, self.execConfig.zLength)
+        self._addCubicCell(0, "BasalMembrane", 0, 0, 0,
+                           self.execConfig.xLength, 2, self.execConfig.zLength, fileHandle)
         cellDiameter = self.cellTypes[2].getAvgDiameter()
         stemCellFactor = 8 * cellDiameter
         if self.execConfig.dimensions == 2:
@@ -139,9 +140,10 @@ class ModelConfig(object):
             xPos = random.uniform(cellDiameter, self.execConfig.xLength - cellDiameter)
             zPos = random.uniform(cellDiameter, self.execConfig.zLength - cellDiameter)
             if self.execConfig.dimensions == 2:
-                addCubicCell(s, "Stem", xPos, 2, 0, cellDiameter, cellDiameter, 0)
+                self._addCubicCell(s, "Stem", xPos, 2, 0, cellDiameter, cellDiameter, 0, fileHandle)
             else:
-                addCubicCell(s, "Stem", xPos, 2, zPos, cellDiameter, cellDiameter, cellDiameter)
+                self._addCubicCell(s, "Stem", xPos, 2, zPos, cellDiameter,
+                                   cellDiameter, cellDiameter, fileHandle)
 
     def _getPIFText(self):
         import StringIO
@@ -154,7 +156,6 @@ class ModelConfig(object):
     def calcVolume(self, diameter):
         return 4.0 / 3.0 * PI * (diameter / 2.0) ** 3
 
-    # Assigns the attributes to each cell type: *0=MinVolume, *1=MaxVol, *2=SurfaceLambda, *3=VolumeLambda, *4=GrowthRate, *5=NutrientsRequirement, *6=ApoptosisTime, *7=MitosisSize, *8=DegradationRate, *9=TransformationSize
     def setCellAttributes(self, cellDict, cell, lifeTimeParent):
         """
         Set attributes for a cell's dictionary.
@@ -178,4 +179,3 @@ class ModelConfig(object):
         cellDict['necrosis'] = False
         cellDict['DNA'] = [100]  # TODO remove list
         cellDict['TurnOver'] = [False]
-        cellDict['label'] = 0

@@ -79,12 +79,11 @@ class ExecConfig(object):
         self.neighborOrder = neighborOrder
         self.boundary_x = boundary_x
         self.debugOutputFrequency = debugOutputFrequency
-        #TODO: change the seed value of every random number used in Moduro project
+        # TODO: change the seed value of every random number used in Moduro project
         self.SEED = SEED
         self.__cc3d = None
         self.parameterStore = ParameterStore()
         self.parameterStore.addObj(self)
-
 
     def initPotts(self):
         self.__cc3d = ElementCC3D("CompuCell3D", {"version": "3.7.3"})
@@ -155,7 +154,6 @@ class ExecConfig(object):
         # TODO: ghj
         return None
 
-
     def calcPixelFromMuMeter(self, mum):
         """
         Convert a length in micro meter to a pixel length.
@@ -173,7 +171,6 @@ class ExecConfig(object):
         :return:
         """
         return self.__truncate(self.voxelDensity * mum)
-
 
     def calculateVolume(self, diameter):
         if self.dimensions == 2:
@@ -213,9 +210,10 @@ class ExecConfig(object):
         :return: Surface in pixel^2 ^(3D) or pixel (2).
         """
         if self.dimensions == 2:
-            return self.__truncate(2 * (PI * voxelVolume) ** (1.0 / 2.0))  # Circumference.
+            # some fractal factor!
+            return self.__truncate(1.5 * 2 * (PI * voxelVolume) ** (1.0 / 2.0))  # Circumference.
         else:
-            return self.__truncate(4 * PI * (3 * voxelVolume / (4 * PI)) ** (2.0 / 3))  # Surface.
+            return self.__truncate(3.0 * 4 * PI * (3 * voxelVolume / (4 * PI)) ** (2.0 / 3))  # Surface.
 
     def __truncate(self, value):
         res = int(value)

@@ -38,12 +38,11 @@ class ConstraintInitializerSteppable(ModuroSteppable):
             cellDict = self.getDictionaryAttribute(cell)
             cellType = self.model.cellTypes[cell.type]
             cell.targetVolume = self.execConfig.calcVoxelVolumeFromVolume(cellType.minVol)
+            # TODO was wrong?
+            cell.targetSurface = self.execConfig.calcVoxelSurfaceFromVoxelVolume(cell.targetVolume)
             cell.lambdaVolume = self.execConfig.calcVolLambdaFromVolFit(cellType.volFit)
             cell.lambdaSurface = self.execConfig.calcSurLambdaFromSurFit(cellType.surFit)
-            # print "!!!!!!!!!! type=", cellType, "tvol=", cell.targetVolume
-            if cell.type == self.STEM:
-                cellDict["label"] = id
-                id =+ 1
+            print "!!!!!!!!!! type=", cellType, "tvol=", cell.targetVolume
 
             self.model.setCellAttributes(cellDict, cell, 0)
 

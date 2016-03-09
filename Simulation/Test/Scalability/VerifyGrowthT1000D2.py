@@ -18,15 +18,17 @@ __license__ = "Apache 2"
 __email__ = "m.gumbel@hs-mannheim.de"
 __status__ = "Test"
 
-from Steppable.ModuroSteppable import ModuroSteppable
+from Core.ExecConfig import ExecConfig
+from Test.Scalability.VerifyGrowth import VerifyGrowth
 
-class MonitorSteppable(ModuroSteppable):
-    def __init__(self, _simulator, model, _frequency=1):
-        ModuroSteppable.__init__(self, _simulator, model,_frequency)
 
-    def moduroStep(self, mcs):
-        for cell in self.cellList:
-            cellDict = self.getDictionaryAttribute(cell)
-            print "!!!!!! VOL !!!!! tVol_s=", cell.targetVolume, \
-                ", tVol_i=",cell.volume, "=", cellDict['target_Volume']
-            print "tSur_i=", cell.surface, "=", cell.targetSurface  #, "=", cellDict['target_Surface']
+class VerifyGrowthT1000D2(VerifyGrowth):
+    def __init__(self, sim, simthread, srcDir):
+        VerifyGrowth.__init__(self, sim, simthread, srcDir)
+        self.name = "VerifyGrowthT1000D2"
+        self._initModel()
+
+    def _createExecConfig(self, srcDir):
+        return ExecConfig(srcDir=srcDir, simDurationDays=2,
+                          xLength=100, yLength=100, zLength=0,
+                          voxelDensity=2, MCSperDay=1000)
