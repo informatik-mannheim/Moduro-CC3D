@@ -41,8 +41,9 @@ class GrowthMitosisSteppable(ModuroMitosisSteppable):
     def updateAttributes(self):
         parentCell = self.mitosisSteppable.parentCell
         childCell = self.mitosisSteppable.childCell
-        parentCell.targetVolume = parentCell.targetVolume / 2
-        childCell.targetVolume = parentCell.targetVolume / 2
+        newVol = parentCell.targetVolume / 2
+        parentCell.targetVolume = newVol
+        childCell.targetVolume = newVol
 
         descendents = self.model.cellTypes[parentCell.type].getDescendants()
         parentCell.type = descendents[0]
