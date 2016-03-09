@@ -173,7 +173,6 @@ class ModelConfig(object):
         cellDict['target_Volume'] = random.uniform(cellDict['min_max_volume'][0],
                                                    cellDict['min_max_volume'][1])
         cellDict['growth_factor'] = []
-        cellDict['life_time'] = lifeTimeParent  # How many MCS is this cell alive?
         expLiveTime = self.execConfig.calcMCSfromDays(cellType.apoptosisTimeInDays)
         cellDict['exp_life_time'] = random.gauss(expLiveTime, expLiveTime / 10.0)
         cellDict['necrosis'] = False

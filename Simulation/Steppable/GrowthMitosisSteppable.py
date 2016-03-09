@@ -50,16 +50,16 @@ class GrowthMitosisSteppable(ModuroMitosisSteppable):
         childCell.type = descendents[1]
 
         # Now set the attributes for the two daughter cells:
-        cellDict = self.getDictionaryAttribute(childCell)
-        self.model.setCellAttributes(cellDict, childCell, 0)
+        cellDictChild = self.getDictionaryAttribute(childCell)
+        self.model.setCellAttributes(cellDictChild, childCell, 0)
         childCell.lambdaVolume = \
-            self.execConfig.calcVolLambdaFromVolFit(cellDict['volume_lambda'])
+            self.execConfig.calcVolLambdaFromVolFit(cellDictChild['volume_lambda'])
         childCell.lambdaSurface = \
-            self.execConfig.calcSurLambdaFromSurFit(cellDict['surface_lambda'])
+            self.execConfig.calcSurLambdaFromSurFit(cellDictChild['surface_lambda'])
 
-        self.model.setCellAttributes(cellDict, parentCell, 0)
-        cellDict = self.getDictionaryAttribute(parentCell)
+        cellDictParent = self.getDictionaryAttribute(parentCell)
+        self.model.setCellAttributes(cellDictParent, parentCell, 0)
         parentCell.lambdaVolume = \
-            self.execConfig.calcVolLambdaFromVolFit(cellDict['volume_lambda'])
+            self.execConfig.calcVolLambdaFromVolFit(cellDictParent['volume_lambda'])
         parentCell.lambdaSurface = \
-            self.execConfig.calcSurLambdaFromSurFit(cellDict['surface_lambda'])
+            self.execConfig.calcSurLambdaFromSurFit(cellDictParent['surface_lambda'])
