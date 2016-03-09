@@ -27,6 +27,12 @@ class CMInDa3D(CMInDa):
     def __init__(self, sim, simthread, srcDir):
         CMInDa.__init__(self, sim, simthread, srcDir)
 
+    def _initModel(self):
+        self.name = "CMInDa3D"
+        self.adhFactor = 0.1
+        self.cellTypes = self._createCellTypes()
+        self.energyMatrix = self._createEnergyMatrix()
+        self._run()  # Must be the last statement.
 
     def _createExecConfig(self, srcDir):
         return ExecConfig(srcDir=srcDir,

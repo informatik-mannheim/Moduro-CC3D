@@ -12,9 +12,10 @@ sim, simthread = CompuCellSetup.getCoreSimulationObjects()
 
 # Now load the model to simulate!
 import Settings.DirectoryPath
-#model = VerifyGrowthT500D1(sim, simthread, Settings.DirectoryPath.getSrcPath())
+from Test.Scalability.VerifyGrowthT500D1 import VerifyGrowthT500D1
+model = VerifyGrowthT500D1(sim, simthread, Settings.DirectoryPath.getSrcPath())
 from Test.Scalability.VerifyGrowthT1000D1 import VerifyGrowthT1000D1
-model = VerifyGrowthT1000D1(sim, simthread, Settings.DirectoryPath.getSrcPath())
+#model = VerifyGrowthT1000D1(sim, simthread, Settings.DirectoryPath.getSrcPath())
 #model = VerifyGrowthT2000D1(sim, simthread, Settings.DirectoryPath.getSrcPath())
 #model = VerifyGrowthT1000D2(sim, simthread, Settings.DirectoryPath.getSrcPath())
 # srcDir is required to know where CellsInit.piff is.

@@ -156,6 +156,15 @@ class ModelConfig(object):
     def calcVolume(self, diameter):
         return 4.0 / 3.0 * PI * (diameter / 2.0) ** 3
 
+    def initCellAttributes(self, cell, cellDict):
+        cellType = self.cellTypes[cell.type]
+        expLiveTime = self.execConfig.calcMCSfromDays(cellType.apoptosisTimeInDays)
+        cellDict['exp_life_time'] = random.gauss(expLiveTime, expLiveTime / 10.0)
+        cellDict['necrosis'] = False
+        cellDict['DNA'] = [100]  # TODO remove list
+        cellDict['TurnOver'] = [False]
+        self.setCellAttributes(cellDict, cell, 0)
+
     def setCellAttributes(self, cellDict, cell, lifeTimeParent):
         """
         Set attributes for a cell's dictionary.
@@ -168,13 +177,12 @@ class ModelConfig(object):
         cellType = self.cellTypes[cell.type]
         cellDict['min_max_volume'] = [self.execConfig.calcVoxelVolumeFromVolume(cellType.minVol),
                                       self.execConfig.calcVoxelVolumeFromVolume(cellType.maxVol)]
-        cellDict['surface_lambda'] = self.execConfig.calcSurLambdaFromSurFit(cellType.surFit)
-        cellDict['volume_lambda'] = self.execConfig.calcVolLambdaFromVolFit(cellType.volFit)
-        cellDict['target_Volume'] = random.uniform(cellDict['min_max_volume'][0],
+        cellDict['normal_volume'] = random.uniform(cellDict['min_max_volume'][0],
                                                    cellDict['min_max_volume'][1])
-        cellDict['growth_factor'] = []
-        expLiveTime = self.execConfig.calcMCSfromDays(cellType.apoptosisTimeInDays)
-        cellDict['exp_life_time'] = random.gauss(expLiveTime, expLiveTime / 10.0)
-        cellDict['necrosis'] = False
-        cellDict['DNA'] = [100]  # TODO remove list
-        cellDict['TurnOver'] = [False]
+        cellDict['growth_factor'] = [] # really needed?
+        cellDict['life_time'] = lifeTimeParent  # How many MCS is this cell alive?
+
+        cell.targetVolume = cell.volume # At the beginning, the target is the actual size.
+        cell.targetSurface = self.execConfig.calcVoxelSurfaceFromVoxelVolume(cell.targetVolume)
+        cell.lambdaVolume = self.execConfig.calcVolLambdaFromVolFit(cellType.volFit)
+        cell.lambdaSurface = self.execConfig.calcSurLambdaFromSurFit(cellType.surFit)

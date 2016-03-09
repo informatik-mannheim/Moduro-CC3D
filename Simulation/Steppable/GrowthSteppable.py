@@ -29,13 +29,13 @@ class GrowthSteppable(ModuroSteppable):
         for cell in self.cellList:
             cellDict = self.getDictionaryAttribute(cell)
             cellType = self.model.cellTypes[cell.type]
-            # print "!!!!!! cell.tvol=", cell.targetVolume, "<=type.tVol=", cellDict['target_Volume']
+            # print "!!!!!! cell.tvol=", cell.targetVolume, "<=type.tVol=", cellDict['normal_volume']
 
             # DEPENDS ON HOW MUCH A MCS IS
             cellDict['life_time'] += 1
             if cellDict['life_time'] >= cellDict['exp_life_time']:
                 cellDict['necrosis'] = True
-            elif cellType.divides or cell.targetVolume <= cellDict['target_Volume']:
+            elif cellType.divides or cell.targetVolume <= cellDict['normal_volume']:
                 cell.targetSurface = self.execConfig.calcVoxelSurfaceFromVoxelVolume(cell.volume)
                 # print "! ! ! ! tSurf=", cell.targetSurface
                 # Growth (mu m^3 ) per MCS:
@@ -48,4 +48,4 @@ class GrowthSteppable(ModuroSteppable):
 
                 #print "!!::!::!:!:! deltaVol=", deltaVolPerMCS, ", deltaVolDimPerDay=",\
                 #    deltaVolDimPerDay, ", deltaVolDimPerMCS=", deltaVolDimPerMCS
-                cell.targetVolume += deltaVolDimPerMCS
+                cell.targetVolume += int(deltaVolDimPerMCS)

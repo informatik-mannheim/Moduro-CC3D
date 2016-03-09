@@ -33,7 +33,7 @@ class GrowthMitosisSteppable(ModuroMitosisSteppable):
 
             # TODO: extract the constant 1.3 out of code into central place
             if cellType.divides and \
-                    cell.volume > 1.3 * cellDict['target_Volume'] and \
+                    cell.volume > 1.75 * cellDict['normal_volume'] and \
                     not cellDict['necrosis']:
                 cells_to_divide.append(cell)
                 self.divideCellRandomOrientation(cell)
@@ -41,9 +41,6 @@ class GrowthMitosisSteppable(ModuroMitosisSteppable):
     def updateAttributes(self):
         parentCell = self.mitosisSteppable.parentCell
         childCell = self.mitosisSteppable.childCell
-        newVol = parentCell.targetVolume / 2
-        parentCell.targetVolume = newVol
-        childCell.targetVolume = newVol
 
         descendents = self.model.cellTypes[parentCell.type].getDescendants()
         parentCell.type = descendents[0]
@@ -51,15 +48,6 @@ class GrowthMitosisSteppable(ModuroMitosisSteppable):
 
         # Now set the attributes for the two daughter cells:
         cellDictChild = self.getDictionaryAttribute(childCell)
-        self.model.setCellAttributes(cellDictChild, childCell, 0)
-        childCell.lambdaVolume = \
-            self.execConfig.calcVolLambdaFromVolFit(cellDictChild['volume_lambda'])
-        childCell.lambdaSurface = \
-            self.execConfig.calcSurLambdaFromSurFit(cellDictChild['surface_lambda'])
-
+        self.model.initCellAttributes(childCell, cellDictChild)
         cellDictParent = self.getDictionaryAttribute(parentCell)
-        self.model.setCellAttributes(cellDictParent, parentCell, 0)
-        parentCell.lambdaVolume = \
-            self.execConfig.calcVolLambdaFromVolFit(cellDictParent['volume_lambda'])
-        parentCell.lambdaSurface = \
-            self.execConfig.calcSurLambdaFromSurFit(cellDictParent['surface_lambda'])
+        self.model.initCellAttributes(parentCell, cellDictParent)
