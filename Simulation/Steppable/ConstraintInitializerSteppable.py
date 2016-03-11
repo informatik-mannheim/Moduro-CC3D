@@ -35,16 +35,14 @@ class ConstraintInitializerSteppable(ModuroSteppable):
 
         id = 1
         for cell in self.cellList:
+            # cellDict needs to be retrieved in a steppable:
             cellDict = self.getDictionaryAttribute(cell)
+            self.model.initCellAttributes(cell, cellDict)
+
             cellType = self.model.cellTypes[cell.type]
-            cell.targetVolume = self.execConfig.calcVoxelVolumeFromVolume(cellType.minVol)
-            # TODO was wrong?
-            cell.targetSurface = self.execConfig.calcVoxelSurfaceFromVoxelVolume(cell.targetVolume)
-            cell.lambdaVolume = self.execConfig.calcVolLambdaFromVolFit(cellType.volFit)
-            cell.lambdaSurface = self.execConfig.calcSurLambdaFromSurFit(cellType.surFit)
             print "!!!!!!!!!! type=", cellType, "tvol=", cell.targetVolume
 
-            self.model.setCellAttributes(cellDict, cell, 0)
+
 
 
 

@@ -27,6 +27,8 @@ class MonitorSteppable(ModuroSteppable):
     def moduroStep(self, mcs):
         for cell in self.cellList:
             cellDict = self.getDictionaryAttribute(cell)
+            perc = cell.volume / cellDict['normal_volume']
             print "!!!!!! VOL !!!!! tVol_s=", cell.targetVolume, \
-                ", tVol_i=",cell.volume, "=", cellDict['target_Volume']
+                "~ tVol_i=", cell.volume, ">=", cellDict['normal_volume'], " =Vol_n", \
+                " (", perc, ")"
             print "tSur_i=", cell.surface, "=", cell.targetSurface  #, "=", cellDict['target_Surface']

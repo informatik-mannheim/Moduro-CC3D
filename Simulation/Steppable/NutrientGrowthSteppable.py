@@ -51,7 +51,7 @@ class NutrientGrowthSteppable(GrowthSteppable):
                         self.scalarField[pixelTrackerData.pixel.x,
                                          pixelTrackerData.pixel.y,
                                          pixelTrackerData.pixel.z] = 0
-            if cellType.divides or cell.targetVolume <= cellDict['target_Volume']:
+            if cellType.divides or cell.targetVolume <= cellDict['normal_volume']:
                 cell.targetSurface = self.execConfig.calcVoxelSurfaceFromVoxelVolume(cell.volume)
                 #TODO: necrosis trigger if to little nutrients
                 if totalNutrients >= cellType.nutrientRequirement * cell.volume:
