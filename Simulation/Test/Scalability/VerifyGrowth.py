@@ -84,7 +84,7 @@ class VerifyGrowth(ModelConfig):
         steppableList = []
         steppableList.append(ConstraintInitializerSteppable(self.sim, self))
         steppableList.append(GrowthSteppable(self.sim, self))
-        steppableList.append(GrowthMitosisSteppable(self.sim, self))
+        steppableList.append(GrowthMitosisSteppable(self.sim, self, splitPercentage=2.0))
         steppableList.append(MonitorSteppable(self.sim, self))
 
         return steppableList

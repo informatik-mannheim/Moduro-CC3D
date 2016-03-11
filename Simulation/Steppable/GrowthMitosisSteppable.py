@@ -22,7 +22,8 @@ from Steppable.ModuroMitosisSteppable import ModuroMitosisSteppable
 
 
 class GrowthMitosisSteppable(ModuroMitosisSteppable):
-    def __init__(self, _simulator, model, _frequency=1):
+    def __init__(self, _simulator, model, splitPercentage=1.3,_frequency=1):
+        self.splitPercentage = splitPercentage
         ModuroMitosisSteppable.__init__(self, _simulator, model, _frequency)
 
     def moduroStep(self, mcs):
@@ -33,7 +34,7 @@ class GrowthMitosisSteppable(ModuroMitosisSteppable):
 
             # TODO: extract the constant 1.3 out of code into central place
             if cellType.divides and \
-                    cell.volume > 1.75 * cellDict['normal_volume'] and \
+                    cell.volume >= self.splitPercentage * cellDict['normal_volume'] and \
                     not cellDict['necrosis']:
                 cells_to_divide.append(cell)
                 self.divideCellRandomOrientation(cell)
