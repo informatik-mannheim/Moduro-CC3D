@@ -32,12 +32,14 @@ class GrowthMitosisSteppable(ModuroMitosisSteppable):
             cellDict = self.getDictionaryAttribute(cell)
             cellType = self.model.cellTypes[cell.type]
 
-            # TODO: extract the constant 1.3 out of code into central place
             if cellType.divides and \
                     cell.volume >= self.splitPercentage * cellDict['normal_volume'] and \
                     not cellDict['necrosis']:
+                # Register death
+                self._cellLifeCycleDeath(cell)
                 cells_to_divide.append(cell)
                 self.divideCellRandomOrientation(cell)
+
 
     def updateAttributes(self):
         parentCell = self.mitosisSteppable.parentCell
@@ -52,3 +54,7 @@ class GrowthMitosisSteppable(ModuroMitosisSteppable):
         self.model.initCellAttributes(childCell, cellDictChild)
         cellDictParent = self.getDictionaryAttribute(parentCell)
         self.model.initCellAttributes(parentCell, cellDictParent)
+
+        # Register events
+        self._cellLifeCycleBirth(parentCell)
+        self._cellLifeCycleBirth(childCell)

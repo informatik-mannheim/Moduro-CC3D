@@ -22,15 +22,27 @@ import random
 from PySteppablesExamples import MitosisSteppableBase
 
 class ModuroMitosisSteppable(MitosisSteppableBase):
+
     def __init__(self, simulator, model, _frequency=1):
         MitosisSteppableBase.__init__(self, simulator, _frequency)
         self.model = model
         self.execConfig = model.execConfig
+        self.timeMCS = 0
 
     def step(self, mcs):
+        self.timeMCS = mcs # We need the time later...
         if not self.execConfig.interuptMCS(mcs):
             self.moduroStep(mcs) # better: not MCS but time!
 
     # Abstract method:
     def moduroStep(self, mcs):
         return None
+
+    # Methods are required to have the timeMCS available.
+    def _cellLifeCycleBirth(self, cell):
+        cellDict = self.getDictionaryAttribute(cell)
+        self.model.cellLifeCycleLogger.cellLifeCycleBirth(self.timeMCS, cell, cellDict)
+
+    def _cellLifeCycleDeath(self, cell):
+        cellDict = self.getDictionaryAttribute(cell)
+        self.model.cellLifeCycleLogger.cellLifeCycleDeath(self.timeMCS, cell, cellDict)

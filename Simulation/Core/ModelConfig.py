@@ -20,11 +20,16 @@ __status__ = "Production"
 
 import random
 from math import pi as PI
+
 import CompuCellSetup
 from ExecConfig import ExecConfig
+from Logger.CellLifeCycleLogger import CellLifeCycleLogger
 
 
 class ModelConfig(object):
+
+    cellID = 1
+
     def __init__(self, sim, simthread, srcDir):
         self.sim = sim
         self.simthread = simthread
@@ -36,6 +41,7 @@ class ModelConfig(object):
         self.execConfig = self._createExecConfig(self.srcDir)
         self.name = ""
         random.seed(self.execConfig.SEED)
+        self.cellLifeCycleLogger = CellLifeCycleLogger(self, "Celltimes.dat")
         self._initModel()
 
     def _initModel(self):
@@ -156,6 +162,7 @@ class ModelConfig(object):
     def calcVolume(self, diameter):
         return 4.0 / 3.0 * PI * (diameter / 2.0) ** 3
 
+
     def initCellAttributes(self, cell, cellDict):
         cellType = self.cellTypes[cell.type]
         expLiveTime = self.execConfig.calcMCSfromDays(cellType.apoptosisTimeInDays)
@@ -175,6 +182,10 @@ class ModelConfig(object):
         """
         # cellDict = cell.getDictionaryAttribute(cell)
         cellType = self.cellTypes[cell.type]
+        # Assign a new cell ID.
+        cellDict['id'] = ModelConfig.cellID
+        ModelConfig.cellID += 1
+
         cellDict['min_max_volume'] = [self.execConfig.calcVoxelVolumeFromVolume(cellType.minVol),
                                       self.execConfig.calcVoxelVolumeFromVolume(cellType.maxVol)]
         cellDict['normal_volume'] = random.uniform(cellDict['min_max_volume'][0],
@@ -182,7 +193,8 @@ class ModelConfig(object):
         cellDict['growth_factor'] = [] # really needed?
         cellDict['life_time'] = lifeTimeParent  # How many MCS is this cell alive?
 
-        cell.targetVolume = cell.volume # At the beginning, the target is the actual size.
+        #cell.targetVolume = cell.volume + 1 # At the beginning, the target is the actual size.
+        cell.targetVolume = cellDict['normal_volume'] # At the beginning, the target is the actual size.
         cell.targetSurface = self.execConfig.calcVoxelSurfaceFromVoxelVolume(cell.targetVolume)
         cell.lambdaVolume = self.execConfig.calcVolLambdaFromVolFit(cellType.volFit)
         cell.lambdaSurface = self.execConfig.calcSurLambdaFromSurFit(cellType.surFit)

@@ -238,6 +238,14 @@ class ExecConfig(object):
         """
         return mcs / (1.0 * self.MCSperDay)
 
+    def calcHoursFromMCS(self, mcs):
+        """
+        Convert the MCS number into hours.
+        :param mcs:
+        :return:
+        """
+        return mcs / (1.0 * self.MCSperDay) * 24.0
+
     def calcSurLambdaFromSurFit(self, surFit):
         return 0.05 * surFit
 

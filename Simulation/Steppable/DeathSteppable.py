@@ -30,6 +30,7 @@ class DeathSteppable(ModuroSteppable):
             cellDict = self.getDictionaryAttribute(cell)
             if cellDict['necrosis'] == True:
                 #print "!!!!!!!!!!!!!!!!!!!!! NECROSIS", cell
+                self.model.cellLifeCycleLogger.cellLifeCycleDeath(mcs, cell, cellDict)
                 if cell.targetVolume > 5:
                     #TODO: find an equation for timeless cell reduction
                     targetVolume = float(cellDict['normal_volume'])

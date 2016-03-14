@@ -38,6 +38,7 @@ class ConstraintInitializerSteppable(ModuroSteppable):
             # cellDict needs to be retrieved in a steppable:
             cellDict = self.getDictionaryAttribute(cell)
             self.model.initCellAttributes(cell, cellDict)
+            self.model.cellLifeCycleLogger.cellLifeCycleBirth(0, cell, cellDict)
 
             cellType = self.model.cellTypes[cell.type]
             print "!!!!!!!!!! type=", cellType, "tvol=", cell.targetVolume
