@@ -33,12 +33,12 @@ class CMTransformationSteppable(ModuroSteppable):
                 else:
                     cellDict = self.getDictionaryAttribute(cell)
                     cell.type = self.INTERMEDIATE
-                    self.model.setCellAttributes(cellDict, cell, cellDict['life_time'])
+                    self.model.setCellAttributes(cellDict, cell, 0)
             elif cell.type == self.INTERMEDIATE:
                 for neighbor, commonSurfaceArea in self.getCellNeighborDataList(cell):
                     if not neighbor and commonSurfaceArea > 0:
                         cellDict = self.getDictionaryAttribute(cell)
                         cell.type = self.UMBRELLA
-                        self.model.setCellAttributes(cellDict, cell, cellDict['life_time'])
+                        self.model.setCellAttributes(cellDict, cell, 0)
                         break
 
