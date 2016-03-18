@@ -22,7 +22,7 @@ from Steppable.ModuroMitosisSteppable import ModuroMitosisSteppable
 
 
 class GrowthMitosisSteppable(ModuroMitosisSteppable):
-    def __init__(self, _simulator, model, splitPercentage=1.3,_frequency=1):
+    def __init__(self, _simulator, model, splitPercentage=1.95,_frequency=1):
         self.splitPercentage = splitPercentage
         ModuroMitosisSteppable.__init__(self, _simulator, model, _frequency)
 

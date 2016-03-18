@@ -30,7 +30,6 @@ class DeathSteppable(ModuroSteppable):
             cellDict = self.getDictionaryAttribute(cell)
             if cellDict['necrosis'] == True:
                 #print "!!!!!!!!!!!!!!!!!!!!! NECROSIS", cell
-                self.model.cellLifeCycleLogger.cellLifeCycleDeath(mcs, cell, cellDict)
                 if cell.targetVolume > 5:
                     #TODO: find an equation for timeless cell reduction
                     targetVolume = float(cellDict['normal_volume'])
@@ -40,4 +39,10 @@ class DeathSteppable(ModuroSteppable):
                     cell.targetVolume -= deltaVolDimPerMCS
                 else:
                     cell.targetVolume = 0
+                    # Make sure that the cell is removed only once in the logger:
+                    if not cellDict['removed']:
+                        self.model.cellLifeCycleLogger.cellLifeCycleDeath(mcs, cell, cellDict)
+                        cellDict['removed'] = True
+                    # Does not work -> moved to GrowthSteppable.
+
                 cell.lambdaVolume = 1000 # TODO Force cell to have 0 pixel!

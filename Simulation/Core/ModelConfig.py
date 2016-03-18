@@ -185,6 +185,7 @@ class ModelConfig(object):
         # Assign a new cell ID.
         cellDict['id'] = ModelConfig.cellID
         ModelConfig.cellID += 1
+        cellDict['removed'] = False
 
         cellDict['min_max_volume'] = [self.execConfig.calcVoxelVolumeFromVolume(cellType.minVol),
                                       self.execConfig.calcVoxelVolumeFromVolume(cellType.maxVol)]
@@ -193,8 +194,8 @@ class ModelConfig(object):
         cellDict['growth_factor'] = [] # really needed?
         cellDict['life_time'] = lifeTimeParent  # How many MCS is this cell alive?
 
-        #cell.targetVolume = cell.volume + 1 # At the beginning, the target is the actual size.
-        cell.targetVolume = cellDict['normal_volume'] # At the beginning, the target is the actual size.
+        cell.targetVolume = cell.volume + 1 # At the beginning, the target is the actual size.
+        #cell.targetVolume = cellDict['normal_volume'] # At the beginning, the target is the actual size.
         cell.targetSurface = self.execConfig.calcVoxelSurfaceFromVoxelVolume(cell.targetVolume)
         cell.lambdaVolume = self.execConfig.calcVolLambdaFromVolFit(cellType.volFit)
         cell.lambdaSurface = self.execConfig.calcSurLambdaFromSurFit(cellType.surFit)
