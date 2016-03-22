@@ -191,6 +191,7 @@ class ModelConfig(object):
                                       self.execConfig.calcVoxelVolumeFromVolume(cellType.maxVol)]
         cellDict['normal_volume'] = random.uniform(cellDict['min_max_volume'][0],
                                                    cellDict['min_max_volume'][1])
+
         cellDict['growth_factor'] = [] # really needed?
         cellDict['life_time'] = lifeTimeParent  # How many MCS is this cell alive?
 

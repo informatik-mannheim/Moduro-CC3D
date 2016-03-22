@@ -34,7 +34,7 @@ class CMTransformationSteppable(ModuroSteppable):
                     cellDict = self.getDictionaryAttribute(cell)
                     self.model.cellLifeCycleLogger.cellLifeCycleDeath(mcs, cell, cellDict)
                     cell.type = self.INTERMEDIATE
-                    self.model.setCellAttributes(cellDict, cell, cellDict['life_time'])
+                    self.model.setCellAttributes(cellDict, cell, 0)
                     self.model.cellLifeCycleLogger.cellLifeCycleBirth(mcs, cell, cellDict)
             elif cell.type == self.INTERMEDIATE:
                 for neighbor, commonSurfaceArea in self.getCellNeighborDataList(cell):
@@ -42,7 +42,7 @@ class CMTransformationSteppable(ModuroSteppable):
                         cellDict = self.getDictionaryAttribute(cell)
                         self.model.cellLifeCycleLogger.cellLifeCycleDeath(mcs, cell, cellDict)
                         cell.type = self.UMBRELLA
-                        self.model.setCellAttributes(cellDict, cell, cellDict['life_time'])
+                        self.model.setCellAttributes(cellDict, cell, 0)
                         self.model.cellLifeCycleLogger.cellLifeCycleBirth(mcs, cell, cellDict)
                         break
 
