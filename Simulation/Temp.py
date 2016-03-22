@@ -12,9 +12,11 @@ sim, simthread = CompuCellSetup.getCoreSimulationObjects()
 
 # Now load the model to simulate!
 import Settings.DirectoryPath
+from EmergingModuroModel.AllCMInDa import AllCMInDa
+model = AllCMInDa(sim, simthread, Settings.DirectoryPath.getSrcPath())
 #model = VerifyGrowthT500D1(sim, simthread, Settings.DirectoryPath.getSrcPath())
-from Test.Scalability.VerifyGrowthT1000D1 import VerifyGrowthT1000D1
-model = VerifyGrowthT1000D1(sim, simthread, Settings.DirectoryPath.getSrcPath())
+#from Test.Scalability.VerifyGrowthT1000D1 import VerifyGrowthT1000D1
+# model = VerifyGrowthT1000D1(sim, simthread, Settings.DirectoryPath.getSrcPath())
 #model = VerifyGrowthT2000D1(sim, simthread, Settings.DirectoryPath.getSrcPath())
 #model = VerifyGrowthT1000D2(sim, simthread, Settings.DirectoryPath.getSrcPath())
 # srcDir is required to know where CellsInit.piff is.
