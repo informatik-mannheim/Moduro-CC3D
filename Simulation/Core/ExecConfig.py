@@ -161,7 +161,8 @@ class ExecConfig(object):
         :param mum:
         :return:
         """
-        return int(self.voxelDensity * mum)
+        #python has approximation errors when casted into int with long number of .99999999
+        return int(self.voxelDensity * mum + 0.000001)
 
     def calcPixelFromMuMeterMin1(self, mum):
         """
@@ -216,7 +217,7 @@ class ExecConfig(object):
             return self.__truncate(2.0 * 4 * PI * (3 * voxelVolume / (4 * PI)) ** (2.0 / 3))  # Surface.
 
     def __truncate(self, value):
-        res = int(value)
+        res = int(value + 0.00001)
         if res <= 1:
             return 1  # Ensure that size is at least 1.
         else:
