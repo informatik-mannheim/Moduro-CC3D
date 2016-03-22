@@ -36,7 +36,6 @@ class GrowthSteppable(ModuroSteppable):
             if cellDict['life_time'] >= cellDict['exp_life_time']:
                 cellDict['necrosis'] = True
             elif cellType.divides or cell.targetVolume <= cellDict['normal_volume']:
-                cell.targetSurface = self.execConfig.calcVoxelSurfaceFromVoxelVolume(cell.volume)
                 # print "! ! ! ! tSurf=", cell.targetSurface
                 # Growth (mu m^3 ) per MCS:
                 # deltaVolPerMCS = 1.0 * cellType.growthVolumePerDay / self.execConfig.MCSperDay
@@ -49,3 +48,7 @@ class GrowthSteppable(ModuroSteppable):
                 #print "!!::!::!:!:! deltaVol=", deltaVolPerMCS, ", deltaVolDimPerDay=",\
                 #    deltaVolDimPerDay, ", deltaVolDimPerMCS=", deltaVolDimPerMCS
                 cell.targetVolume += int(deltaVolDimPerMCS)
+                cell.targetSurface = self.execConfig.calcVoxelSurfaceFromVoxelVolume(cell.targetVolume)
+                if cell.type == self.STEM:
+                    print "!!!!!!!!!!!!!!tVOL: ", cell.targetVolume, " VOL: ", cell.volume, " lamVOL: ", cell.lambdaVolume, " tSUR: ", cell.targetSurface, " SUR: ", cell.surface, " lamSUR: ", cell.lambdaSurface
+
