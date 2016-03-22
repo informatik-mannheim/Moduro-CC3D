@@ -49,6 +49,6 @@ class GrowthSteppable(ModuroSteppable):
                 #    deltaVolDimPerDay, ", deltaVolDimPerMCS=", deltaVolDimPerMCS
                 cell.targetVolume += int(deltaVolDimPerMCS)
                 cell.targetSurface = self.execConfig.calcVoxelSurfaceFromVoxelVolume(cell.targetVolume)
-                if cell.type == self.STEM:
-                    print "!!!!!!!!!!!!!!tVOL: ", cell.targetVolume, " VOL: ", cell.volume, " lamVOL: ", cell.lambdaVolume, " tSUR: ", cell.targetSurface, " SUR: ", cell.surface, " lamSUR: ", cell.lambdaSurface
+                #if cell.type == self.STEM:
+                #    print "!!!!!!!!!!!!!!tVOL: ", cell.targetVolume, " VOL: ", cell.volume, " lamVOL: ", cell.lambdaVolume, " tSUR: ", cell.targetSurface, " SUR: ", cell.surface, " lamSUR: ", cell.lambdaSurface
 

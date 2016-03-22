@@ -182,7 +182,7 @@ class ModelConfig(object):
         cellDict['growth_factor'] = [] # really needed?
         cellDict['life_time'] = lifeTimeParent  # How many MCS is this cell alive?
 
-        cell.targetVolume = cell.volume # At the beginning, the target is the actual size.
+        #cell.targetVolume = cell.volume # At the beginning, the target is the actual size.
         cell.targetSurface = self.execConfig.calcVoxelSurfaceFromVoxelVolume(cell.targetVolume)
         cell.lambdaVolume = self.execConfig.calcVolLambdaFromVolFit(cellType.volFit)
         cell.lambdaSurface = self.execConfig.calcSurLambdaFromSurFit(cellType.surFit)
