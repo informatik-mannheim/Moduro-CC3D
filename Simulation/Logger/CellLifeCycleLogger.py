@@ -46,7 +46,7 @@ class CellLifeCycleLogger(object):
         fileHandle.write("%s " % cell.type)
         fileHandle.write("\n")
         fileHandle.close
-        print "QQQQQQQQQQQQQQ Logger: birth", timeDays, " ", id, " ", cell.type
+        #print "QQQQQQQQQQQQQQ Logger: birth", timeDays, " ", id, " ", cell.type
 
     def cellLifeCycleDeath(self, timeMCS, cell, cellDict):
         fileHandle = self._openFile()
@@ -60,4 +60,4 @@ class CellLifeCycleLogger(object):
         fileHandle.write("%s " % lifeTime)
         fileHandle.write("\n")
         fileHandle.close
-        print "QQQQQQQQQQQQQQ Logger: death", timeDays, " ", id, " ", cell.type, " ", lifeTime
+        #print "QQQQQQQQQQQQQQ Logger: death", timeDays, " ", id, " ", cell.type, " ", lifeTime

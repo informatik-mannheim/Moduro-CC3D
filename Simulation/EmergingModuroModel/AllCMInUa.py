@@ -54,22 +54,22 @@ class AllCMInUa(ModelConfig):
                                   volFit=1.0, surFit=1.0)
 
         stem = CellType(name="Stem", minDiameter=8, maxDiameter=10,
-                                  growthVolumePerDay=.5 * self.calcVolume(10),
+                                  growthVolumePerDay=.1 * self.calcVolume(10),
                                   nutrientRequirement=1.0, apoptosisTimeInDays=180000,
                                   volFit=1, surFit=0.5)
 
-        basal = CellType(name="Basal", minDiameter=10, maxDiameter=12,
-                                  growthVolumePerDay=0.5 * self.calcVolume(12),
+        basal = CellType(name="Basal", minDiameter=9, maxDiameter=11,
+                                  growthVolumePerDay=1 * self.calcVolume(12),
                                   nutrientRequirement=1.0, apoptosisTimeInDays=10,
                                   volFit=0.9, surFit=0.5)
 
         intermediate = CellType(name="Intermediate", minDiameter=12, maxDiameter=15,
-                                  growthVolumePerDay=0.1 * self.calcVolume(15),
+                                  growthVolumePerDay=0.01 * self.calcVolume(15),
                                   nutrientRequirement=1.0, apoptosisTimeInDays=10,
                                   volFit=0.9, surFit=0.1)
 
         umbrella = CellType(name="Umbrella", minDiameter=15, maxDiameter=19,
-                                  growthVolumePerDay=0.5 * self.calcVolume(19),
+                                  growthVolumePerDay=0.01 * self.calcVolume(19),
                                   nutrientRequirement=1.0, apoptosisTimeInDays=10,
                                   volFit=0.9, surFit=0.1)
 
@@ -98,4 +98,4 @@ class AllCMInUa(ModelConfig):
 
     def _createExecConfig(self, srcDir):
         return ExecConfig(srcDir=srcDir, MCSperDay=500, SEED=1,
-                          xLength=500, yLength=150, zLength=0, voxelDensity=.8)
+                          xLength=200, yLength=150, zLength=0, voxelDensity=.8)

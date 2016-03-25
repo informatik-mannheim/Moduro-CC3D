@@ -41,7 +41,7 @@ class ModelConfig(object):
         self.execConfig = self._createExecConfig(self.srcDir)
         self.name = ""
         random.seed(self.execConfig.SEED)
-        self.cellLifeCycleLogger = CellLifeCycleLogger(self, "Celltimes.dat")
+        self.cellLifeCycleLogger = CellLifeCycleLogger(self, "Celltimes.daz")
         self._initModel()
 
     def _initModel(self):
