@@ -45,8 +45,3 @@ class UrinationSteppable(ModuroSteppable):
                     # print "WEG!!!!!!!!!!!!!!!!!!!"
                     cellDict = self.getDictionaryAttribute(cell)
                     cellDict['necrosis'] = True
-                    # TODO was happens here?
-                    #cell.lambdaVecY = 0 # -500
-                    #apoptosisDays = self.model.cellTypes[cell.type].apoptosisTimeInDays
-                    #killTime = self.execConfig.calcMCSfromDays(apoptosisDays)
-                    #cellDict['life_time'] = killTime - self.deathIntervalMCS

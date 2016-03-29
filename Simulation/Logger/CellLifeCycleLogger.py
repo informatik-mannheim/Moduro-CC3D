@@ -20,10 +20,15 @@ __status__ = "Production"
 
 
 class CellLifeCycleLogger(object):
+
+    cells = {} # For plausibility check.
+
     def __init__(self, model, fileName):
         self.model = model
         self.execConfig = model.execConfig
         self._fileName = fileName
+        for i in range(999999):
+            self.cells[i] = False # Set map with cell Ids to false.
 
     def _openFile(self):
         try:
@@ -46,18 +51,28 @@ class CellLifeCycleLogger(object):
         fileHandle.write("%s " % cell.type)
         fileHandle.write("\n")
         fileHandle.close
+        if (self.cells[id] == True):
+            print "Cell ", id, " cannot be added twice!"
+            raise
+        else:
+            self.cells[id] = True # Mark this cell (id) as being added.
         #print "QQQQQQQQQQQQQQ Logger: birth", timeDays, " ", id, " ", cell.type
 
     def cellLifeCycleDeath(self, timeMCS, cell, cellDict):
-        fileHandle = self._openFile()
-        timeDays = self.execConfig.calcDaysFromMCS(timeMCS)
-        id = cellDict['id']
-        lifeTime = self.execConfig.calcHoursFromMCS(cellDict['life_time'])
-        fileHandle.write("%s " % timeDays)
-        fileHandle.write("%s " % "-")
-        fileHandle.write("%s " % id)
-        fileHandle.write("%s " % cell.type)
-        fileHandle.write("%s " % lifeTime)
-        fileHandle.write("\n")
-        fileHandle.close
+        if not cellDict['removed']:
+            cellDict['removed'] = True
+            fileHandle = self._openFile()
+            timeDays = self.execConfig.calcDaysFromMCS(timeMCS)
+            id = cellDict['id']
+            lifeTime = self.execConfig.calcHoursFromMCS(cellDict['life_time'])
+            fileHandle.write("%s " % timeDays)
+            fileHandle.write("%s " % "-")
+            fileHandle.write("%s " % id)
+            fileHandle.write("%s " % cell.type)
+            fileHandle.write("%s " % lifeTime)
+            fileHandle.write("\n")
+            fileHandle.close
+            if (self.cells[id] == False):
+                print "Cell ", id, " cannot be removed when not added!"
+                raise
         #print "QQQQQQQQQQQQQQ Logger: death", timeDays, " ", id, " ", cell.type, " ", lifeTime
