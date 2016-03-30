@@ -53,8 +53,6 @@ class ModelConfig(object):
     def _run(self):
         """
         Start the simulation.
-        :param srcDir: Absolute path to source file. Required for dynamic piff init.
-        :return:
         """
         self.execConfig.parameterStore.addObj(self)
         for cellType in self.cellTypes:
@@ -82,7 +80,6 @@ class ModelConfig(object):
                                     "ExternalPotential")
         if self.execConfig.initNutrientDiffusion:
             self.execConfig.initDiffusion(self.cellTypes[1], 0.1, 0.000015)
-        self.execConfig.initField(self._getPIFText())
         # self._initCells() # not yet possible.
 
         return self.execConfig.getCC3D()
@@ -103,61 +100,6 @@ class ModelConfig(object):
     def _createExecConfig(self, srcDir):
         return ExecConfig(self, srcDir)
 
-    def _addCubicCell(self, id, typename, xPos, yPos, zPos, xLength, yLength, zLength,
-                      fileHandle):
-        # TODO exact?
-        xPosDim = self.execConfig.calcPixelFromMuMeter(xPos)
-        yPosDim = self.execConfig.calcPixelFromMuMeter(yPos)
-        zPosDim = self.execConfig.calcPixelFromMuMeter(zPos)
-        xLengthDim = self.execConfig.calcPixelFromMuMeterMin1(xLength)
-        yLengthDim = self.execConfig.calcPixelFromMuMeterMin1(yLength)
-        zLengthDim = self.execConfig.calcPixelFromMuMeterMin1(zLength)
-        fileHandle.write("%(id)s %(name)s  %(x1)s   %(x2)s  %(y1)s   %(y2)s   %(z1)s   %(z2)s \n"
-                         % {"id": id, "name": typename,
-                            "x1": xPosDim, "x2": xPosDim + xLengthDim - 1,
-                            "y1": yPosDim, "y2": yPosDim + yLengthDim - 1,
-                            "z1": zPosDim, "z2": zPosDim + zLengthDim - 1})
-
-    def _initCells(self, fileHandle):
-        def addCubicCell2(typename, xPos, yPos, zPos, xLength, yLength, zLength):
-            cell = self.sim.newCell(typename)
-            xPosDim = self.execConfig.calcPixelFromMuMeter(xPos)
-            yPosDim = self.execConfig.calcPixelFromMuMeter(yPos)
-            zPosDim = self.execConfig.calcPixelFromMuMeter(zPos)
-            xLengthDim = self.execConfig.calcPixelFromMuMeter(xLength)
-            yLengthDim = self.execConfig.calcPixelFromMuMeter(yLength)
-            zLengthDim = self.execConfig.calcPixelFromMuMeter(zLength)
-            # size of cell will be SIZExSIZEx1
-            self.sim.cellField[xPosDim:xPosDim + xLengthDim - 1,
-            yPosDim:yPosDim + yLengthDim - 1,
-            zPosDim:zPosDim + zLengthDim - 1] = cell
-
-        # Add the basal membrane:
-        self._addCubicCell(0, "BasalMembrane", 0, 0, 0,
-                           self.execConfig.xLength, 2, self.execConfig.zLength, fileHandle)
-        cellDiameter = self.cellTypes[2].getAvgDiameter()
-        stemCellFactor = 8 * cellDiameter
-        if self.execConfig.dimensions == 2:
-            noStemCells = int(self.execConfig.xLength / stemCellFactor)
-        else:
-            noStemCells = int(self.execConfig.xLength * self.execConfig.yLength /
-                              (stemCellFactor * stemCellFactor))
-        for s in range(1, noStemCells + 1, 1):
-            xPos = random.uniform(cellDiameter, self.execConfig.xLength - cellDiameter)
-            zPos = random.uniform(cellDiameter, self.execConfig.zLength - cellDiameter)
-            if self.execConfig.dimensions == 2:
-                self._addCubicCell(s, "Stem", xPos, 2, 0, cellDiameter, cellDiameter, 0, fileHandle)
-            else:
-                self._addCubicCell(s, "Stem", xPos, 2, zPos, cellDiameter,
-                                   cellDiameter, cellDiameter, fileHandle)
-
-    def _getPIFText(self):
-        import StringIO
-        fileHandle = StringIO.StringIO()
-        self._initCells(fileHandle)
-        text = fileHandle.getvalue()
-        fileHandle.close()
-        return text
 
     def calcVolume(self, diameter):
         return 4.0 / 3.0 * PI * (diameter / 2.0) ** 3

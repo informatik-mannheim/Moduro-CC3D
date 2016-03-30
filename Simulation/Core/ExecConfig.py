@@ -84,6 +84,7 @@ class ExecConfig(object):
         self.__cc3d = None
         self.parameterStore = ParameterStore()
         self.parameterStore.addObj(self)
+        self.steppableBasePy = None
 
     def initPotts(self):
         self.__cc3d = ElementCC3D("CompuCell3D", {"version": "3.7.3"})
@@ -129,17 +130,6 @@ class ExecConfig(object):
         DiffusionDataElmnt.ElementCC3D("DecayConstant", {}, decayConstantNutr)
         SecretionDataElmnt = DiffusionFieldElmnt.ElementCC3D("SecretionData")
         SecretionDataElmnt.ElementCC3D("Secretion", {"Type": cellType.name}, secretionRateNutr)
-
-    def initField(self, pifText):
-        fileName = "Simulation\CellsInit.piff"
-        filePath = self.srcDir + "\\" + fileName
-
-        fileHandle = open(filePath, 'w')
-        fileHandle.write(pifText)
-        fileHandle.close()
-
-        PIFInitializer = self.__cc3d.ElementCC3D("Steppable", {"Type": "PIFInitializer"})
-        PIFInitializer.ElementCC3D("PIFName", {}, fileName)
 
     def getCC3D(self):
         return self.__cc3d
