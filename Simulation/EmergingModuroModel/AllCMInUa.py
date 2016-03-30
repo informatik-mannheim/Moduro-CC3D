@@ -33,8 +33,8 @@ from Logger.DummyFitnessSteppable import DummyFitnessSteppable
 
 
 class AllCMInUa(ModelConfig):
-    def __init__(self, sim, simthread, srcDir):
-        ModelConfig.__init__(self, sim, simthread, srcDir)
+    def __init__(self, sim, simthread):
+        ModelConfig.__init__(self, sim, simthread)
 
     def _initModel(self):
         self.name = "AllCMInUa"
@@ -96,6 +96,6 @@ class AllCMInUa(ModelConfig):
 
         return steppableList
 
-    def _createExecConfig(self, srcDir):
-        return ExecConfig(srcDir=srcDir, MCSperDay=500, SEED=2,
+    def _createExecConfig(self):
+        return ExecConfig(MCSperDay=500, SEED=2,
                           xLength=200, yLength=150, zLength=0, voxelDensity=.8)

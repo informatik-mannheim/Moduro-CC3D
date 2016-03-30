@@ -31,6 +31,5 @@ sim, simthread = CompuCellSetup.getCoreSimulationObjects()
 
 # Now load the model to simulate!
 from ModuroModel.PASCMNuDa import PASCMNuDa
-import Settings.DirectoryPath
-model = PASCMNuDa(sim, simthread, Settings.DirectoryPath.getSrcPath())
-# srcDir is required to know where CellsInit.piff is.
+model = PASCMNuDa(sim, simthread)
+

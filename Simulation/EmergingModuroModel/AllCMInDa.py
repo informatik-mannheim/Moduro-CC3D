@@ -22,8 +22,8 @@ from EmergingModuroModel.AllCMInUa import AllCMInUa
 
 
 class AllCMInDa(AllCMInUa):
-    def __init__(self, sim, simthread, srcDir):
-        AllCMInUa.__init__(self, sim, simthread, srcDir)
+    def __init__(self, sim, simthread):
+        AllCMInUa.__init__(self, sim, simthread)
 
     def _initModel(self):
         self.name = "AllCMInDa"

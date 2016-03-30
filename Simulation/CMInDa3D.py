@@ -12,6 +12,6 @@ sim, simthread = CompuCellSetup.getCoreSimulationObjects()
 
 # Now load the model to simulate!
 from EmergingModuroModel.CMInDa3D import CMInDa3D
-import Settings.DirectoryPath
+
 model = CMInDa3D(sim, simthread,Settings.DirectoryPath.getSrcPath())
-# srcDir is required to know where CellsInit.piff is.
+

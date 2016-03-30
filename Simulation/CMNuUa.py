@@ -32,6 +32,5 @@ sim, simthread = CompuCellSetup.getCoreSimulationObjects()
 
 # Now load the model to simulate!
 from ModuroModel.CMNuUa import CMNuUa
-import Settings.DirectoryPath
 model = CMNuUa(sim, simthread,Settings.DirectoryPath.getSrcPath())
-# srcDir is required to know where CellsInit.piff is.
+

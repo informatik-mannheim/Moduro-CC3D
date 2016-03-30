@@ -23,11 +23,10 @@ from ModuroModel.CMInUa import CMInUa
 
 class CMInUa2(CMInUa):
 
-    def __init__(self, sim, simthread, srcDir):
-        CMInUa.__init__(self, sim, simthread, srcDir)
+    def __init__(self, sim, simthread):
+        CMInUa.__init__(self, sim, simthread)
 
-    def _createExecConfig(self, srcDir):
-        return ExecConfig(srcDir=srcDir,
-                          xLength=300, yLength=100, zLength=0, voxelDensity=0.8,
+    def _createExecConfig(self):
+        return ExecConfig(xLength=300, yLength=100, zLength=0, voxelDensity=0.8,
                           MCSperDay=500,
                           fluctuationAmplitude=10.0)

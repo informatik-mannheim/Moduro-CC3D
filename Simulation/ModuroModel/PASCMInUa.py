@@ -24,8 +24,8 @@ from ModuroModel.CMInUa import CMInUa
 
 
 class PASCMInUa(CMInUa):
-    def __init__(self, sim, simthread, srcDir):
-        CMInUa.__init__(self, sim, simthread, srcDir)
+    def __init__(self, sim, simthread):
+        CMInUa.__init__(self, sim, simthread)
 
     def _initModel(self):
         self.name = "PASCMInUa"
@@ -71,7 +71,6 @@ class PASCMInUa(CMInUa):
 
         return cellTypes
 
-    def _createExecConfig(self, srcDir):
-        return ExecConfig(srcDir=srcDir,
-                          xLength=800, yLength=100, zLength=0, voxelDensity=0.8,
+    def _createExecConfig(self):
+        return ExecConfig(xLength=800, yLength=100, zLength=0, voxelDensity=0.8,
                           MCSperDay=500)

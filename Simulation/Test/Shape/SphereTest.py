@@ -31,8 +31,8 @@ class SphereTest(ModelConfig):
     '''
     Some experiments on a cell's shape.
     '''
-    def __init__(self, sim, simthread, srcDir):
-        ModelConfig.__init__(self, sim, simthread, srcDir)
+    def __init__(self, sim, simthread):
+        ModelConfig.__init__(self, sim, simthread)
 
     def _initModel(self):
         self.name = "SphereTest"
@@ -84,6 +84,5 @@ class SphereTest(ModelConfig):
 
         return steppableList
 
-    def _createExecConfig(self, srcDir):
-        return ExecConfig(srcDir=srcDir,
-                          xLength=70, yLength=70, zLength=70, voxelDensity=1.5)
+    def _createExecConfig(self):
+        return ExecConfig(xLength=70, yLength=70, zLength=70, voxelDensity=1.5)

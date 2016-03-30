@@ -22,8 +22,8 @@ from ModuroModel.PASCMNuUa import PASCMNuUa
 
 
 class PASCMNuDa(PASCMNuUa):
-    def __init__(self, sim, simthread, srcDir):
-        PASCMNuUa.__init__(self, sim, simthread, srcDir)
+    def __init__(self, sim, simthread):
+        PASCMNuUa.__init__(self, sim, simthread)
 
     def _initModel(self):
         self.name = "PASCMNuDa"

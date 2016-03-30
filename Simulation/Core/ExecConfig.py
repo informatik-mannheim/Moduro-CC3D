@@ -25,12 +25,10 @@ from Core.ParameterStore import ParameterStore
 
 class ExecConfig(object):
     def __init__(self,
-                 srcDir="",
                  xLength=150, yLength=200, zLength=1,
                  voxelDensity=1,
                  initNutrientDiffusion = False,
                  MCSperDay=500,
-                 piffInitial="Simulation/CellsInit.piff",
                  simDurationDays=720,
                  sampleIntervalInDays=0.5,
                  fluctuationAmplitude=10.0,
@@ -42,13 +40,11 @@ class ExecConfig(object):
                  colonyTagInDays=1):
         """
 
-        :param srcDir:
         :param xLength:
         :param yLength:
         :param zLength:
         :param voxelDensity:
         :param MCSperDay: MC steps per Day. Default is 500, i.e. 500 MCS = 1 day.
-        :param piffInitial:
         :param simDurationDays:
         :param fluctuationAmplitude:
         :param flip2DimRatio:
@@ -58,7 +54,6 @@ class ExecConfig(object):
         :param SEED:
         :return:
         """
-        self.srcDir = srcDir
         self.xLength = xLength
         self.yLength = yLength
         self.zLength = zLength
@@ -70,7 +65,6 @@ class ExecConfig(object):
         self.zDimension = 1 if self.dimensions == 2 else self.calcPixelFromMuMeterMin1(zLength)
         self.latticeSizeInVoxel = self.xDimension * self.yDimension * self.zDimension
         self.MCSperDay = MCSperDay
-        self.piffInitial = piffInitial
         self.simDurationDays = simDurationDays
         self.sampleIntervalInDays = sampleIntervalInDays
         self.sampleIntervalInMCS = self.calcMCSfromDays(sampleIntervalInDays)

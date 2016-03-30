@@ -18,14 +18,12 @@ __license__ = "Apache 2"
 __email__ = "m.gumbel@hs-mannheim.de"
 __status__ = "Production"
 
-from Core.CellType import CellType
-from Core.ExecConfig import ExecConfig
 from ModuroModel.PASCMInUa import PASCMInUa
 
 
 class PASCMInDa(PASCMInUa):
-    def __init__(self, sim, simthread, srcDir):
-        PASCMInUa.__init__(self, sim, simthread, srcDir)
+    def __init__(self, sim, simthread):
+        PASCMInUa.__init__(self, sim, simthread)
 
     def _initModel(self):
         self.name = "PASCMInDa"

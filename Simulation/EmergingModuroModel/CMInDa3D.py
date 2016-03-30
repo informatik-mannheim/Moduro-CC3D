@@ -24,8 +24,8 @@ from Core.CellType import CellType
 
 class CMInDa3D(CMInDa):
 
-    def __init__(self, sim, simthread, srcDir):
-        CMInDa.__init__(self, sim, simthread, srcDir)
+    def __init__(self, sim, simthread):
+        CMInDa.__init__(self, sim, simthread)
 
     def _initModel(self):
         self.name = "CMInDa3D"
@@ -34,8 +34,7 @@ class CMInDa3D(CMInDa):
         self.energyMatrix = self._createEnergyMatrix()
         self._run()  # Must be the last statement.
 
-    def _createExecConfig(self, srcDir):
-        return ExecConfig(srcDir=srcDir,
-                          xLength=100, yLength=120, zLength=50, voxelDensity=1,
+    def _createExecConfig(self):
+        return ExecConfig(xLength=100, yLength=120, zLength=50, voxelDensity=1,
                           MCSperDay=500,
                           fluctuationAmplitude=10.0)

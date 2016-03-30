@@ -27,18 +27,28 @@ from Logger.CellLifeCycleLogger import CellLifeCycleLogger
 
 
 class ModelConfig(object):
+    '''
+    ModelConfig defines a biological simulation model. All properties in this class
+    are (as good as possible) independent of the simulation technique (like GGH and CC3D).
+    Right now, ModelConfig is tailored for the urothelium but it could easily be refactored
+    to become tissue independent.
+    '''
 
     cellID = 1
 
-    def __init__(self, sim, simthread, srcDir):
+    def __init__(self, sim, simthread):
+        '''
+        :param sim:
+        :param simthread:
+        :return:
+        '''
         self.sim = sim
         self.simthread = simthread
-        self.srcDir = srcDir
         self.adhFactor = 0.5  # Average adhesion strength compared to vol./surf. fits.
         self.adhEnergy = 2.0  # Some reference value.
         self.cellTypes = []
         self.energyMatrix = []
-        self.execConfig = self._createExecConfig(self.srcDir)
+        self.execConfig = self._createExecConfig()
         self.name = ""
         random.seed(self.execConfig.SEED)
         self.cellLifeCycleLogger = CellLifeCycleLogger(self, "Celltimes.daz")
@@ -97,8 +107,8 @@ class ModelConfig(object):
                         for x in range(self.cellTypes.__len__())]
         return energyMatrix
 
-    def _createExecConfig(self, srcDir):
-        return ExecConfig(self, srcDir)
+    def _createExecConfig(self):
+        return ExecConfig(self)
 
 
     def calcVolume(self, diameter):
@@ -146,6 +156,18 @@ class ModelConfig(object):
         cell.lambdaSurface = self.execConfig.calcSurLambdaFromSurFit(cellType.surFit)
 
     def _addCubicCell(self, typename, xPos, yPos, zPos, xLength, yLength, zLength, steppable):
+        '''
+        Adds a cubic (rectangle or cube) cell. All values are in micro m.
+        :param typename:  Type of the cell.
+        :param xPos: Lower x position of the cube (in micro m).
+        :param yPos: Lower y position of the cube.
+        :param zPos: Lower z position of the cube.
+        :param xLength: Length in x dimension (in micro m).
+        :param yLength: Length in y dimension.
+        :param zLength: Length in z dimension.
+        :param steppable: A steppable required for to add pixels (voxels).
+        :return:
+        '''
         cell = steppable.newCell(typename)
         xPosDim = self.execConfig.calcPixelFromMuMeter(xPos)
         yPosDim = self.execConfig.calcPixelFromMuMeter(yPos)
@@ -159,6 +181,12 @@ class ModelConfig(object):
         zPosDim:zPosDim + zLengthDim - 1] = cell
 
     def _initCells(self, steppable):
+        '''
+        Initialize the tissue with cells etc. Here a urothelium with a basal membrane
+        and some stem cells is created.
+        :param steppable: Required to add cells dynamically.
+        :return:
+        '''
         # Adds the basal membrane:
         self._addCubicCell(1, 0, 0, 0, self.execConfig.xLength, 2, self.execConfig.zLength, steppable)
         # Adds the stem cells throughout the basal membrane:

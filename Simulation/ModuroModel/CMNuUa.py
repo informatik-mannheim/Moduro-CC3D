@@ -34,8 +34,8 @@ from Logger.DummyFitnessSteppable import DummyFitnessSteppable
 
 
 class CMNuUa(ModelConfig):
-    def __init__(self, sim, simthread, srcDir):
-        ModelConfig.__init__(self, sim, simthread, srcDir)
+    def __init__(self, sim, simthread):
+        ModelConfig.__init__(self, sim, simthread)
 
     def _initModel(self):
         self.name = "CMNuUa"
@@ -96,6 +96,5 @@ class CMNuUa(ModelConfig):
 
         return steppableList
 
-    def _createExecConfig(self, srcDir):
-        return ExecConfig(srcDir=srcDir,
-                          xLength=150, yLength=100, zLength=0, voxelDensity=1, initNutrientDiffusion=True)
+    def _createExecConfig(self):
+        return ExecConfig(xLength=150, yLength=100, zLength=0, voxelDensity=1, initNutrientDiffusion=True)

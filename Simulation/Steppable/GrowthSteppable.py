@@ -31,7 +31,6 @@ class GrowthSteppable(ModuroSteppable):
             cellType = self.model.cellTypes[cell.type]
             # print "!!!!!! cell.tvol=", cell.targetVolume, "<=type.tVol=", cellDict['normal_volume']
 
-            # DEPENDS ON HOW MUCH A MCS IS
             cellDict['life_time'] += 1
             if cellDict['life_time'] >= cellDict['exp_life_time']:
                 cellDict['necrosis'] = True

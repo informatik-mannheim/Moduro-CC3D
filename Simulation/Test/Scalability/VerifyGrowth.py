@@ -33,8 +33,8 @@ class VerifyGrowth(ModelConfig):
     Test classes to verify that the time and space scaling is correct.
     Two cells are put on a plane and simulated for 2 days.
     '''
-    def __init__(self, sim, simthread, srcDir):
-        ModelConfig.__init__(self, sim, simthread, srcDir)
+    def __init__(self, sim, simthread):
+        ModelConfig.__init__(self, sim, simthread)
 
     def _initModel(self):
         self.adhFactor = 0.5  # average adhesion = 0.5

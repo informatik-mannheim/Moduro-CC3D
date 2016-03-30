@@ -22,8 +22,8 @@ from ModuroModel.CMNuUa import CMNuUa
 
 
 class CMNuDa(CMNuUa):
-    def __init__(self, sim, simthread, srcDir):
-        CMNuUa.__init__(self, sim, simthread, srcDir)
+    def __init__(self, sim, simthread):
+        CMNuUa.__init__(self, sim, simthread)
 
     def _initModel(self):
         self.name = "CMNuDa"

@@ -23,12 +23,12 @@ from Test.Scalability.VerifyGrowth import VerifyGrowth
 
 
 class VerifyGrowthT1000D2(VerifyGrowth):
-    def __init__(self, sim, simthread, srcDir):
-        VerifyGrowth.__init__(self, sim, simthread, srcDir)
+    def __init__(self, sim, simthread):
+        VerifyGrowth.__init__(self, sim, simthread)
         self.name = "VerifyGrowthT1000D2"
         self._initModel()
 
-    def _createExecConfig(self, srcDir):
-        return ExecConfig(srcDir=srcDir, simDurationDays=2,
+    def _createExecConfig(self):
+        return ExecConfig(simDurationDays=2,
                           xLength=100, yLength=100, zLength=0,
                           voxelDensity=2, MCSperDay=1000)
