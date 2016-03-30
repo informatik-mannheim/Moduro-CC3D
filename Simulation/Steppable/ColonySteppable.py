@@ -27,7 +27,8 @@ class ColonySteppable(ModuroSteppable):
         self.scalarCLField = self.createScalarFieldCellLevelPy("ColonyField")
 
     def moduroStep(self, mcs):
-        if (self.model.execConfig.colonyTagInMCS - 2) <= mcs <= (self.model.execConfig.colonyTagInMCS + 2):
+        #TODO: when interupt is a multiple of colonytag interval than it does not go into the if statement therefor +1
+        if self.model.execConfig.colonyTagInMCS + 1 == mcs:
             cellNr = self.cellList.__len__()
             stemNr = 0
             for cell in self.cellList:
@@ -40,7 +41,7 @@ class ColonySteppable(ModuroSteppable):
                     stemNr -=1
                 cellDict = self.getDictionaryAttribute(cell)
                 cellDict['colony'] = cell.id
-        elif self.model.execConfig.colonyTagInMCS + 10 < mcs:
+        elif self.model.execConfig.colonyTagInMCS < mcs:
             self.model.execConfig.colonyTag = True
             self.scalarCLField.clear()
             for cell in self.cellList:
