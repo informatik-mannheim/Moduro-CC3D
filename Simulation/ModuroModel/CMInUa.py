@@ -60,17 +60,17 @@ class CMInUa(ModelConfig):
 
         basal = CellType(name="Basal", minDiameter=10, maxDiameter=12,
                                   growthVolumePerDay=10 * self.calcVolume(12),
-                                  nutrientRequirement=1.0, apoptosisTimeInDays=30,
+                                  nutrientRequirement=1.0, apoptosisTimeInDays=10,
                                   volFit=0.9, surFit=0.5)
 
         intermediate = CellType(name="Intermediate", minDiameter=12, maxDiameter=15,
                                   growthVolumePerDay=20 * self.calcVolume(15),
-                                  nutrientRequirement=1.0, apoptosisTimeInDays=20,
+                                  nutrientRequirement=1.0, apoptosisTimeInDays=2,
                                   volFit=0.9, surFit=0.1)
 
         umbrella = CellType(name="Umbrella", minDiameter=15, maxDiameter=19,
                                   growthVolumePerDay=10 * self.calcVolume(19),
-                                  nutrientRequirement=1.0, apoptosisTimeInDays=20,
+                                  nutrientRequirement=1.0, apoptosisTimeInDays=2,
                                   volFit=0.9, surFit=0.1)
 
         stem.setDescendants(1.0, [stem.id, basal.id])
@@ -96,4 +96,4 @@ class CMInUa(ModelConfig):
 
     def _createExecConfig(self, srcDir):
         return ExecConfig(srcDir=srcDir,
-                          xLength=150, yLength=100, zLength=0, voxelDensity=1)
+                          xLength=150, yLength=200, zLength=0, voxelDensity=1)

@@ -37,12 +37,10 @@ class DeathSteppable(ModuroSteppable):
                     if deltaVolDimPerMCS < 1.0: # The change may be too small for one MCS.
                         deltaVolDimPerMCS = 1 if deltaVolDimPerMCS >= random.random() else 0
                     cell.targetVolume -= deltaVolDimPerMCS
+                    if (cell.targetVolume < 0):
+                        cell.targetVolume = 0
                 else:
+                    self.model.cellLifeCycleLogger.cellLifeCycleDeath(mcs, cell, cellDict)
                     cell.targetVolume = 0
-                    # Make sure that the cell is removed only once in the logger:
-                    if not cellDict['removed']:
-                        self.model.cellLifeCycleLogger.cellLifeCycleDeath(mcs, cell, cellDict)
-                        cellDict['removed'] = True
-                    # Does not work -> moved to GrowthSteppable.
 
                 cell.lambdaVolume = 1000 # TODO Force cell to have 0 pixel!

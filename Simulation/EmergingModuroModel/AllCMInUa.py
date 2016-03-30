@@ -97,5 +97,5 @@ class AllCMInUa(ModelConfig):
         return steppableList
 
     def _createExecConfig(self, srcDir):
-        return ExecConfig(srcDir=srcDir, MCSperDay=500, SEED=1,
+        return ExecConfig(srcDir=srcDir, MCSperDay=500, SEED=2,
                           xLength=200, yLength=150, zLength=0, voxelDensity=.8)
