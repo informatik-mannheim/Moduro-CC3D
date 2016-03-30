@@ -59,12 +59,12 @@ class AllCMInUa(ModelConfig):
                                   volFit=1, surFit=0.5)
 
         basal = CellType(name="Basal", minDiameter=9, maxDiameter=11,
-                                  growthVolumePerDay=1 * self.calcVolume(12),
+                                  growthVolumePerDay=0.1 * self.calcVolume(12),
                                   nutrientRequirement=1.0, apoptosisTimeInDays=10,
                                   volFit=0.9, surFit=0.5)
 
         intermediate = CellType(name="Intermediate", minDiameter=12, maxDiameter=15,
-                                  growthVolumePerDay=0.01 * self.calcVolume(15),
+                                  growthVolumePerDay=0.1 * self.calcVolume(15),
                                   nutrientRequirement=1.0, apoptosisTimeInDays=10,
                                   volFit=0.9, surFit=0.1)
 
@@ -97,5 +97,5 @@ class AllCMInUa(ModelConfig):
         return steppableList
 
     def _createExecConfig(self):
-        return ExecConfig(MCSperDay=500, SEED=2,
+        return ExecConfig(MCSperDay=500, SEED=3,
                           xLength=200, yLength=150, zLength=0, voxelDensity=.8)

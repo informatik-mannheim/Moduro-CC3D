@@ -64,5 +64,4 @@ class GrowthMitosisSteppable(ModuroMitosisSteppable):
         # Register events
         self._cellLifeCycleBirth(parentCell)
         self._cellLifeCycleBirth(childCell)
-        if self.model.execConfig.colonyTag:
-            cellDictChild['colony'] = cellDictParent['colony']
+        cellDictChild['colony'] = cellDictParent['colony']

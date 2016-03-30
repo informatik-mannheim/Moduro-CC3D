@@ -120,8 +120,9 @@ class ModelConfig(object):
         expLiveTime = self.execConfig.calcMCSfromDays(cellType.apoptosisTimeInDays)
         cellDict['exp_life_time'] = random.gauss(expLiveTime, expLiveTime / 10.0)
         cellDict['necrosis'] = False
-        cellDict['DNA'] = [100]  # TODO remove list
-        cellDict['TurnOver'] = [False]
+        cellDict['DNA'] = 100
+        cellDict['TurnOver'] = False
+        cellDict['colony'] = -1 # Default colony id.
         self.setCellAttributes(cellDict, cell, 0)
 
     def setCellAttributes(self, cellDict, cell, lifeTimeParent):

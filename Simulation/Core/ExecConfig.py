@@ -36,8 +36,7 @@ class ExecConfig(object):
                  neighborOrder=1,
                  boundary_x="Periodic",
                  debugOutputFrequency=50000,
-                 SEED=100,
-                 colonyTagInDays=1):
+                 SEED=100):
         """
 
         :param xLength:
@@ -79,9 +78,6 @@ class ExecConfig(object):
         self.__cc3d = None
         self.parameterStore = ParameterStore()
         self.parameterStore.addObj(self)
-        self.colonyTagInDays = colonyTagInDays
-        self.colonyTagInMCS = self.calcMCSfromDays(colonyTagInDays)
-        self.colonyTag = False
 
     def initPotts(self):
         self.__cc3d = ElementCC3D("CompuCell3D", {"version": "3.7.3"})
