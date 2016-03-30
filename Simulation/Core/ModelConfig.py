@@ -127,7 +127,6 @@ class ModelConfig(object):
         # Assign a new cell ID.
         cellDict['id'] = ModelConfig.cellID
         ModelConfig.cellID += 1
-        cellDict['colony'] = cellDict['id']
         cellDict['removed'] = False
         cellDict['inhibited'] = True
 

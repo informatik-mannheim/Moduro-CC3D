@@ -98,4 +98,4 @@ class CMInUa(ModelConfig):
 
     def _createExecConfig(self, srcDir):
         return ExecConfig(srcDir=srcDir,
-                          xLength=150, yLength=200, zLength=0, voxelDensity=1)
+                          xLength=500, yLength=200, zLength=0, voxelDensity=1)

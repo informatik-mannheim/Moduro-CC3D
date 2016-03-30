@@ -27,8 +27,23 @@ class ColonySteppable(ModuroSteppable):
         self.scalarCLField = self.createScalarFieldCellLevelPy("ColonyField")
 
     def moduroStep(self, mcs):
-        self.scalarCLField.clear()
-        for cell in self.cellList:
-            cellDict = self.getDictionaryAttribute(cell)
-            self.scalarCLField[cell] = cellDict['colony']
+        if (self.model.execConfig.colonyTagInMCS - 2) <= mcs <= (self.model.execConfig.colonyTagInMCS + 2):
+            cellNr = self.cellList.__len__()
+            stemNr = 0
+            for cell in self.cellList:
+                if cell.type == self.STEM:
+                    stemNr += 1
+            distance = cellNr/stemNr
+            for cell in self.cellList:
+                if cell.type == self.STEM:
+                    cellDict['colony'] = cellNr - stemNr * distance
+                    stemNr -=1
+                cellDict = self.getDictionaryAttribute(cell)
+                cellDict['colony'] = cell.id
+        elif self.model.execConfig.colonyTagInMCS + 10 < mcs:
+            self.model.execConfig.colonyTag = True
+            self.scalarCLField.clear()
+            for cell in self.cellList:
+                cellDict = self.getDictionaryAttribute(cell)
+                self.scalarCLField[cell] = cellDict['colony']
 
