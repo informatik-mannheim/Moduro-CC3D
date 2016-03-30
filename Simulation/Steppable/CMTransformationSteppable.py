@@ -26,23 +26,41 @@ class CMTransformationSteppable(ModuroSteppable):
 
     def moduroStep(self, mcs):
         for cell in self.cellList:
-            if cell.type == self.BASAL:
-                for neighbor, commonSurfaceArea in self.getCellNeighborDataList(cell):
-                    if neighbor and neighbor.type == self.BASALMEMBRANE and commonSurfaceArea > 0:
-                        break
-                else:
-                    cellDict = self.getDictionaryAttribute(cell)
-                    self.model.cellLifeCycleLogger.cellLifeCycleDeath(mcs, cell, cellDict)
-                    cell.type = self.INTERMEDIATE
-                    self.model.setCellAttributes(cellDict, cell, 0)
-                    self.model.cellLifeCycleLogger.cellLifeCycleBirth(mcs, cell, cellDict)
-            elif cell.type == self.INTERMEDIATE:
-                for neighbor, commonSurfaceArea in self.getCellNeighborDataList(cell):
-                    if not neighbor and commonSurfaceArea > 0:
-                        cellDict = self.getDictionaryAttribute(cell)
-                        self.model.cellLifeCycleLogger.cellLifeCycleDeath(mcs, cell, cellDict)
-                        cell.type = self.UMBRELLA
-                        self.model.setCellAttributes(cellDict, cell, 0)
-                        self.model.cellLifeCycleLogger.cellLifeCycleBirth(mcs, cell, cellDict)
-                        break
+            if cell.type == self.BASAL and not self.hasCertainNeighbor(cell, self.BASALMEMBRANE):
+                self.transformInto(cell, self.INTERMEDIATE, mcs)
+            elif cell.type == self.INTERMEDIATE and self.hasCertainNeighbor(cell, self.MEDIUM):
+                self.transformInto(cell, self.UMBRELLA, mcs)
+            elif (cell.type == self.STEM or cell.type == self.UMBRELLA) and self.hasCertainNeighbor(cell, self.MEDIUM):
+                self.setInhibitionFlag(cell, False)
 
+
+    def hasCertainNeighbor(self, cell, neighborType):
+        totalMediumArea = 0
+        hasCertainNeighbor = False
+        for neighbor, commonSurfaceArea in self.getCellNeighborDataList(cell):
+            if neighbor and neighborType != 0 and neighbor.type == neighborType and commonSurfaceArea > 0:
+                hasCertainNeighbor = True
+            elif not neighbor and commonSurfaceArea > 0:
+                totalMediumArea += commonSurfaceArea
+                if neighborType == 0:
+                    hasCertainNeighbor = True
+                if hasCertainNeighbor:
+                    break
+        if totalMediumArea == 0:
+            self.setInhibitionFlag(cell, True)
+        else:
+            self.setInhibitionFlag(cell, False)
+        return hasCertainNeighbor
+
+
+    def transformInto(self, cell, cellType, mcs):
+        cellDict = self.getDictionaryAttribute(cell)
+        self.model.cellLifeCycleLogger.cellLifeCycleDeath(mcs, cell, cellDict)
+        cell.type = cellType
+        self.model.setCellAttributes(cellDict, cell, 0)
+        self.model.cellLifeCycleLogger.cellLifeCycleBirth(mcs, cell, cellDict)
+
+
+    def setInhibitionFlag(self, cell, flag):
+        cellDict = self.getDictionaryAttribute(cell)
+        cellDict['inhibited'] = flag

@@ -42,6 +42,8 @@ class GrowthSteppable(ModuroSteppable):
                 # Volume/surface change in voxel per day.
                 deltaVolDimPerDay = self.execConfig.calcVoxelVolumeFromVolume(cellType.growthVolumePerDay)
                 deltaVolDimPerMCS = 1.0 * deltaVolDimPerDay / self.execConfig.MCSperDay
+                if not cellDict['inhibited']:
+                    deltaVolDimPerMCS *= 2.0
                 if deltaVolDimPerMCS < 1.0: # The change may be too small for one MCS.
                     deltaVolDimPerMCS = 1 if deltaVolDimPerMCS >= random.random() else 0
 

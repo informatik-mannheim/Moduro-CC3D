@@ -128,6 +128,7 @@ class ModelConfig(object):
         cellDict['id'] = ModelConfig.cellID
         ModelConfig.cellID += 1
         cellDict['removed'] = False
+        cellDict['inhibited'] = True
 
         cellDict['min_max_volume'] = [self.execConfig.calcVoxelVolumeFromVolume(cellType.minVol),
                                       self.execConfig.calcVoxelVolumeFromVolume(cellType.maxVol)]
