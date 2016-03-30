@@ -12,35 +12,23 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-__author__ = "Angelo Torelli, Markus Gumbel"
+__author__ = "Angelo Torelli"
 __copyright__ = "The authors"
 __license__ = "Apache 2"
 __email__ = "m.gumbel@hs-mannheim.de"
 __status__ = "Production"
 
+import random
 from Steppable.ModuroSteppable import ModuroSteppable
 
-class ConstraintInitializerSteppable(ModuroSteppable):
+class ColonySteppable(ModuroSteppable):
     def __init__(self, simulator, model, _frequency=1):
         ModuroSteppable.__init__(self, simulator, model, _frequency)
+        self.scalarCLField = self.createScalarFieldCellLevelPy("ColonyField")
 
-    def start(self):
-        """
-        Initialize all cells.
-        :return:
-        """
-        # Required here! Otherwise CC3D will not create the file.
-        #self.execConfig.parameterStore.saveParameterfile("ParameterDump.dat")
-        self.execConfig.parameterStore.saveAllObjs("ParameterDump.dat")
-
-        self.model._initCells(self)
-
-
+    def moduroStep(self, mcs):
+        self.scalarCLField.clear()
         for cell in self.cellList:
-            # cellDict needs to be retrieved in a steppable:
             cellDict = self.getDictionaryAttribute(cell)
-            self.model.initCellAttributes(cell, cellDict)
-            self.model.cellLifeCycleLogger.cellLifeCycleBirth(0, cell, cellDict)
-
-            cellType = self.model.cellTypes[cell.type]
+            self.scalarCLField[cell] = cellDict['colony']
 

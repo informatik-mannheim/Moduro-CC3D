@@ -64,3 +64,5 @@ class GrowthMitosisSteppable(ModuroMitosisSteppable):
         # Register events
         self._cellLifeCycleBirth(parentCell)
         self._cellLifeCycleBirth(childCell)
+
+        cellDictChild['colony'] = cellDictParent['colony']

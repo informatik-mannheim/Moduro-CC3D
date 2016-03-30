@@ -22,7 +22,7 @@ from math import pi as PI
 
 from Core.CellType import CellType
 from Core.ModelConfig import ModelConfig
-from Steppable.ConstraintInitializerSteppable import ConstraintInitializerSteppable
+from Steppable.InitializerSteppable import InitializerSteppable
 from Steppable.GrowthMitosisSteppable import GrowthMitosisSteppable
 from Steppable.GrowthSteppable import GrowthSteppable
 from Test.Steppable.MonitorSteppable import MonitorSteppable
@@ -82,7 +82,7 @@ class VerifyGrowth(ModelConfig):
 
     def _getSteppables(self):
         steppableList = []
-        steppableList.append(ConstraintInitializerSteppable(self.sim, self))
+        steppableList.append(InitializerSteppable(self.sim, self))
         steppableList.append(GrowthSteppable(self.sim, self))
         steppableList.append(GrowthMitosisSteppable(self.sim, self, splitPercentage=2.0))
         steppableList.append(MonitorSteppable(self.sim, self))

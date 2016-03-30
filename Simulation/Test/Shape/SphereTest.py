@@ -23,7 +23,7 @@ from math import pi as PI
 from Core.CellType import CellType
 from Core.ExecConfig import ExecConfig
 from Core.ModelConfig import ModelConfig
-from Steppable.ConstraintInitializerSteppable import ConstraintInitializerSteppable
+from Steppable.InitializerSteppable import InitializerSteppable
 from Test.Steppable.MonitorSteppable import MonitorSteppable
 
 
@@ -79,7 +79,7 @@ class SphereTest(ModelConfig):
 
     def _getSteppables(self):
         steppableList = []
-        steppableList.append(ConstraintInitializerSteppable(self.sim, self))
+        steppableList.append(InitializerSteppable(self.sim, self))
         steppableList.append(MonitorSteppable(self.sim, self))
 
         return steppableList

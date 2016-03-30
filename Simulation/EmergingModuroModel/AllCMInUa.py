@@ -21,7 +21,7 @@ __status__ = "Production"
 from Core.CellType import CellType
 from Core.ExecConfig import ExecConfig
 from Core.ModelConfig import ModelConfig
-from Steppable.ConstraintInitializerSteppable import ConstraintInitializerSteppable
+from Steppable.InitializerSteppable import InitializerSteppable
 from Steppable.DeathSteppable import DeathSteppable
 from Steppable.GrowthMitosisSteppable import GrowthMitosisSteppable
 from Steppable.GrowthSteppable import GrowthSteppable
@@ -83,7 +83,7 @@ class AllCMInUa(ModelConfig):
 
     def _getSteppables(self):
         steppableList = []
-        steppableList.append(ConstraintInitializerSteppable(self.sim, self))
+        steppableList.append(InitializerSteppable(self.sim, self))
         steppableList.append(GrowthSteppable(self.sim, self))
         steppableList.append(GrowthMitosisSteppable(self.sim, self))
         steppableList.append(CMTransformationSteppable(self.sim, self))
