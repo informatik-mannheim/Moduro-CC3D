@@ -11,9 +11,10 @@ sys.path.append(environ["PYTHON_MODULE_PATH"])
 sim, simthread = CompuCellSetup.getCoreSimulationObjects()
 
 # Now load the model to simulate!
-from Test.Scalability.VerifyGrowthT500D1 import VerifyGrowthT500D1
-model = VerifyGrowthT500D1(sim, simthread)
+from Test.Scalability.VerifyGrowthT1000D4 import VerifyGrowthT1000D4
+#model = VerifyGrowthT500D1(sim, simthread)
 from Test.Scalability.VerifyGrowthT1000D1 import VerifyGrowthT1000D1
 #model = VerifyGrowthT1000D1(sim, simthread)
 #model = VerifyGrowthT2000D1(sim, simthread)
 #model = VerifyGrowthT1000D2(sim, simthread)
+model = VerifyGrowthT1000D4(sim, simthread)

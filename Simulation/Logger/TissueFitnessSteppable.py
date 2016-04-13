@@ -37,10 +37,12 @@ class TissueFitnessSteppable(ModuroSteppable):
 
         return fileHandle
 
-    def _addLine(self, mcs, value):
+    def _addLine(self, *args):
         fileHandle = self._openFile()
-
-        fileHandle.write("%s " % self.execConfig.calcDaysFromMCS(mcs))
-        fileHandle.write("%s " % value)
+        for count, value in enumerate(args):
+            if count == 0:
+                fileHandle.write("%s " % self.execConfig.calcDaysFromMCS(value))
+            else:
+                fileHandle.write("%s " % value)
         fileHandle.write("\n")
         fileHandle.close()
