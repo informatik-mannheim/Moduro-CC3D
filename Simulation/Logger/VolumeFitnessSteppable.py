@@ -69,7 +69,7 @@ class VolumeFitnessSteppable(TissueFitnessSteppable):
                 # print "!!!!!! U ", self.idealUmbrellaCellsVol, " = ", umbrellaVolume
                 # print "!!!!!! fB = ", fitness_B,", fI = ", fitness_I,", fU = ", fitness_U
 
-            self._addLine(mcs, fitness_v)
+            self._addLine(mcs, fitness_v, fitness_B, fitness_I, fitness_U)
 
     def _fit(self, volOpt, vol):
         return 1.0 / (4.0 * ((volOpt - vol) / volOpt) ** 2.0 + 1.0)
