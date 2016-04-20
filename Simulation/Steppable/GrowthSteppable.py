@@ -22,8 +22,9 @@ import random
 from Steppable.ModuroSteppable import ModuroSteppable
 
 class GrowthSteppable(ModuroSteppable):
-    def __init__(self, simulator, model, _frequency=1):
+    def __init__(self, simulator, model, contactInhibitedFactor=50.0,_frequency=1):
         ModuroSteppable.__init__(self, simulator, model, _frequency)
+        self.contactInhibitedFactor = contactInhibitedFactor
 
     def moduroStep(self, mcs):
         for cell in self.cellList:
@@ -39,10 +40,12 @@ class GrowthSteppable(ModuroSteppable):
                 # Growth (mu m^3 ) per MCS:
                 # deltaVolPerMCS = 1.0 * cellType.growthVolumePerDay / self.execConfig.MCSperDay
                 # Volume/surface change in voxel per day.
-                deltaVolDimPerDay = self.execConfig.calcVoxelVolumeFromVolume(cellType.growthVolumePerDay)
+                if cellDict['inhibited']:
+                    growthVolPerDay = cellType.growthVolumePerDay
+                else:
+                    growthVolPerDay = cellType.growthVolumePerDay * self.contactInhibitedFactor
+                deltaVolDimPerDay = self.execConfig.calcVoxelVolumeFromVolume(growthVolPerDay)
                 deltaVolDimPerMCS = 1.0 * deltaVolDimPerDay / self.execConfig.MCSperDay
-                if not cellDict['inhibited']:
-                    deltaVolDimPerMCS *= 5.0
                 if deltaVolDimPerMCS < 1.0: # The change may be too small for one MCS.
                     deltaVolDimPerMCS = 1 if deltaVolDimPerMCS >= random.random() else 0
 

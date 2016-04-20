@@ -18,15 +18,16 @@ __license__ = "Apache 2"
 __email__ = "m.gumbel@hs-mannheim.de"
 __status__ = "Production"
 
-from EmergingModuroModel.AllCMInUa import AllCMInUa
+from EmergingModuroModel.SdPcdbPcdiInUa import SdPcdbPcdiInUa
 
 
-class AllCMInDa(AllCMInUa):
+class SdPcdbPcdiInDa(SdPcdbPcdiInUa):
     def __init__(self, sim, simthread):
-        AllCMInUa.__init__(self, sim, simthread)
+        SdPcdbPcdiInUa.__init__(self, sim, simthread)
 
     def _initModel(self):
-        self.name = "AllCMInDa"
+        self.name = "SdPcdbPcdiInDa"
+        self.adhFactor = 0.25
         self.cellTypes = self._createCellTypes()
         self.energyMatrix = self._createEnergyMatrix()
         self._run() # Must be the last statement.
