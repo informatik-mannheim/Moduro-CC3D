@@ -20,6 +20,7 @@ __status__ = "Production"
 
 from XMLUtils import ElementCC3D
 from math import pi as PI
+import time
 from Core.ParameterStore import ParameterStore
 
 
@@ -36,7 +37,7 @@ class ExecConfig(object):
                  neighborOrder=1,
                  boundary_x="Periodic",
                  debugOutputFrequency=50000,
-                 SEED=100):
+                 SEED=-1):
         """
 
         :param xLength:
@@ -74,7 +75,7 @@ class ExecConfig(object):
         self.boundary_x = boundary_x
         self.debugOutputFrequency = debugOutputFrequency
         # TODO: change the seed value of every random number used in Moduro project
-        self.SEED = SEED
+        self.SEED = int(round(time.time() * 1000)) if SEED < 0 else SEED
         self.__cc3d = None
         self.parameterStore = ParameterStore()
         self.parameterStore.addObj(self)

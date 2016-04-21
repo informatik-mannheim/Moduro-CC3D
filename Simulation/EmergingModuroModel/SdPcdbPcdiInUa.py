@@ -59,7 +59,7 @@ class SdPcdbPcdiInUa(ModelConfig):
                                   volFit=1, surFit=0.5)
 
         basal = CellType(name="Basal", minDiameter=9, maxDiameter=10,
-                                  growthVolumePerDay=9.0477, # 0.017 * self.calcVolume(10),
+                                  growthVolumePerDay=0.017279834 * self.calcVolume(10), # 9.0477
                                   nutrientRequirement=1.0, apoptosisTimeInDays=80,
                                   volFit=0.9, surFit=0.5)
 
@@ -97,5 +97,5 @@ class SdPcdbPcdiInUa(ModelConfig):
         return steppableList
 
     def _createExecConfig(self):
-        return ExecConfig(MCSperDay=500, SEED=10,
+        return ExecConfig(MCSperDay=500, SEED=-1,
                           xLength=500, yLength=150, zLength=0, voxelDensity=.8)
