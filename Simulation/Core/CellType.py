@@ -51,8 +51,8 @@ class CellType(object):
         self.frozen = frozen
         self.minDiameter = minDiameter
         self.maxDiameter = maxDiameter
-        self.minVol = 4.0 / 3 * PI * ((minDiameter / 2) ** 3)
-        self.maxVol = 4.0 / 3 * PI * ((maxDiameter / 2) ** 3)
+        self.minVol = 4.0 / 3.0 * PI * (self.minDiameter / 2.0) * (self.minDiameter / 2.0) * (self.minDiameter / 2.0)
+        self.maxVol = 4.0 / 3.0 * PI * (self.maxDiameter / 2.0) * (self.maxDiameter / 2.0) * (self.maxDiameter / 2.0)
         self.growthVolumePerDay = growthVolumePerDay
         self.nutrientRequirement = nutrientRequirement
         self.apoptosisTimeInDays = apoptosisTimeInDays

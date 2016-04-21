@@ -59,7 +59,7 @@ class SdPcdbPcdiInUa(ModelConfig):
                                   volFit=1, surFit=0.5)
 
         basal = CellType(name="Basal", minDiameter=9, maxDiameter=10,
-                                  growthVolumePerDay=0.015 * self.calcVolume(10),
+                                  growthVolumePerDay=9.0477, # 0.017 * self.calcVolume(10),
                                   nutrientRequirement=1.0, apoptosisTimeInDays=80,
                                   volFit=0.9, surFit=0.5)
 

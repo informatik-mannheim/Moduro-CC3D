@@ -176,7 +176,7 @@ class ExecConfig(object):
         :param volume: physical volume in mu m^3.
         :return: Voxel volume.
         """
-        r = (3 * volume / (4 * PI)) ** (1.0 / 3)  # Radius of a sphere with known volume.
+        r = (3 * volume / (4.0 * PI)) ** (1.0 / 3.0)  # Radius of a sphere with known volume.
         rDimension = self.calcPixelFromMuMeter(r)  # Convert it to a pixel unit.
         if self.dimensions == 2:
             # a = self.__truncateToVoxel(PI * (rDimension ** 2))
@@ -184,7 +184,7 @@ class ExecConfig(object):
             #    print "volume=", volume, ", rDim=", rDimension, ", r=", r, ", A=", a
             return self.__truncate(PI * (rDimension ** 2))  # Area of a circle.
         else:
-            return self.__truncate(4.0 / 3 * PI * (rDimension ** 3))  # Volume of a sphere.
+            return self.__truncate(4.0 / 3.0 * PI * (rDimension ** 3))  # Volume of a sphere.
 
     def calcVoxelSurfaceFromVoxelVolume(self, voxelVolume):
         """
@@ -197,7 +197,7 @@ class ExecConfig(object):
             # some fractal factor!
             return self.__truncate(1.5 * 2 * (PI * voxelVolume) ** (1.0 / 2.0))  # Circumference.
         else:
-            return self.__truncate(2.0 * 4 * PI * (3 * voxelVolume / (4 * PI)) ** (2.0 / 3))  # Surface.
+            return self.__truncate(2.0 * 4 * PI * (3 * voxelVolume / (4 * PI)) ** (2.0 / 3.0))  # Surface.
 
     def __truncate(self, value):
         res = int(value + 0.00001)
