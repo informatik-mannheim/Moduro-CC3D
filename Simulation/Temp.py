@@ -11,7 +11,7 @@ sys.path.append(environ["PYTHON_MODULE_PATH"])
 sim, simthread = CompuCellSetup.getCoreSimulationObjects()
 
 # Now load the model to simulate!
-from EmergingModuroModel.SdPcdbPcdiInDa import AllCMInDa
+from EmergingModuroModel.Sd.SdPcdbPcdiInDa import AllCMInDa
 model = AllCMInDa(sim, simthread)
 #model = VerifyGrowthT500D1(sim, simthread)
 #from Test.Scalability.VerifyGrowthT1000D1 import VerifyGrowthT1000D1
