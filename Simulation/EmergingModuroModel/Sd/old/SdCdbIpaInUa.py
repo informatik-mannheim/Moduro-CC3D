@@ -31,6 +31,7 @@ from Steppable.UrinationSteppable import UrinationSteppable
 from Logger.VolumeFitnessSteppable import VolumeFitnessSteppable
 from Logger.ArrangementFitnessSteppable import ArrangementFitnessSteppable
 from Logger.DummyFitnessSteppable import DummyFitnessSteppable
+from Steppable.ColonySteppable import ColonySteppable
 
 class SdCdbIpaInUa(ModelConfig):
     def __init__(self, sim, simthread):
@@ -84,6 +85,7 @@ class SdCdbIpaInUa(ModelConfig):
 
     def _getSteppables(self):
         steppableList = []
+        steppableList.append(ColonySteppable(self.sim, self))
         steppableList.append(InitializerSteppable(self.sim, self))
         steppableList.append(GrowthSteppable(self.sim, self))
         steppableList.append(GrowthMitosisSteppable(self.sim, self))

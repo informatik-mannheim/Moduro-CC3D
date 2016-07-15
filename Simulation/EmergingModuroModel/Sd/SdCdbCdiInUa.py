@@ -18,9 +18,10 @@ __license__ = "Apache 2"
 __email__ = "m.gumbel@hs-mannheim.de"
 __status__ = "Production"
 
-from Core.CellType import CellType
+from Core.CellType import *
 from Core.ExecConfig import ExecConfig
 from Core.ModelConfig import ModelConfig
+from Steppable.ColonySteppable import ColonySteppable
 from Steppable.InitializerSteppable import InitializerSteppable
 from Steppable.DeathSteppable import DeathSteppable
 from Steppable.GrowthMitosisSteppable import GrowthMitosisSteppable
@@ -45,42 +46,31 @@ class SdCdbCdiInUa(ModelConfig):
 
     def _createCellTypes(self):
         cellTypes = []
-        medium = CellType(name="Medium", frozen=True, minDiameter=0, maxDiameter=0,
-                                  growthVolumePerDay=0, nutrientRequirement=0, apoptosisTimeInDays=0,
-                                  volFit=1.0, surFit=1.0)
 
-        basalmembrane = CellType(name="BasalMembrane", frozen=True, minDiameter=0, maxDiameter=0,
-                                  growthVolumePerDay=0, nutrientRequirement=0, apoptosisTimeInDays=180000,
-                                  volFit=1.0, surFit=1.0)
+        stem = Stemcell
+        stem.setGrowthVolumePerDayRelVolume(0.05)
 
-        stem = CellType(name="Stem", minDiameter=8, maxDiameter=10,
-                                  growthVolumePerDay=.010 * self.calcVolume(10),
-                                  nutrientRequirement=1.0, apoptosisTimeInDays=180000,
-                                  volFit=1, surFit=0.5)
+        basal = Basalcell
+        basal.setGrowthVolumePerDayRelVolume(0.05)
+        basal.apoptosisTimeInDays = 80.0
 
-        basal = CellType(name="Basal", minDiameter=9, maxDiameter=10,
-                                  growthVolumePerDay=0.015 * self.calcVolume(10),
-                                  nutrientRequirement=1.0, apoptosisTimeInDays=80,
-                                  volFit=0.9, surFit=0.5)
+        intermediate = Intermediatecell
+        intermediate.setGrowthVolumePerDayRelVolume(0.05)
+        intermediate.apoptosisTimeInDays = 20.0
 
-        intermediate = CellType(name="Intermediate", minDiameter=12, maxDiameter=15,
-                                  growthVolumePerDay=0.001 * self.calcVolume(15),
-                                  nutrientRequirement=1.0, apoptosisTimeInDays=20,
-                                  volFit=0.9, surFit=0.1)
-
-        umbrella = CellType(name="Umbrella", minDiameter=15, maxDiameter=19,
-                                  growthVolumePerDay=0.001 * self.calcVolume(19),
-                                  nutrientRequirement=1.0, apoptosisTimeInDays=10,
-                                  volFit=0.9, surFit=0.1)
+        umbrella = Umbrellacell
+        umbrella.setGrowthVolumePerDayRelVolume(0.05)
+        umbrella.apoptosisTimeInDays = 10.0
 
         stem.setDescendants(1.0, [stem.id, basal.id])
 
-        cellTypes.extend((medium, basalmembrane, stem, basal, intermediate, umbrella))
+        cellTypes.extend((Medium, Basalmembrane, stem, basal, intermediate, umbrella))
 
         return cellTypes
 
     def _getSteppables(self):
         steppableList = []
+        steppableList.append(ColonySteppable(self.sim, self))
         steppableList.append(InitializerSteppable(self.sim, self))
         steppableList.append(GrowthSteppable(self.sim, self))
         steppableList.append(GrowthMitosisSteppable(self.sim, self))
