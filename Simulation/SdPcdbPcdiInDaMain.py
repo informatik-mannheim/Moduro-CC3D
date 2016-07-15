@@ -12,7 +12,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-__author__ = "Angelo Torelli"
+__author__ = "Markus Gumbel"
 __copyright__ = "The authors"
 __license__ = "Apache 2"
 __email__ = "m.gumbel@hs-mannheim.de"
@@ -31,6 +31,6 @@ sys.path.append(environ["PYTHON_MODULE_PATH"])
 sim, simthread = CompuCellSetup.getCoreSimulationObjects()
 
 # Now load the model to simulate!
-from ModuroModel.SdCdbCdiNuUa import SdCdbCdiNuUa
-model = SdCdbCdiNuUa(sim, simthread, Settings.DirectoryPath.getSrcPath())
+from EmergingModuroModel.SdPcdbPcdiInDa import SdPcdbPcdiInDa
+model = SdPcdbPcdiInDa(sim, simthread)
 

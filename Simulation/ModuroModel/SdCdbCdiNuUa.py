@@ -33,12 +33,12 @@ from Logger.ArrangementFitnessSteppable import ArrangementFitnessSteppable
 from Logger.DummyFitnessSteppable import DummyFitnessSteppable
 
 
-class CMNuUa(ModelConfig):
+class SdCdbCdiNuUa(ModelConfig):
     def __init__(self, sim, simthread):
         ModelConfig.__init__(self, sim, simthread)
 
     def _initModel(self):
-        self.name = "CMNuUa"
+        self.name = "SdCdbCdiNuUa"
         self.cellTypes = self._createCellTypes()
         self.energyMatrix = self._createEnergyMatrix()
         self._run() # Must be the last statement.

@@ -18,20 +18,21 @@ __license__ = "Apache 2"
 __email__ = "m.gumbel@hs-mannheim.de"
 __status__ = "Production"
 
-# Example for Simulation.
+import random
+from Steppable.ModuroSteppable import ModuroSteppable
 
-# Important to have it here. Otherwise error. CC3D uses a special module loader
-# that cannot directly instantiate classes. (Wish I knew more on Python)
-import sys
-from os import environ
+class MutationSteppable(ModuroSteppable):
+    def __init__(self, _simulator,  model, prob=0.01, _frequency=1):
+        ModuroSteppable.__init__(self, _simulator, model, _frequency)
+        self.mutationMCS = self.execConfig.calcMCSfromDays(1) # every six hours.
+        self.prob = prob
 
-import CompuCellSetup
+    def moduroStep(self, mcs):
+        if mcs > 2 * self.mutationMCS and mcs % self.mutationMCS == 0:
+            self._removeCells()
 
-sys.path.append(environ["PYTHON_MODULE_PATH"])
-sim, simthread = CompuCellSetup.getCoreSimulationObjects()
-
-# Now load the model to simulate!
-from ModuroModel.CMInDa import CMInDa
-
-model = CMInDa(sim, simthread)
-
+    def _removeCells(self):
+        for cell in self.cellList:
+            if random.random() < self.prob:
+                cellDict = self.getDictionaryAttribute(cell)
+                cellDict['necrosis'] = True

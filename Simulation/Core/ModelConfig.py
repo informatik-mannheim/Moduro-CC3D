@@ -44,7 +44,7 @@ class ModelConfig(object):
         '''
         self.sim = sim
         self.simthread = simthread
-        self.adhFactor = 0.5  # Average adhesion strength compared to vol./surf. fits.
+        self.adhFactor = 0.25  # Average adhesion strength compared to vol./surf. fits.
         self.adhEnergy = 2.0  # Some reference value.
         self.cellTypes = []
         self.energyMatrix = []
@@ -110,10 +110,8 @@ class ModelConfig(object):
     def _createExecConfig(self):
         return ExecConfig(self)
 
-
     def calcVolume(self, diameter):
         return 4.0 / 3.0 * PI * (diameter / 2.0) ** 3
-
 
     def initCellAttributes(self, cell, cellDict):
         cellType = self.cellTypes[cell.type]
@@ -122,7 +120,7 @@ class ModelConfig(object):
         cellDict['necrosis'] = False
         cellDict['DNA'] = 100
         cellDict['TurnOver'] = False
-        cellDict['colony'] = -1 # Default colony id.
+        cellDict['colony'] = -1  # Default colony id.
         self.setCellAttributes(cellDict, cell, 0)
 
     def setCellAttributes(self, cellDict, cell, lifeTimeParent):
@@ -141,17 +139,16 @@ class ModelConfig(object):
         cellDict['removed'] = False
         cellDict['inhibited'] = True
 
-
         cellDict['min_max_volume'] = [self.execConfig.calcVoxelVolumeFromVolume(cellType.minVol),
                                       self.execConfig.calcVoxelVolumeFromVolume(cellType.maxVol)]
         cellDict['normal_volume'] = random.uniform(cellDict['min_max_volume'][0],
                                                    cellDict['min_max_volume'][1])
 
-        cellDict['growth_factor'] = [] # really needed?
+        cellDict['growth_factor'] = []  # really needed?
         cellDict['life_time'] = lifeTimeParent  # How many MCS is this cell alive?
 
-        cell.targetVolume = cell.volume + 1 # At the beginning, the target is the actual size.
-        #cell.targetVolume = cellDict['normal_volume'] # At the beginning, the target is the actual size.
+        cell.targetVolume = cell.volume + 1  # At the beginning, the target is the actual size.
+        # cell.targetVolume = cellDict['normal_volume'] # At the beginning, the target is the actual size.
         cell.targetSurface = self.execConfig.calcVoxelSurfaceFromVoxelVolume(cell.targetVolume)
         cell.lambdaVolume = self.execConfig.calcVolLambdaFromVolFit(cellType.volFit)
         cell.lambdaSurface = self.execConfig.calcSurLambdaFromSurFit(cellType.surFit)

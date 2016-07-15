@@ -18,7 +18,7 @@ __license__ = "Apache 2"
 __email__ = "m.gumbel@hs-mannheim.de"
 __status__ = "Production"
 
-from Core.CellType import CellType
+from Core.CellType import *
 from Core.ExecConfig import ExecConfig
 from Core.ModelConfig import ModelConfig
 from Steppable.ColonySteppable import ColonySteppable
@@ -33,50 +33,37 @@ from Logger.ArrangementFitnessSteppable import ArrangementFitnessSteppable
 from Logger.DummyFitnessSteppable import DummyFitnessSteppable
 
 
-class CMInUa(ModelConfig):
+class SdCdbCdiInUa(ModelConfig):
     def __init__(self, sim, simthread):
         ModelConfig.__init__(self, sim, simthread)
 
     def _initModel(self):
-        self.name = "CMInUa"
+        self.name = "SdCdbCdiInUa"
         self.cellTypes = self._createCellTypes()
         self.energyMatrix = self._createEnergyMatrix()
-        self._run() # Must be the last statement.
-
+        self._run()  # Must be the last statement.
 
     def _createCellTypes(self):
         cellTypes = []
-        medium = CellType(name="Medium", frozen=True, minDiameter=0, maxDiameter=0,
-                                  growthVolumePerDay=0, nutrientRequirement=0, apoptosisTimeInDays=0,
-                                  volFit=1.0, surFit=1.0)
 
-        basalmembrane = CellType(name="BasalMembrane", frozen=True, minDiameter=0, maxDiameter=0,
-                                  growthVolumePerDay=0, nutrientRequirement=0, apoptosisTimeInDays=180000,
-                                  volFit=1.0, surFit=1.0)
+        stem = Stemcell
+        stem.setGrowthVolumePerDayRelVolume(0.05)
 
-        stem = CellType(name="Stem", minDiameter=8, maxDiameter=10,
-                                  growthVolumePerDay=10 * self.calcVolume(10),
-                                  nutrientRequirement=1.0, apoptosisTimeInDays=180000,
-                                  volFit=0.9, surFit=0.5)
+        basal = Basalcell
+        basal.setGrowthVolumePerDayRelVolume(0.05)
+        basal.apoptosisTimeInDays = 80.0
 
-        basal = CellType(name="Basal", minDiameter=10, maxDiameter=12,
-                                  growthVolumePerDay=10 * self.calcVolume(12),
-                                  nutrientRequirement=1.0, apoptosisTimeInDays=10,
-                                  volFit=0.9, surFit=0.5)
+        intermediate = Intermediatecell
+        intermediate.setGrowthVolumePerDayRelVolume(0.05)
+        intermediate.apoptosisTimeInDays = 20.0
 
-        intermediate = CellType(name="Intermediate", minDiameter=12, maxDiameter=15,
-                                  growthVolumePerDay=20 * self.calcVolume(15),
-                                  nutrientRequirement=1.0, apoptosisTimeInDays=2,
-                                  volFit=0.9, surFit=0.1)
-
-        umbrella = CellType(name="Umbrella", minDiameter=15, maxDiameter=19,
-                                  growthVolumePerDay=10 * self.calcVolume(19),
-                                  nutrientRequirement=1.0, apoptosisTimeInDays=2,
-                                  volFit=0.9, surFit=0.1)
+        umbrella = Umbrellacell
+        umbrella.setGrowthVolumePerDayRelVolume(0.05)
+        umbrella.apoptosisTimeInDays = 10.0
 
         stem.setDescendants(1.0, [stem.id, basal.id])
 
-        cellTypes.extend((medium, basalmembrane, stem, basal, intermediate, umbrella))
+        cellTypes.extend((Medium, Basalmembrane, stem, basal, intermediate, umbrella))
 
         return cellTypes
 
@@ -89,7 +76,7 @@ class CMInUa(ModelConfig):
         steppableList.append(CMTransformationSteppable(self.sim, self))
         steppableList.append(UrinationSteppable(self.sim, self, prop=0.02))
         steppableList.append(DeathSteppable(self.sim, self))
-        #steppableList.append(OptimumSearchSteppable(self.sim, self))
+        # steppableList.append(OptimumSearchSteppable(self.sim, self))
         steppableList.append(VolumeFitnessSteppable(self.sim, self))
         steppableList.append(ArrangementFitnessSteppable(self.sim, self))
         steppableList.append(DummyFitnessSteppable(self.sim, self))
@@ -97,4 +84,5 @@ class CMInUa(ModelConfig):
         return steppableList
 
     def _createExecConfig(self):
-        return ExecConfig(xLength=500, yLength=200, zLength=0, voxelDensity=1)
+        return ExecConfig(xLength=800, yLength=150, zLength=0, voxelDensity=0.8,
+                          MCSperDay=500)

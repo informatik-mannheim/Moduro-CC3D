@@ -18,15 +18,15 @@ __license__ = "Apache 2"
 __email__ = "m.gumbel@hs-mannheim.de"
 __status__ = "Production"
 
-from ModuroModel.CMNuUa import CMNuUa
+from ModuroModel.SdCdbCdiNuUa import SdCdbCdiNuUa
 
 
-class CMNuDa(CMNuUa):
+class SdCdbCdiNuDa(SdCdbCdiNuUa):
     def __init__(self, sim, simthread):
-        CMNuUa.__init__(self, sim, simthread)
+        SdCdbCdiNuUa.__init__(self, sim, simthread)
 
     def _initModel(self):
-        self.name = "CMNuDa"
+        self.name = "SdCdbCdiNuDa"
         self.cellTypes = self._createCellTypes()
         self.energyMatrix = self._createEnergyMatrix()
         self._run()  # Must be the last statement.

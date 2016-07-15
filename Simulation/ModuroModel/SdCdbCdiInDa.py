@@ -12,21 +12,21 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-__author__ = "Angelo Torelli"
+__author__ = "Markus Gumbel, Angelo Torelli"
 __copyright__ = "The authors"
 __license__ = "Apache 2"
 __email__ = "m.gumbel@hs-mannheim.de"
 __status__ = "Production"
 
-from ModuroModel.PASCMInUa import PASCMInUa
+from ModuroModel.SdCdbCdiInUa import SdCdbCdiInUa
 
 
-class PASCMInDa(PASCMInUa):
+class SdCdbCdiInDa(SdCdbCdiInUa):
     def __init__(self, sim, simthread):
-        PASCMInUa.__init__(self, sim, simthread)
+        SdCdbCdiInUa.__init__(self, sim, simthread)
 
     def _initModel(self):
-        self.name = "PASCMInDa"
+        self.name = "SdCdbCdiInDa"
         self.cellTypes = self._createCellTypes()
         self.energyMatrix = self._createEnergyMatrix()
         self._run()  # Must be the last statement.

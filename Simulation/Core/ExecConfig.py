@@ -75,7 +75,7 @@ class ExecConfig(object):
         self.boundary_x = boundary_x
         self.debugOutputFrequency = debugOutputFrequency
         # TODO: change the seed value of every random number used in Moduro project
-        self.SEED = int(round(time.time() * 1000)) if SEED < 0 else SEED
+        self.SEED = (int(round(time.time() * 1000)) % 9999) if SEED < 0 else SEED
         self.__cc3d = None
         self.parameterStore = ParameterStore()
         self.parameterStore.addObj(self)

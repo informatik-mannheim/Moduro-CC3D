@@ -24,13 +24,12 @@ __status__ = "Production"
 # that cannot directly instantiate classes. (Wish I knew more on Python)
 import sys
 from os import environ
-
 import CompuCellSetup
 
 sys.path.append(environ["PYTHON_MODULE_PATH"])
 sim, simthread = CompuCellSetup.getCoreSimulationObjects()
 
 # Now load the model to simulate!
-from ModuroModel.SdCdbCdiNuUa import SdCdbCdiNuUa
-model = SdCdbCdiNuUa(sim, simthread, Settings.DirectoryPath.getSrcPath())
+from ModuroModel.SpaCdbCdiInDa import SpaCdbCdiInDa
+model = SpaCdbCdiInDa(sim, simthread)
 

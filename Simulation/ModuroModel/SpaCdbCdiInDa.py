@@ -18,15 +18,15 @@ __license__ = "Apache 2"
 __email__ = "m.gumbel@hs-mannheim.de"
 __status__ = "Production"
 
-from ModuroModel.PASCMNuUa import PASCMNuUa
+from ModuroModel.SpaCdbCdiInUa import SpaCdbCdiInUa
 
 
-class PASCMNuDa(PASCMNuUa):
+class SpaCdbCdiInDa(SpaCdbCdiInUa):
     def __init__(self, sim, simthread):
-        PASCMNuUa.__init__(self, sim, simthread)
+        SpaCdbCdiInUa.__init__(self, sim, simthread)
 
     def _initModel(self):
-        self.name = "PASCMNuDa"
+        self.name = "SpaCdbCdiInDa"
         self.cellTypes = self._createCellTypes()
         self.energyMatrix = self._createEnergyMatrix()
         self._run()  # Must be the last statement.

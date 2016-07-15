@@ -18,23 +18,27 @@ __license__ = "Apache 2"
 __email__ = "m.gumbel@hs-mannheim.de"
 __status__ = "Production"
 
-from Core.ExecConfig import ExecConfig
-from ModuroModel.SdCdbCdiInDa import SdCdbCdiInDa
-from Core.CellType import CellType
+from EmergingModuroModel.SdPcdbCdiInUa import SdPcdbCdiInUa
 
-class CMInDa3D(SdCdbCdiInDa):
 
+class SdPcdbCdiInDa(SdPcdbCdiInUa):
     def __init__(self, sim, simthread):
-        SdCdbCdiInDa.__init__(self, sim, simthread)
+        SdPcdbCdiInUa.__init__(self, sim, simthread)
 
     def _initModel(self):
-        self.name = "CMInDa3D"
-        self.adhFactor = 0.1
+        self.name = "SdPcdbCdiInDa"
+        self.adhFactor = 0.25
         self.cellTypes = self._createCellTypes()
         self.energyMatrix = self._createEnergyMatrix()
-        self._run()  # Must be the last statement.
+        self._run() # Must be the last statement.
 
-    def _createExecConfig(self):
-        return ExecConfig(xLength=100, yLength=120, zLength=50, voxelDensity=1,
-                          MCSperDay=500,
-                          fluctuationAmplitude=10.0)
+
+    def _createEnergyMatrix(self):
+        energyMatrix = [[0, 14, 14, 14, 14, 4],
+                        [0, -1, 1, 3, 12, 12],
+                        [0, 0, 6, 4, 8, 14],
+                        [0, 0, 0, 5, 8, 12],
+                        [0, 0, 0, 0, 6, 4],
+                        [0, 0, 0, 0, 0, 2]]
+
+        return energyMatrix

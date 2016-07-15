@@ -20,6 +20,7 @@ __status__ = "Production"
 
 import random
 from math import pi as PI
+import Math
 
 
 class CellType(object):
@@ -62,6 +63,14 @@ class CellType(object):
         self.descendants = []
         CellType.__typeCount += 1
 
+    def setGrowthVolumePerDayRelVolume(self, multiple):
+        '''
+        Set the growth volume per day relative to the maximum cell volume.
+        :param multiple: Factor for the daily growth.
+        :return:
+        '''
+        self.growthVolumePerDay = multiple * Math.calcSphereVolumeFromDiameter(self.maxDiameter)
+
     def getAvgVolume(self):
         return (self.minVol + self.maxVol) / 2.0
 
@@ -80,7 +89,38 @@ class CellType(object):
             return []
 
     def setDescendants(self, probability, descendants):
-        #TODO: check if probability is higher than 1.0 and normalize
+        # TODO: check if probability is higher than 1.0 and normalize
         cellLineageOfCellType = [probability, descendants]
         self.descendants.append(cellLineageOfCellType)
         self.divides = True
+
+
+# Some frequently reused objects:
+
+Medium = CellType(name="Medium", frozen=True, minDiameter=0, maxDiameter=0,
+                  growthVolumePerDay=0, nutrientRequirement=0, apoptosisTimeInDays=0,
+                  volFit=1.0, surFit=1.0)
+
+Basalmembrane = CellType(name="BasalMembrane", frozen=True, minDiameter=0, maxDiameter=0,
+                         growthVolumePerDay=0, nutrientRequirement=0, apoptosisTimeInDays=180000,
+                         volFit=1.0, surFit=1.0)
+
+Stemcell = CellType(name="Stem", minDiameter=8, maxDiameter=10,
+                    growthVolumePerDay=1 * Math.calcSphereVolumeFromDiameter(10),
+                    nutrientRequirement=1.0, apoptosisTimeInDays=180000,
+                    volFit=0.9, surFit=0.5)
+
+Basalcell = CellType(name="Basal", minDiameter=9, maxDiameter=10,
+                     growthVolumePerDay=1 * Math.calcSphereVolumeFromDiameter(10),
+                     nutrientRequirement=1.0, apoptosisTimeInDays=80,
+                     volFit=0.9, surFit=0.5)
+
+Intermediatecell = CellType(name="Intermediate", minDiameter=12, maxDiameter=15,
+                            growthVolumePerDay=1 * Math.calcSphereVolumeFromDiameter(15),
+                            nutrientRequirement=1.0, apoptosisTimeInDays=2,
+                            volFit=0.9, surFit=0.1)
+
+Umbrellacell = CellType(name="Umbrella", minDiameter=15, maxDiameter=19,
+                        growthVolumePerDay=1 * Math.calcSphereVolumeFromDiameter(19),
+                        nutrientRequirement=1.0, apoptosisTimeInDays=2,
+                        volFit=0.9, surFit=0.1)
