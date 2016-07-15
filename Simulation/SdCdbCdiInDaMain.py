@@ -12,31 +12,26 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-__author__ = "Markus Gumbel, Angelo Torelli"
+__author__ = "Markus Gumbel"
 __copyright__ = "The authors"
 __license__ = "Apache 2"
 __email__ = "m.gumbel@hs-mannheim.de"
 __status__ = "Production"
 
-from ModuroModel.CMInUa import CMInUa
+# Example for Simulation.
 
+# Important to have it here. Otherwise error. CC3D uses a special module loader
+# that cannot directly instantiate classes. (Wish I knew more on Python)
+import sys
+from os import environ
 
-class CMInDa(CMInUa):
-    def __init__(self, sim, simthread):
-        CMInUa.__init__(self, sim, simthread)
+import CompuCellSetup
 
-    def _initModel(self):
-        self.name = "CMInDa"
-        self.cellTypes = self._createCellTypes()
-        self.energyMatrix = self._createEnergyMatrix()
-        self._run()  # Must be the last statement.
+sys.path.append(environ["PYTHON_MODULE_PATH"])
+sim, simthread = CompuCellSetup.getCoreSimulationObjects()
 
-    def _createEnergyMatrix(self):
-        energyMatrix = [[0, 14, 14, 14, 14, 4],
-                        [0, -1, 1, 3, 12, 12],
-                        [0, 0, 6, 4, 8, 14],
-                        [0, 0, 0, 5, 8, 12],
-                        [0, 0, 0, 0, 6, 4],
-                        [0, 0, 0, 0, 0, 2]]
+# Now load the model to simulate!
+from ModuroModel.SdCdbCdiInDa import SdCdbCdiInDa
 
-        return energyMatrix
+model = SdCdbCdiInDa(sim, simthread)
+

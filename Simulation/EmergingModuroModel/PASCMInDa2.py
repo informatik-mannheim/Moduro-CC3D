@@ -19,12 +19,12 @@ __email__ = "m.gumbel@hs-mannheim.de"
 __status__ = "Production"
 
 from Core.ExecConfig import ExecConfig
-from ModuroModel.PASCMInDa import PASCMInDa
+from ModuroModel.SpaCdbCdiInDa import SpaCdbCdiInDa
 
-class PASCMInDa2(PASCMInDa):
+class PASCMInDa2(SpaCdbCdiInDa):
 
     def __init__(self, sim, simthread):
-        PASCMInDa.__init__(self, sim, simthread)
+        SpaCdbCdiInDa.__init__(self, sim, simthread)
 
 
     def _createExecConfig(self):

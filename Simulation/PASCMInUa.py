@@ -30,6 +30,6 @@ sys.path.append(environ["PYTHON_MODULE_PATH"])
 sim, simthread = CompuCellSetup.getCoreSimulationObjects()
 
 # Now load the model to simulate!
-from ModuroModel.PASCMInUa import PASCMInUa
-model = PASCMInUa(sim, simthread)
+from ModuroModel.SpaCdbCdiInUa import SpaCdbCdiInUa
+model = SpaCdbCdiInUa(sim, simthread)
 

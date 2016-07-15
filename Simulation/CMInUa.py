@@ -31,6 +31,6 @@ sys.path.append(environ["PYTHON_MODULE_PATH"])
 sim, simthread = CompuCellSetup.getCoreSimulationObjects()
 
 # Now load the model to simulate!
-from ModuroModel.CMInUa import CMInUa
-model = CMInUa(sim, simthread,Settings.DirectoryPath.getSrcPath())
+from ModuroModel.SdCdbCdiInUa import SdCdbCdiInUa
+model = SdCdbCdiInUa(sim, simthread, Settings.DirectoryPath.getSrcPath())
 

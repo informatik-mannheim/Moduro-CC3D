@@ -19,15 +19,15 @@ __email__ = "m.gumbel@hs-mannheim.de"
 __status__ = "Production"
 
 from Core.CellType import CellType
-from ModuroModel.CMNuUa import CMNuUa
+from ModuroModel.SdCdbCdiNuUa import SdCdbCdiNuUa
 
 
-class PASCMNuUa(CMNuUa):
+class SpaCdbCdiNuUa(SdCdbCdiNuUa):
     def __init__(self, sim, simthread):
-        CMNuUa.__init__(self, sim, simthread)
+        SdCdbCdiNuUa.__init__(self, sim, simthread)
 
     def _initModel(self):
-        self.name = "PASCMNuUa"
+        self.name = "SpaCdbCdiNuUa"
         self.cellTypes = self._createCellTypes()
         self.energyMatrix = self._createEnergyMatrix()
         self._run()  # Must be the last statement.

@@ -26,7 +26,7 @@ class UrinationSteppable(ModuroSteppable):
         ModuroSteppable.__init__(self, _simulator, model, _frequency)
         self.urinationMCS = self.execConfig.calcMCSfromDays(0.25) # every six hours.
         self.deathIntervalMCS = self.execConfig.calcMCSfromDays(1) # one day.
-        self.prop = prop
+        self.prob = prop
 
     def moduroStep(self, mcs):
         if mcs > 2 * self.urinationMCS and mcs % self.urinationMCS == 0:
@@ -37,7 +37,7 @@ class UrinationSteppable(ModuroSteppable):
         for cell in self.cellList:
             totalArea = 0
             cell.lambdaVecX = 0
-            if random.random() < self.prop:
+            if random.random() < self.prob:
                 for neighbor, commonSurfaceArea in self.getCellNeighborDataList(cell):
                     if not neighbor:
                         totalArea += commonSurfaceArea

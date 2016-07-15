@@ -31,6 +31,6 @@ sys.path.append(environ["PYTHON_MODULE_PATH"])
 sim, simthread = CompuCellSetup.getCoreSimulationObjects()
 
 # Now load the model to simulate!
-from ModuroModel.CMNuDa import CMNuDa
-model = CMNuDa(sim, simthread)
+from ModuroModel.SdCdbCdiNuDa import SdCdbCdiNuDa
+model = SdCdbCdiNuDa(sim, simthread)
 

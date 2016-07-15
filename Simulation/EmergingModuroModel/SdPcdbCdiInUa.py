@@ -27,17 +27,18 @@ from Steppable.GrowthMitosisSteppable import GrowthMitosisSteppable
 from Steppable.GrowthSteppable import GrowthSteppable
 from Steppable.CMTransformationSteppable import CMTransformationSteppable
 from Steppable.UrinationSteppable import UrinationSteppable
+from Steppable.MutationSteppable import MutationSteppable
 from Logger.VolumeFitnessSteppable import VolumeFitnessSteppable
 from Logger.ArrangementFitnessSteppable import ArrangementFitnessSteppable
 from Logger.DummyFitnessSteppable import DummyFitnessSteppable
 
 
-class SdPcdbPcdiInUa(ModelConfig):
+class SdPcdbCdiInUa(ModelConfig):
     def __init__(self, sim, simthread):
         ModelConfig.__init__(self, sim, simthread)
 
     def _initModel(self):
-        self.name = "SdPcdbPcdiInUa"
+        self.name = "SdPcdbCdiInUa"
         self.cellTypes = self._createCellTypes()
         self.energyMatrix = self._createEnergyMatrix()
         self._run()  # Must be the last statement.
@@ -62,7 +63,6 @@ class SdPcdbPcdiInUa(ModelConfig):
 
         stem.setDescendants(1.0, [stem.id, basal.id])
         basal.setDescendants(1.0, [basal.id, basal.id])
-        intermediate.setDescendants(1.0, [intermediate.id, intermediate.id])
 
         cellTypes.extend((Medium, Basalmembrane, stem, basal, intermediate, umbrella))
 
@@ -75,6 +75,7 @@ class SdPcdbPcdiInUa(ModelConfig):
         steppableList.append(GrowthMitosisSteppable(self.sim, self))
         steppableList.append(CMTransformationSteppable(self.sim, self))
         steppableList.append(UrinationSteppable(self.sim, self, prop=0.02))
+        steppableList.append(MutationSteppable(self.sim, self, prob=0.001))
         steppableList.append(DeathSteppable(self.sim, self))
         # steppableList.append(OptimumSearchSteppable(self.sim, self))
         steppableList.append(VolumeFitnessSteppable(self.sim, self))

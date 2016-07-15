@@ -19,12 +19,12 @@ __email__ = "m.gumbel@hs-mannheim.de"
 __status__ = "Production"
 
 from Core.ExecConfig import ExecConfig
-from ModuroModel.CMInUa import CMInUa
+from ModuroModel.SdCdbCdiInUa import SdCdbCdiInUa
 
-class CMInUa2(CMInUa):
+class CMInUa2(SdCdbCdiInUa):
 
     def __init__(self, sim, simthread):
-        CMInUa.__init__(self, sim, simthread)
+        SdCdbCdiInUa.__init__(self, sim, simthread)
 
     def _createExecConfig(self):
         return ExecConfig(xLength=300, yLength=100, zLength=0, voxelDensity=0.8,
