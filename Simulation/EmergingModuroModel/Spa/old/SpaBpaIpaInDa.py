@@ -12,21 +12,21 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-__author__ = "Markus Gumbel, Angelo Torelli"
+__author__ = "Julian Debatin"
 __copyright__ = "The authors"
 __license__ = "Apache 2"
-__email__ = "m.gumbel@hs-mannheim.de"
+__email__ = "juliandebatin@gmail.com"
 __status__ = "Production"
 
-from EmergingModuroModel.SdPcdbPcdiInUa import SdPcdbPcdiInUa
+from EmergingModuroModel.Spa.old.SpaBpaIpaInUa import SpaBpaIpaInUa
 
 
-class SdPcdbPcdiInDa(SdPcdbPcdiInUa):
+class SpaBpaIpaInDa(SpaBpaIpaInUa):
     def __init__(self, sim, simthread):
-        SdPcdbPcdiInUa.__init__(self, sim, simthread)
+        SpaBpaIpaInUa.__init__(self, sim, simthread)
 
     def _initModel(self):
-        self.name = "SdPcdbPcdiInDa"
+        self.name = "SpaBpaIpaInDa"
         self.adhFactor = 0.25
         self.cellTypes = self._createCellTypes()
         self.energyMatrix = self._createEnergyMatrix()
