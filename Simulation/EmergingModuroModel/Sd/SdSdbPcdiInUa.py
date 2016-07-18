@@ -18,6 +18,7 @@ __license__ = "Apache 2"
 __email__ = "juliandebatin@gmail.com"
 __status__ = "Production"
 
+
 from Core.CellType import *
 from Core.ExecConfig import ExecConfig
 from Core.ModelConfig import ModelConfig
@@ -31,18 +32,18 @@ from Logger.VolumeFitnessSteppable import VolumeFitnessSteppable
 from Logger.ArrangementFitnessSteppable import ArrangementFitnessSteppable
 from Logger.DummyFitnessSteppable import DummyFitnessSteppable
 from Steppable.ColonySteppable import ColonySteppable
+from Steppable.IntermediateTransformationSteppable import IntermediateTransformationSteppable
 
 
-class SpaCdbCdiInUa(ModelConfig):
+class SdSdbPcdiInUa(ModelConfig):
     def __init__(self, sim, simthread):
         ModelConfig.__init__(self, sim, simthread)
 
-    def _initModel(self):
-        self.name = "SpaCdbCdiInUa"
-        self.cellTypes = self._createCellTypes()
+    def _initMOdel(self):
+        self.name = "SdSdbPcdiInUa"
+        self.CellType = self._createCellTypes()
         self.energyMatrix = self._createEnergyMatrix()
         self._run() # Must be the last statement.
-
 
     def _createCellTypes(self):
         cellTypes = []
@@ -61,9 +62,10 @@ class SpaCdbCdiInUa(ModelConfig):
         umbrella.setGrowthVolumePerDayRelVolume(0.05)
         umbrella.apoptosisTimeInDays = 10.0
 
-        stem.setDescendants(0.90, [stem.id, basal.id])
-        stem.setDescendants(0.05, [stem.id, stem.id])
-        stem.setDescendants(0.05, [basal.id, basal.id])
+        stem.setDescendants(1.0, [stem.id, basal.id])
+        basal.setDescendants(1.0, [basal.id, intermediate.id])
+        intermediate.setDescendants(1.0, [intermediate.id, intermediate.id])
+
 
         cellTypes.extend((Medium, Basalmembrane, stem, basal, intermediate, umbrella))
 
@@ -75,10 +77,11 @@ class SpaCdbCdiInUa(ModelConfig):
         steppableList.append(InitializerSteppable(self.sim, self))
         steppableList.append(GrowthSteppable(self.sim, self))
         steppableList.append(GrowthMitosisSteppable(self.sim, self))
-        steppableList.append(CMTransformationSteppable(self.sim, self))
+        steppableList.append(IntermediateTransformationSteppable(self.sim, self))
+        #steppableList.append(CMTransformationSteppable(self.sim, self, onlyIntermediate=1))
         steppableList.append(UrinationSteppable(self.sim, self, prop=0.02))
         steppableList.append(DeathSteppable(self.sim, self))
-        #steppableList.append(OptimumSearchSteppable(self.sim, self))
+        # steppableList.append(OptimumSearchSteppable(self.sim, self))
         steppableList.append(VolumeFitnessSteppable(self.sim, self))
         steppableList.append(ArrangementFitnessSteppable(self.sim, self))
         steppableList.append(DummyFitnessSteppable(self.sim, self))

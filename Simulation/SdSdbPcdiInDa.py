@@ -12,10 +12,10 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-__author__ = "Julian Debatin"
+__author__ = "Julain Debatin"
 __copyright__ = "The authors"
 __license__ = "Apache 2"
-__email__ = "juliandebatin@gmail.com"
+__email__ = "m.gumbel@hs-mannheim.de"
 __status__ = "Production"
 
 # Example for Simulation.
@@ -31,6 +31,6 @@ sys.path.append(environ["PYTHON_MODULE_PATH"])
 sim, simthread = CompuCellSetup.getCoreSimulationObjects()
 
 # Now load the model to simulate!
-from EmergingModuroModel.Sd.old.SdBpaIpaInDa import SdBpaIpaInDa
-model = SdBpaIpaInDa(sim, simthread)
+from EmergingModuroModel.Sd.SdSdbPcdiInDa import SdSdbPcdiInDa
+model = SdSdbPcdiInDa(sim, simthread)
 

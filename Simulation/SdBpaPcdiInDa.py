@@ -18,27 +18,19 @@ __license__ = "Apache 2"
 __email__ = "juliandebatin@gmail.com"
 __status__ = "Production"
 
-from EmergingModuroModel.Sd.SdCdbCdiInUa import SdCdbCdiInUa
+# Example for Simulation.
 
+# Important to have it here. Otherwise error. CC3D uses a special module loader
+# that cannot directly instantiate classes. (Wish I knew more on Python)
+import sys
+from os import environ
 
-class SdCdbCdiInDa(SdCdbCdiInUa):
-    def __init__(self, sim, simthread):
-        SdCdbCdiInUa.__init__(self, sim, simthread)
+import CompuCellSetup
 
-    def _initModel(self):
-        self.name = "SdCdbCdiInDa"
-        self.adhFactor = 0.25
-        self.cellTypes = self._createCellTypes()
-        self.energyMatrix = self._createEnergyMatrix()
-        self._run() # Must be the last statement.
+sys.path.append(environ["PYTHON_MODULE_PATH"])
+sim, simthread = CompuCellSetup.getCoreSimulationObjects()
 
+# Now load the model to simulate!
+from EmergingModuroModel.Sd.SdBpaPcdiInDa import SdBpaPcdiInDa
+model = SdBpaPcdiInDa(sim, simthread)
 
-    def _createEnergyMatrix(self):
-        energyMatrix = [[0, 14, 14, 14, 14, 4],
-                        [0, -1, 1, 3, 12, 12],
-                        [0, 0, 6, 4, 8, 14],
-                        [0, 0, 0, 5, 8, 12],
-                        [0, 0, 0, 0, 6, 4],
-                        [0, 0, 0, 0, 0, 2]]
-
-        return energyMatrix

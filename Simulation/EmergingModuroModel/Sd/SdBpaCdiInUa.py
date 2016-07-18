@@ -26,6 +26,7 @@ from Steppable.InitializerSteppable import InitializerSteppable
 from Steppable.DeathSteppable import DeathSteppable
 from Steppable.GrowthMitosisSteppable import GrowthMitosisSteppable
 from Steppable.GrowthSteppable import GrowthSteppable
+from Steppable.IntermediateTransformationSteppable import IntermediateTransformationSteppable
 from Steppable.CMTransformationSteppable import CMTransformationSteppable
 from Steppable.UrinationSteppable import UrinationSteppable
 from Logger.VolumeFitnessSteppable import VolumeFitnessSteppable
@@ -76,7 +77,8 @@ class SdBpaCdiInUa(ModelConfig):
         steppableList.append(InitializerSteppable(self.sim, self))
         steppableList.append(GrowthSteppable(self.sim, self))
         steppableList.append(GrowthMitosisSteppable(self.sim, self))
-        steppableList.append(CMTransformationSteppable(self.sim, self))
+        steppableList.append(IntermediateTransformationSteppable(self.sim, self))
+        #steppableList.append(CMTransformationSteppable(self.sim, self))
         steppableList.append(UrinationSteppable(self.sim, self, prop=0.02))
         steppableList.append(DeathSteppable(self.sim, self))
         # steppableList.append(OptimumSearchSteppable(self.sim, self))

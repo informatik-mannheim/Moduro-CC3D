@@ -32,6 +32,7 @@ from Logger.VolumeFitnessSteppable import VolumeFitnessSteppable
 from Logger.ArrangementFitnessSteppable import ArrangementFitnessSteppable
 from Logger.DummyFitnessSteppable import DummyFitnessSteppable
 from Steppable.ColonySteppable import ColonySteppable
+from Steppable.IntermediateTransformationSteppable import IntermediateTransformationSteppable
 
 
 class SdBpaPcdiInUa(ModelConfig):
@@ -78,7 +79,8 @@ class SdBpaPcdiInUa(ModelConfig):
         steppableList.append(InitializerSteppable(self.sim, self))
         steppableList.append(GrowthSteppable(self.sim, self))
         steppableList.append(GrowthMitosisSteppable(self.sim, self))
-        steppableList.append(CMTransformationSteppable(self.sim, self))
+        steppableList.append(IntermediateTransformationSteppable(self.sim, self))
+        #steppableList.append(CMTransformationSteppable(self.sim, self, onlyIntermediate=1))
         steppableList.append(UrinationSteppable(self.sim, self, prop=0.02))
         steppableList.append(DeathSteppable(self.sim, self))
         # steppableList.append(OptimumSearchSteppable(self.sim, self))

@@ -33,12 +33,12 @@ from Logger.DummyFitnessSteppable import DummyFitnessSteppable
 from Steppable.ColonySteppable import ColonySteppable
 
 
-class SpaCdbCdiInUa(ModelConfig):
+class SpaSdbPcdiInUa(ModelConfig):
     def __init__(self, sim, simthread):
         ModelConfig.__init__(self, sim, simthread)
 
     def _initModel(self):
-        self.name = "SpaCdbCdiInUa"
+        self.name = "SpaSdbPcdiInUa"
         self.cellTypes = self._createCellTypes()
         self.energyMatrix = self._createEnergyMatrix()
         self._run() # Must be the last statement.
@@ -64,6 +64,8 @@ class SpaCdbCdiInUa(ModelConfig):
         stem.setDescendants(0.90, [stem.id, basal.id])
         stem.setDescendants(0.05, [stem.id, stem.id])
         stem.setDescendants(0.05, [basal.id, basal.id])
+        basal.setDescendants(1.0, [basal.id, intermediate.id])
+        intermediate.setDescendants(1.0, [intermediate.id, intermediate.id])
 
         cellTypes.extend((Medium, Basalmembrane, stem, basal, intermediate, umbrella))
 
