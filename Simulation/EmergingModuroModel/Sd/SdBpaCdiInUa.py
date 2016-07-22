@@ -33,6 +33,7 @@ from Logger.VolumeFitnessSteppable import VolumeFitnessSteppable
 from Logger.ArrangementFitnessSteppable import ArrangementFitnessSteppable
 from Logger.DummyFitnessSteppable import DummyFitnessSteppable
 from Steppable.ColonySteppable import ColonySteppable
+from Steppable.MutationSteppable import MutationSteppable
 
 class SdBpaCdiInUa(ModelConfig):
     def __init__(self, sim, simthread):
@@ -47,19 +48,24 @@ class SdBpaCdiInUa(ModelConfig):
     def _createCellTypes(self):
         cellTypes = []
         stem = Stemcell
-        stem.setGrowthVolumePerDayRelVolume(0.05)
+        stem.setGrowthVolumePerDayRelVolume(0.02)
+        #stem.apoptosisTimeInDays = 60.0
+        self.necrosisProbStem = stem.necrosisProb = 0.0
 
         basal = Basalcell
-        basal.setGrowthVolumePerDayRelVolume(0.05)
-        basal.apoptosisTimeInDays = 80.0
+        basal.setGrowthVolumePerDayRelVolume(0.03)
+        basal.apoptosisTimeInDays = 55.0
+        self.necrosisProbBasal = basal.necrosisProb = 0.01
 
         intermediate = Intermediatecell
         intermediate.setGrowthVolumePerDayRelVolume(0.05)
-        intermediate.apoptosisTimeInDays = 20.0
+        intermediate.apoptosisTimeInDays = 15.0
+        self.necrosisProbIntermediate = intermediate.necrosisProb = 0.02
 
         umbrella = Umbrellacell
         umbrella.setGrowthVolumePerDayRelVolume(0.05)
         umbrella.apoptosisTimeInDays = 10.0
+        self.necrosisProbUmbrella = umbrella.necrosisProb = 0.05
 
         stem.setDescendants(1.0, [stem.id, basal.id])
         basal.setDescendants(0.9, [basal.id, intermediate.id])
@@ -85,6 +91,8 @@ class SdBpaCdiInUa(ModelConfig):
         steppableList.append(VolumeFitnessSteppable(self.sim, self))
         steppableList.append(ArrangementFitnessSteppable(self.sim, self))
         steppableList.append(DummyFitnessSteppable(self.sim, self))
+        steppableList.append(MutationSteppable(self.sim, self, self.necrosisProbStem, self.necrosisProbBasal,
+                                               self.necrosisProbIntermediate, self.necrosisProbUmbrella))
 
         return steppableList
 

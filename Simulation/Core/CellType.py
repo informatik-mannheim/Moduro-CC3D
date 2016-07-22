@@ -33,7 +33,7 @@ class CellType(object):
     # TODO explain parameter
     def __init__(self, name="CellType", frozen=False, minDiameter=10, maxDiameter=10,
                  growthVolumePerDay=500, nutrientRequirement=1.0, apoptosisTimeInDays=180000,
-                 volFit=1.0, surFit=0.0):
+                 volFit=1.0, surFit=0.0, necrosisProb=0.0):
         """
 
         :param name:
@@ -45,6 +45,7 @@ class CellType(object):
         :param apoptosisTimeInDays:
         :param volFit:
         :param surFit:
+        :param necrosisProb: propability for a cell to do necrosis
         :return:
         """
         self.id = CellType.__typeCount
@@ -61,6 +62,7 @@ class CellType(object):
         self.surFit = surFit
         self.divides = False
         self.descendants = []
+        self.necrosisProb = necrosisProb
         CellType.__typeCount += 1
 
     def setGrowthVolumePerDayRelVolume(self, multiple):

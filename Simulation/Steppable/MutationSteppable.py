@@ -12,7 +12,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-__author__ = "Markus Gumbel"
+__author__ = "Markus Gumbel, Julian Debatin"
 __copyright__ = "The authors"
 __license__ = "Apache 2"
 __email__ = "m.gumbel@hs-mannheim.de"
@@ -20,12 +20,16 @@ __status__ = "Production"
 
 import random
 from Steppable.ModuroSteppable import ModuroSteppable
+from Core.CellType import *
 
 class MutationSteppable(ModuroSteppable):
-    def __init__(self, _simulator,  model, prob=0.01, _frequency=1):
+    def __init__(self, _simulator,  model, probStem=0.00, probBasal=0.00, probIntermediate=0.00, probUmbrella=0.00, _frequency=1):
         ModuroSteppable.__init__(self, _simulator, model, _frequency)
-        self.mutationMCS = self.execConfig.calcMCSfromDays(1) # every six hours.
-        self.prob = prob
+        self.mutationMCS = self.execConfig.calcMCSfromDays(1)
+        self.probStem = probStem
+        self.probBasal = probBasal
+        self.probIntermediate = probIntermediate
+        self.probUmbrella = probUmbrella
 
     def moduroStep(self, mcs):
         if mcs > 2 * self.mutationMCS and mcs % self.mutationMCS == 0:
@@ -33,6 +37,22 @@ class MutationSteppable(ModuroSteppable):
 
     def _removeCells(self):
         for cell in self.cellList:
-            if random.random() < self.prob:
-                cellDict = self.getDictionaryAttribute(cell)
-                cellDict['necrosis'] = True
+            if cell == Stemcell:
+            #if cell['stem']:
+                if random.random() < self.probStem:
+                    cellDict = self.getDictionaryAttribute(cell)
+                    cellDict['necrosis'] = True
+            elif cell == Basalcell:
+            #elif cell['basal']:
+                if random.random() < self.probBasal:
+                    cellDict = self.getDictionaryAttriute(cell)
+                    cellDict['necrosis'] = True
+            elif cell == Intermediatecell:
+            #elif cell['intermediate']:
+                if random.random() < self.probIntermediate:
+                    cellDict = self.getDictionaryAttriute(cell)
+                    cellDict['necrosis'] = True
+            elif cell == Umbrellacell:
+                if random.random() < self.probUmbrella:
+                    cellDict = self.getDictionaryAttriute(cell)
+                    cellDict['necrosis'] = True
