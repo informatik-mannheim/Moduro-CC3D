@@ -60,7 +60,7 @@ class SdBpaCdiInUa(ModelConfig):
         intermediate = Intermediatecell
         intermediate.setGrowthVolumePerDayRelVolume(0.04)
         intermediate.apoptosisTimeInDays = 180000.0
-        self.necrosisProbIntermediate = intermediate.necrosisProb = 0.08
+        self.necrosisProbIntermediate = intermediate.necrosisProb = 0.1
 
         umbrella = Umbrellacell
         umbrella.setGrowthVolumePerDayRelVolume(0.05)
@@ -68,9 +68,9 @@ class SdBpaCdiInUa(ModelConfig):
         self.necrosisProbUmbrella = umbrella.necrosisProb = 0.12
 
         stem.setDescendants(1.0, [stem.id, basal.id])
-        basal.setDescendants(0.9, [basal.id, intermediate.id])
-        basal.setDescendants(0.05, [basal.id, basal.id])
-        basal.setDescendants(0.05, [intermediate.id, intermediate.id])
+        basal.setDescendants(0.96, [basal.id, intermediate.id])
+        basal.setDescendants(0.02, [basal.id, basal.id])
+        basal.setDescendants(0.02, [intermediate.id, intermediate.id])
 
 
         cellTypes.extend((Medium, Basalmembrane, stem, basal, intermediate, umbrella))
@@ -97,5 +97,5 @@ class SdBpaCdiInUa(ModelConfig):
         return steppableList
 
     def _createExecConfig(self):
-        return ExecConfig(MCSperDay=500, SEED=random.random(),
+        return ExecConfig(MCSperDay=500,  # SEED=10,
                           xLength=500, yLength=150, zLength=0, voxelDensity=.8)
