@@ -94,5 +94,5 @@ class SdPcdbCdiInUa(ModelConfig):
         return steppableList
 
     def _createExecConfig(self):
-        return ExecConfig(MCSperDay=500, SEED=10,
+        return ExecConfig(MCSperDay=500, #SEED=10,
                           xLength=500, yLength=150, zLength=0, voxelDensity=.8)
