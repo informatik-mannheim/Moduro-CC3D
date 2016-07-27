@@ -31,6 +31,7 @@ from Logger.VolumeFitnessSteppable import VolumeFitnessSteppable
 from Logger.ArrangementFitnessSteppable import ArrangementFitnessSteppable
 from Logger.DummyFitnessSteppable import DummyFitnessSteppable
 from Steppable.ColonySteppable import ColonySteppable
+from Steppable.MutationSteppable import MutationSteppable
 
 
 class SdPcdbCdiInUa(ModelConfig):
@@ -49,18 +50,23 @@ class SdPcdbCdiInUa(ModelConfig):
 
         stem = Stemcell
         stem.setGrowthVolumePerDayRelVolume(0.05)
+        self.stemNecrosisProb = stem.necrosisProb = 0
 
         basal = Basalcell
         basal.setGrowthVolumePerDayRelVolume(0.05)
-        basal.apoptosisTimeInDays = 80.0
+        basal.apoptosisTimeInDays = 800000.0
+        self.basalNecrosisProb = basal.necrosisProb = 0.03
 
         intermediate = Intermediatecell
         intermediate.setGrowthVolumePerDayRelVolume(0.05)
-        intermediate.apoptosisTimeInDays = 20.0
+        intermediate.apoptosisTimeInDays = 20000000.0
+        self.intermediateNecrosisProb = intermediate.necrosisProb = 0.04
+
 
         umbrella = Umbrellacell
         umbrella.setGrowthVolumePerDayRelVolume(0.05)
-        umbrella.apoptosisTimeInDays = 10.0
+        umbrella.apoptosisTimeInDays = 100000000.0
+        self.umbrellaNecrosisProb = umbrella.necrosisProb = 0.06
 
         stem.setDescendants(1.0, [stem.id, basal.id])
         basal.setDescendants(1.0, [basal.id, basal.id])
@@ -82,6 +88,8 @@ class SdPcdbCdiInUa(ModelConfig):
         steppableList.append(VolumeFitnessSteppable(self.sim, self))
         steppableList.append(ArrangementFitnessSteppable(self.sim, self))
         steppableList.append(DummyFitnessSteppable(self.sim, self))
+        steppableList.append(MutationSteppable(self.sim, self, self.stemNecrosisProb, self.basalNecrosisProb,
+                                               self.intermediateNecrosisProb, self.umbrellaNecrosisProb))
 
         return steppableList
 
