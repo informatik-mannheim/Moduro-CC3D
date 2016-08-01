@@ -12,7 +12,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-__author__ = "Angelo Torelli, Markus Gumbel"
+__author__ = "Angelo Torelli, Markus Gumbel, Julian Debatin"
 __copyright__ = "The authors"
 __license__ = "Apache 2"
 __email__ = "m.gumbel@hs-mannheim.de"

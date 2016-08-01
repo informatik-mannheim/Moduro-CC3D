@@ -32,8 +32,8 @@ class MutationSteppable(ModuroSteppable):
         self.probUmbrella = probUmbrella
 
     def moduroStep(self, mcs):
-        if mcs > 2 * self.mutationMCS and mcs % self.mutationMCS == 0:
-            self._removeCells(self)
+        if mcs > 2 * self.mutationMCS: #and mcs % self.mutationMCS == 0:
+            self._removeCells()
 
     def _removeCells(self):
         for cell in self.cellList:
@@ -43,13 +43,13 @@ class MutationSteppable(ModuroSteppable):
                     cellDict['necrosis'] = True
             elif cell.type == self.BASAL:
                 if random.random() < self.probBasal:
-                    cellDict = self.getDictionaryAttriute(cell)
+                    cellDict = self.getDictionaryAttribute(cell)
                     cellDict['necrosis'] = True
             elif cell.type == self.INTERMEDIATE:
                 if random.random() < self.probIntermediate:
-                    cellDict = self.getDictionaryAttriute(cell)
+                    cellDict = self.getDictionaryAttribute(cell)
                     cellDict['necrosis'] = True
             elif cell.type == self.UMBRELLA:
                 if random.random() < self.probUmbrella:
-                    cellDict = self.getDictionaryAttriute(cell)
+                    cellDict = self.getDictionaryAttribute(cell)
                     cellDict['necrosis'] = True
