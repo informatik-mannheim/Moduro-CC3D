@@ -31,7 +31,7 @@ from Steppable.UrinationSteppable import UrinationSteppable
 from Logger.VolumeFitnessSteppable import VolumeFitnessSteppable
 from Logger.ArrangementFitnessSteppable import ArrangementFitnessSteppable
 from Logger.DummyFitnessSteppable import DummyFitnessSteppable
-
+from Steppable.MutationSteppable import MutationSteppable
 
 class SdCdbCdiInUa(ModelConfig):
     def __init__(self, sim, simthread):
@@ -49,18 +49,22 @@ class SdCdbCdiInUa(ModelConfig):
 
         stem = Stemcell
         stem.setGrowthVolumePerDayRelVolume(0.05)
+        self.stemNecrosisProb = stem.necrosisProb = 0
 
         basal = Basalcell
         basal.setGrowthVolumePerDayRelVolume(0.05)
-        basal.apoptosisTimeInDays = 80.0
+        basal.apoptosisTimeInDays = 8000000000000.0
+        self.basalNecrosisProb = stem.necrosisProb = 0.00002
 
         intermediate = Intermediatecell
         intermediate.setGrowthVolumePerDayRelVolume(0.05)
-        intermediate.apoptosisTimeInDays = 20.0
+        intermediate.apoptosisTimeInDays = 200000000000.0
+        self.intermediateNecrosisProb = stem.necrosisProb = 0.00002
 
         umbrella = Umbrellacell
         umbrella.setGrowthVolumePerDayRelVolume(0.05)
-        umbrella.apoptosisTimeInDays = 10.0
+        umbrella.apoptosisTimeInDays = 1000000000000000.0
+        self.umbrellaNecrosisProb = stem.necrosisProb = 0.00004
 
         stem.setDescendants(1.0, [stem.id, basal.id])
 
@@ -81,9 +85,11 @@ class SdCdbCdiInUa(ModelConfig):
         steppableList.append(VolumeFitnessSteppable(self.sim, self))
         steppableList.append(ArrangementFitnessSteppable(self.sim, self))
         steppableList.append(DummyFitnessSteppable(self.sim, self))
+        steppableList.append(MutationSteppable(self.sim, self, self.stemNecrosisProb, self.basalNecrosisProb,
+                                               self.intermediateNecrosisProb, self.umbrellaNecrosisProb))
 
         return steppableList
 
     def _createExecConfig(self):
-        return ExecConfig(MCSperDay=500, SEED=10,
+        return ExecConfig(MCSperDay=500, #SEED=10,
                           xLength=500, yLength=150, zLength=0, voxelDensity=.8)
