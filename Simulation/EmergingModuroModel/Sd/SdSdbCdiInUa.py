@@ -33,6 +33,7 @@ from Logger.ArrangementFitnessSteppable import ArrangementFitnessSteppable
 from Logger.DummyFitnessSteppable import DummyFitnessSteppable
 from Steppable.ColonySteppable import ColonySteppable
 from Steppable.IntermediateTransformationSteppable import IntermediateTransformationSteppable
+from Steppable.MutationSteppable import MutationSteppable
 
 
 class SdSdbCdiInUa(ModelConfig):
@@ -49,18 +50,22 @@ class SdSdbCdiInUa(ModelConfig):
         cellTypes = []
         stem = Stemcell
         stem.setGrowthVolumePerDayRelVolume(0.05)
+        self.necrosisProbStem = stem.necrosisProb = 0.0
 
         basal = Basalcell
         basal.setGrowthVolumePerDayRelVolume(0.05)
-        basal.apoptosisTimeInDays = 80.0
+        basal.apoptosisTimeInDays = 80000000000.0
+        self.basalNecrosisProb = basal.necrosisProb = 0.00002
 
         intermediate = Intermediatecell
         intermediate.setGrowthVolumePerDayRelVolume(0.05)
-        intermediate.apoptosisTimeInDays = 20.0
+        intermediate.apoptosisTimeInDays = 20000000000.0
+        self.intermediateNecrosisProb = intermediate.necrosisProb = 0.00002
 
         umbrella = Umbrellacell
         umbrella.setGrowthVolumePerDayRelVolume(0.05)
-        umbrella.apoptosisTimeInDays = 10.0
+        umbrella.apoptosisTimeInDays = 1000000000.0
+        self.umbrellaNecrosisProb = umbrella.necrosisProb = 0.00004
 
         stem.setDescendants(1.0, [stem.id, basal.id])
         basal.setDescendants(1.0, [basal.id, intermediate.id])
@@ -85,9 +90,11 @@ class SdSdbCdiInUa(ModelConfig):
         steppableList.append(VolumeFitnessSteppable(self.sim, self))
         steppableList.append(ArrangementFitnessSteppable(self.sim, self))
         steppableList.append(DummyFitnessSteppable(self.sim, self))
+        steppableList.append(MutationSteppable(self.sim, self, self.stemNecrosisProb, self.basalNecrosisProb,
+                                               self.intermediateNecrosisProb, self.umbrellaNecrosisProb))
 
         return steppableList
 
     def _createExecConfig(self):
-        return ExecConfig(MCSperDay=500, SEED=10,
+        return ExecConfig(MCSperDay=500, #SEED=10,
                           xLength=500, yLength=150, zLength=0, voxelDensity=.8)

@@ -31,6 +31,7 @@ from Logger.VolumeFitnessSteppable import VolumeFitnessSteppable
 from Logger.ArrangementFitnessSteppable import ArrangementFitnessSteppable
 from Logger.DummyFitnessSteppable import DummyFitnessSteppable
 from Steppable.ColonySteppable import ColonySteppable
+from Steppable.MutationSteppable import MutationSteppable
 
 
 class SdPcdbPcdiInUa(ModelConfig):
@@ -48,18 +49,22 @@ class SdPcdbPcdiInUa(ModelConfig):
 
         stem = Stemcell
         stem.setGrowthVolumePerDayRelVolume(0.010)
+        self.necrosisProbStem = stem.necrosisProb = 0.0
 
         basal = Basalcell
         basal.setGrowthVolumePerDayRelVolume(0.015)
-        basal.apoptosisTimeInDays = 70.0 # actually not used.
+        basal.apoptosisTimeInDays = 7000000000.0 # actually not used.
+        self.basalNecrosisProb = basal.necrosisProb = 0.00002
 
         intermediate = Intermediatecell
         intermediate.setGrowthVolumePerDayRelVolume(0.012)
-        intermediate.apoptosisTimeInDays = 70.0
+        intermediate.apoptosisTimeInDays = 70000000000.0
+        self.intermediateNecrosisProb = intermediate.necrosisProb = 0.00002
 
         umbrella = Umbrellacell
         umbrella.setGrowthVolumePerDayRelVolume(0.012)
-        umbrella.apoptosisTimeInDays = 70.0
+        umbrella.apoptosisTimeInDays = 70000000.0
+        self.umbrellaNecrosisProb = umbrella.necrosisProb = 0.00004
 
         stem.setDescendants(1.0, [stem.id, basal.id])
         basal.setDescendants(1.0, [basal.id, basal.id])
@@ -82,9 +87,11 @@ class SdPcdbPcdiInUa(ModelConfig):
         steppableList.append(VolumeFitnessSteppable(self.sim, self))
         steppableList.append(ArrangementFitnessSteppable(self.sim, self))
         steppableList.append(DummyFitnessSteppable(self.sim, self))
+        steppableList.append(MutationSteppable(self.sim, self, self.stemNecrosisProb, self.basalNecrosisProb,
+                                               self.intermediateNecrosisProb, self.umbrellaNecrosisProb))
 
         return steppableList
 
     def _createExecConfig(self):
-        return ExecConfig(xLength=800, yLength=150, zLength=0, voxelDensity=0.8,
-                          MCSperDay=500)
+        return ExecConfig(xLength=800, #SEED=10,
+                          yLength=150, zLength=0, voxelDensity=0.8, MCSperDay=500)
