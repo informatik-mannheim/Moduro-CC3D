@@ -48,16 +48,16 @@ class SdPcdbPcdiInUa(ModelConfig):
         cellTypes = []
 
         stem = Stemcell
-        stem.setGrowthVolumePerDayRelVolume(0.12)
+        stem.setGrowthVolumePerDayRelVolume(0.1)
         self.stemNecrosisProb = stem.necrosisProb = 0.0
 
         basal = Basalcell
-        basal.setGrowthVolumePerDayRelVolume(0.1)
+        basal.setGrowthVolumePerDayRelVolume(0.08)
         basal.apoptosisTimeInDays = 7000000000.0 # actually not used.
         self.basalNecrosisProb = basal.necrosisProb = 0.000005
 
         intermediate = Intermediatecell
-        intermediate.setGrowthVolumePerDayRelVolume(0.08)
+        intermediate.setGrowthVolumePerDayRelVolume(0.06)
         intermediate.apoptosisTimeInDays = 70000000000.0
         self.intermediateNecrosisProb = intermediate.necrosisProb = 0.000005
 
