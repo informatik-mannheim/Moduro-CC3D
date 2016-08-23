@@ -57,9 +57,9 @@ class SdPcdbPcdiInUa(ModelConfig):
         self.basalNecrosisProb = basal.necrosisProb = 0.00005
 
         intermediate = Intermediatecell
-        intermediate.setGrowthVolumePerDayRelVolume(0.07)
+        intermediate.setGrowthVolumePerDayRelVolume(0.06)
         intermediate.apoptosisTimeInDays = 70000000000.0
-        self.intermediateNecrosisProb = intermediate.necrosisProb = 0.00009
+        self.intermediateNecrosisProb = intermediate.necrosisProb = 0.0001
 
         umbrella = Umbrellacell
         umbrella.setGrowthVolumePerDayRelVolume(0.06)
