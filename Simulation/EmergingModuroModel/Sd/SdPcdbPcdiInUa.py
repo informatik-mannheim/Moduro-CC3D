@@ -48,7 +48,7 @@ class SdPcdbPcdiInUa(ModelConfig):
         cellTypes = []
 
         stem = Stemcell
-        stem.setGrowthVolumePerDayRelVolume(0.09)
+        stem.setGrowthVolumePerDayRelVolume(0.1)
         self.stemNecrosisProb = stem.necrosisProb = 0.0
 
         basal = Basalcell
