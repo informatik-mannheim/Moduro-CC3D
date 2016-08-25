@@ -57,7 +57,7 @@ class SdPcdbPcdiInUa(ModelConfig):
         self.basalNecrosisProb = basal.necrosisProb = 0.00005
 
         intermediate = Intermediatecell
-        intermediate.setGrowthVolumePerDayRelVolume(0.09)
+        intermediate.setGrowthVolumePerDayRelVolume(0.095)
         intermediate.apoptosisTimeInDays = 70000000000.0
         self.intermediateNecrosisProb = intermediate.necrosisProb = 0.0001
 
