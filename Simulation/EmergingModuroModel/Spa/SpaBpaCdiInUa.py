@@ -48,21 +48,21 @@ class SpaBpaCdiInUa(ModelConfig):
     def _createCellTypes(self):
         cellTypes = []
         stem = Stemcell
-        stem.setGrowthVolumePerDayRelVolume(0.05)
+        stem.setGrowthVolumePerDayRelVolume(0.13)
         self.stemNecrosisProb = stem.necrosisProb = 0
 
         basal = Basalcell
-        basal.setGrowthVolumePerDayRelVolume(0.05)
+        basal.setGrowthVolumePerDayRelVolume(0.12)
         basal.apoptosisTimeInDays = 800000000.0
         self.basalNecrosisProb = basal.necrosisProb = 0.00002
 
         intermediate = Intermediatecell
-        intermediate.setGrowthVolumePerDayRelVolume(0.05)
+        intermediate.setGrowthVolumePerDayRelVolume(0.11)
         intermediate.apoptosisTimeInDays = 2000000000.0
         self.intermediateNecrosisProb = intermediate.necrosisProb = 0.00002
 
         umbrella = Umbrellacell
-        umbrella.setGrowthVolumePerDayRelVolume(0.05)
+        umbrella.setGrowthVolumePerDayRelVolume(0.1)
         umbrella.apoptosisTimeInDays = 100000000.0
         self.umbrellaNecrosisProb = umbrella.necrosisProb = 0.00004
 

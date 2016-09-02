@@ -48,22 +48,22 @@ class SdBpaCdiInUa(ModelConfig):
     def _createCellTypes(self):
         cellTypes = []
         stem = Stemcell
-        stem.setGrowthVolumePerDayRelVolume(0.02)
+        stem.setGrowthVolumePerDayRelVolume(0.12)
         #stem.apoptosisTimeInDays = 60.0
         self.necrosisProbStem = stem.necrosisProb = 0.0
 
         basal = Basalcell
-        basal.setGrowthVolumePerDayRelVolume(0.03)
+        basal.setGrowthVolumePerDayRelVolume(0.11)
         basal.apoptosisTimeInDays = 180000.0
         self.necrosisProbBasal = basal.necrosisProb = 0.04
 
         intermediate = Intermediatecell
-        intermediate.setGrowthVolumePerDayRelVolume(0.04)
+        intermediate.setGrowthVolumePerDayRelVolume(0.1)
         intermediate.apoptosisTimeInDays = 180000.0
         self.necrosisProbIntermediate = intermediate.necrosisProb = 0.1
 
         umbrella = Umbrellacell
-        umbrella.setGrowthVolumePerDayRelVolume(0.05)
+        umbrella.setGrowthVolumePerDayRelVolume(0.09)
         umbrella.apoptosisTimeInDays = 180000.0
         self.necrosisProbUmbrella = umbrella.necrosisProb = 0.12
 
