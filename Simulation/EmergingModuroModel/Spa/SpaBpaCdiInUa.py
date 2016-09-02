@@ -54,7 +54,7 @@ class SpaBpaCdiInUa(ModelConfig):
         basal = Basalcell
         basal.setGrowthVolumePerDayRelVolume(0.12)
         basal.apoptosisTimeInDays = 800000000.0
-        self.basalNecrosisProb = basal.necrosisProb = 0.00002
+        self.basalNecrosisProb = basal.necrosisProb = 0.000015
 
         intermediate = Intermediatecell
         intermediate.setGrowthVolumePerDayRelVolume(0.11)
@@ -64,7 +64,7 @@ class SpaBpaCdiInUa(ModelConfig):
         umbrella = Umbrellacell
         umbrella.setGrowthVolumePerDayRelVolume(0.1)
         umbrella.apoptosisTimeInDays = 100000000.0
-        self.umbrellaNecrosisProb = umbrella.necrosisProb = 0.00004
+        self.umbrellaNecrosisProb = umbrella.necrosisProb = 0.00003
 
         stem.setDescendants(0.90, [stem.id, basal.id])
         stem.setDescendants(0.05, [stem.id, stem.id])
