@@ -55,7 +55,7 @@ class SdBpaCdiInUa(ModelConfig):
         basal = Basalcell
         basal.setGrowthVolumePerDayRelVolume(0.12)
         basal.apoptosisTimeInDays = 180000.0
-        self.necrosisProbBasal = basal.necrosisProb = 0.000005
+        self.necrosisProbBasal = basal.necrosisProb = 0.000008
 
         intermediate = Intermediatecell
         intermediate.setGrowthVolumePerDayRelVolume(0.11)
