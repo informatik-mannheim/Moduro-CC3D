@@ -66,12 +66,12 @@ class SpaBpaCdiInUa(ModelConfig):
         umbrella.apoptosisTimeInDays = 100000000.0
         self.umbrellaNecrosisProb = umbrella.necrosisProb = 0.00003
 
-        stem.setDescendants(0.90, [stem.id, basal.id])
-        stem.setDescendants(0.05, [stem.id, stem.id])
-        stem.setDescendants(0.05, [basal.id, basal.id])
-        basal.setDescendants(0.90, [basal.id, intermediate.id])
-        basal.setDescendants(0.05, [basal.id, basal.id])
-        basal.setDescendants(0.05, [intermediate.id, intermediate.id])
+        stem.setDescendants(0.92, [stem.id, basal.id])
+        stem.setDescendants(0.04, [stem.id, stem.id])
+        stem.setDescendants(0.04, [basal.id, basal.id])
+        basal.setDescendants(0.92, [basal.id, intermediate.id])
+        basal.setDescendants(0.04, [basal.id, basal.id])
+        basal.setDescendants(0.04, [intermediate.id, intermediate.id])
 
         cellTypes.extend((Medium, Basalmembrane, stem, basal, intermediate, umbrella))
 
