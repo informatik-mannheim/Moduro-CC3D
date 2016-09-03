@@ -60,7 +60,7 @@ class SdBpaCdiInUa(ModelConfig):
         intermediate = Intermediatecell
         intermediate.setGrowthVolumePerDayRelVolume(0.11)
         intermediate.apoptosisTimeInDays = 180000.0
-        self.necrosisProbIntermediate = intermediate.necrosisProb = 0.000025
+        self.necrosisProbIntermediate = intermediate.necrosisProb = 0.00003
 
         umbrella = Umbrellacell
         umbrella.setGrowthVolumePerDayRelVolume(0.1)
