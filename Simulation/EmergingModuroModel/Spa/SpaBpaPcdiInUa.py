@@ -64,7 +64,7 @@ class SpaBpaPcdiInUa(ModelConfig):
         umbrella = Umbrellacell
         umbrella.setGrowthVolumePerDayRelVolume(0.06)
         umbrella.apoptosisTimeInDays = 100000000.0
-        self.umbrellaNecrosisProb = umbrella.necrosisProb = 0.000011
+        self.umbrellaNecrosisProb = umbrella.necrosisProb = 0.00011
 
         stem.setDescendants(0.90, [stem.id, basal.id])
         stem.setDescendants(0.05, [stem.id, stem.id])
