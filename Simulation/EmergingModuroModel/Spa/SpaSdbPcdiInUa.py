@@ -48,23 +48,23 @@ class SpaSdbPcdiInUa(ModelConfig):
     def _createCellTypes(self):
         cellTypes = []
         stem = Stemcell
-        stem.setGrowthVolumePerDayRelVolume(0.05)
+        stem.setGrowthVolumePerDayRelVolume(0.12)
         self.stemNecrosisProb = stem.necrosisProb = 0
 
         basal = Basalcell
-        basal.setGrowthVolumePerDayRelVolume(0.05)
+        basal.setGrowthVolumePerDayRelVolume(0.12)
         basal.apoptosisTimeInDays = 80000000000.0
         self.basalNecrosisProb = basal.necrosisProb = 0.00002
 
         intermediate = Intermediatecell
-        intermediate.setGrowthVolumePerDayRelVolume(0.05)
+        intermediate.setGrowthVolumePerDayRelVolume(0.1)
         intermediate.apoptosisTimeInDays = 20000000000.0
-        self.intermediateNecrosisProb = intermediate.necrosisProb = 0.00002
+        self.intermediateNecrosisProb = intermediate.necrosisProb = 0.00008
 
         umbrella = Umbrellacell
-        umbrella.setGrowthVolumePerDayRelVolume(0.05)
+        umbrella.setGrowthVolumePerDayRelVolume(0.09)
         umbrella.apoptosisTimeInDays = 10000000000.0
-        self.umbrellaNecrosisProb = umbrella.necrosisProb = 0.00004
+        self.umbrellaNecrosisProb = umbrella.necrosisProb = 0.00012
 
         stem.setDescendants(0.90, [stem.id, basal.id])
         stem.setDescendants(0.05, [stem.id, stem.id])
