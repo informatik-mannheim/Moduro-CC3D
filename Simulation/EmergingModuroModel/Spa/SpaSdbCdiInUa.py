@@ -48,16 +48,16 @@ class SpaSdbCdiInUa(ModelConfig):
     def _createCellTypes(self):
         cellTypes = []
         stem = Stemcell
-        stem.setGrowthVolumePerDayRelVolume(0.12)
+        stem.setGrowthVolumePerDayRelVolume(0.13)
         self.stemNecrosisProb = stem.necrosisProb = 0
 
         basal = Basalcell
-        basal.setGrowthVolumePerDayRelVolume(0.11)
+        basal.setGrowthVolumePerDayRelVolume(0.12)
         basal.apoptosisTimeInDays = 8000000000.0
         self.basalNecrosisProb = basal.necrosisProb = 0.00001
 
         intermediate = Intermediatecell
-        intermediate.setGrowthVolumePerDayRelVolume(0.1)
+        intermediate.setGrowthVolumePerDayRelVolume(0.11)
         intermediate.apoptosisTimeInDays = 20000000000.0
         self.intermediateNecrosisProb = intermediate.necrosisProb = 0.00002
 
