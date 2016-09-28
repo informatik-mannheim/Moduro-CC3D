@@ -59,12 +59,12 @@ class SpaSdbCdiInUa(ModelConfig):
         intermediate = Intermediatecell
         intermediate.setGrowthVolumePerDayRelVolume(0.11)
         intermediate.apoptosisTimeInDays = 20000000000.0
-        self.intermediateNecrosisProb = intermediate.necrosisProb = 0.00002
+        self.intermediateNecrosisProb = intermediate.necrosisProb = 0.00003
 
         umbrella = Umbrellacell
         umbrella.setGrowthVolumePerDayRelVolume(0.09)
         umbrella.apoptosisTimeInDays = 100000000000.0
-        self.umbrellaNecrosisProb = umbrella.necrosisProb = 0.00003
+        self.umbrellaNecrosisProb = umbrella.necrosisProb = 0.00005
 
         stem.setDescendants(0.90, [stem.id, basal.id])
         stem.setDescendants(0.05, [stem.id, stem.id])
