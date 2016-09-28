@@ -50,7 +50,7 @@ class SdSdbCdiInUa(ModelConfig):
         cellTypes = []
         stem = Stemcell
         stem.setGrowthVolumePerDayRelVolume(0.11)
-        self.necrosisProbStem = stem.necrosisProb = 0.0
+        self.stemNecrosisProb = stem.necrosisProb = 0.0
 
         basal = Basalcell
         basal.setGrowthVolumePerDayRelVolume(0.1)
