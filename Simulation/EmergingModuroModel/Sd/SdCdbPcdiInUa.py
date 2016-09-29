@@ -48,23 +48,23 @@ class SdCdbPcdiInUa(ModelConfig):
     def _createCellTypes(self):
         cellTypes = []
         stem = Stemcell
-        stem.setGrowthVolumePerDayRelVolume(0.05)
-        self.necrosisProbStem = stem.necrosisProb = 0.0
+        stem.setGrowthVolumePerDayRelVolume(0.12)
+        self.stemNecrosisProb = stem.necrosisProb = 0.0
 
         basal = Basalcell
-        basal.setGrowthVolumePerDayRelVolume(0.05)
+        basal.setGrowthVolumePerDayRelVolume(0.11)
         basal.apoptosisTimeInDays = 800000000000.0
         self.basalNecrosisProb = basal.necrosisProb = 0.00002
 
         intermediate = Intermediatecell
-        intermediate.setGrowthVolumePerDayRelVolume(0.05)
+        intermediate.setGrowthVolumePerDayRelVolume(0.1)
         intermediate.apoptosisTimeInDays = 20000000000.0
-        self.intermediateNecrosisProb = intermediate.necrosisProb = 0.00002
+        self.intermediateNecrosisProb = intermediate.necrosisProb = 0.00008
 
         umbrella = Umbrellacell
-        umbrella.setGrowthVolumePerDayRelVolume(0.05)
+        umbrella.setGrowthVolumePerDayRelVolume(0.1)
         umbrella.apoptosisTimeInDays = 10000000.0
-        self.umbrellaNecrosisProb = umbrella.necrosisProb = 0.00004
+        self.umbrellaNecrosisProb = umbrella.necrosisProb = 0.0001
 
         stem.setDescendants(1.0, [stem.id, basal.id])
         intermediate.setDescendants(1.0, [intermediate.id, intermediate.id])
