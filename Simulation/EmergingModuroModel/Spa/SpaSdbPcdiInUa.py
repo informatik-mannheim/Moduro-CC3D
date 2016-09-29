@@ -48,7 +48,7 @@ class SpaSdbPcdiInUa(ModelConfig):
     def _createCellTypes(self):
         cellTypes = []
         stem = Stemcell
-        stem.setGrowthVolumePerDayRelVolume(0.12)
+        stem.setGrowthVolumePerDayRelVolume(0.1215)
         self.stemNecrosisProb = stem.necrosisProb = 0
 
         basal = Basalcell
