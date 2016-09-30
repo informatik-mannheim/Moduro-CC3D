@@ -52,7 +52,7 @@ class SdCdbPcdiInUa(ModelConfig):
         self.stemNecrosisProb = stem.necrosisProb = 0.0
 
         basal = Basalcell
-        basal.setGrowthVolumePerDayRelVolume(0.115)
+        basal.setGrowthVolumePerDayRelVolume(0.11)
         basal.apoptosisTimeInDays = 800000000000.0
         self.basalNecrosisProb = basal.necrosisProb = 0.00002
 
