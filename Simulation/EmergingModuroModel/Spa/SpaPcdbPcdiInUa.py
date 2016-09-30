@@ -60,12 +60,12 @@ class SpaPcdbPcdiInUa(ModelConfig):
         intermediate = Intermediatecell
         intermediate.setGrowthVolumePerDayRelVolume(0.1)
         intermediate.apoptosisTimeInDays = 20000000000.0
-        self.intermediateNecrosisProb = intermediate.necrosisProb = 0.0001
+        self.intermediateNecrosisProb = intermediate.necrosisProb = 0.00015
 
         umbrella = Umbrellacell
         umbrella.setGrowthVolumePerDayRelVolume(0.09)
         umbrella.apoptosisTimeInDays = 10000000000.0
-        self.umbrellaNecrosisProb = umbrella.necrosisProb = 0.00015
+        self.umbrellaNecrosisProb = umbrella.necrosisProb = 0.00018
 
         stem.setDescendants(0.90, [stem.id, basal.id])
         stem.setDescendants(0.05, [stem.id, stem.id])
