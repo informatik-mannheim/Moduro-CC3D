@@ -24,7 +24,7 @@ from Steppable.ModuroSteppable import ModuroSteppable
 class MutationSteppable(ModuroSteppable):
     def __init__(self, _simulator,  model, prob=0.01, _frequency=1):
         ModuroSteppable.__init__(self, _simulator, model, _frequency)
-        self.mutationMCS = self.execConfig.calcMCSfromDays(1) # every six hours.
+        self.mutationMCS = self.execConfig.calcMCSfromDays(1) # every day.
         self.prob = prob
 
     def moduroStep(self, mcs):
