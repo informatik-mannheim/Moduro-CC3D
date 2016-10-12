@@ -12,24 +12,26 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-__author__ = "Angelo Torelli"
+__author__ = "Julian Debatin"
 __copyright__ = "The authors"
 __license__ = "Apache 2"
-__email__ = "m.gumbel@hs-mannheim.de"
+__email__ = "juliandebatin@gmail.com"
 __status__ = "Production"
 
-from ModuroModel.SpaCdbCdiNuUa import SpaCdbCdiNuUa
+from ModuroModel.Spa.SpaPcdbPcdiInUa import SpaPcdbPcdiInUa
 
 
-class SpaCdbCdiNuDa(SpaCdbCdiNuUa):
+class SpaPcdbPcdiInDa(SpaPcdbPcdiInUa):
     def __init__(self, sim, simthread):
-        SpaCdbCdiNuUa.__init__(self, sim, simthread)
+        SpaPcdbPcdiInUa.__init__(self, sim, simthread)
 
     def _initModel(self):
-        self.name = "SpaCdbCdiNuDa"
+        self.name = "SpaPcdbPcdiInDa"
+        self.adhFactor = 0.25
         self.cellTypes = self._createCellTypes()
         self.energyMatrix = self._createEnergyMatrix()
-        self._run()  # Must be the last statement.
+        self._run() # Must be the last statement.
+
 
     def _createEnergyMatrix(self):
         energyMatrix = [[0, 14, 14, 14, 14, 4],

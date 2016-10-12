@@ -18,12 +18,12 @@ __license__ = "Apache 2"
 __email__ = "juliandebatin@gmail.com"
 __status__ = "Production"
 
-from EmergingModuroModel.Spa.SpaCdbPcdiInUa import SpaCdbPcdiInUa
+from ModuroModel.Spa.SpaPcdbCdiInUa import SpaPcdbCdiInUa
 
 
-class SpaCdbPcdiInDa(SpaCdbPcdiInUa):
+class SpaPcdbCdiInDa(SpaPcdbCdiInUa):
     def __init__(self, sim, simthread):
-        SpaCdbPcdiInUa.__init__(self, sim, simthread)
+        SpaPcdbCdiInUa.__init__(self, sim, simthread)
 
     def _initModel(self):
         self.name = "SpaCdbPcdiInDa"

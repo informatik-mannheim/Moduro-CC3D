@@ -31,6 +31,6 @@ sys.path.append(environ["PYTHON_MODULE_PATH"])
 sim, simthread = CompuCellSetup.getCoreSimulationObjects()
 
 # Now load the model to simulate!
-from EmergingModuroModel.Spa.SpaSdbPcdiInDa import SpaSdbPcdiInDa
+from ModuroModel.Spa.SpaSdbPcdiInDa import SpaSdbPcdiInDa
 model = SpaSdbPcdiInDa(sim, simthread)
 

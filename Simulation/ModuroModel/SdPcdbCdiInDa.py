@@ -12,13 +12,13 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-__author__ = "Julian Debatin"
+__author__ = "Markus Gumbel, Angelo Torelli"
 __copyright__ = "The authors"
 __license__ = "Apache 2"
-__email__ = "juliandebatin@gmail.com"
+__email__ = "m.gumbel@hs-mannheim.de"
 __status__ = "Production"
 
-from EmergingModuroModel.Sd.SdPcdbCdiInUa import SdPcdbCdiInUa
+from ModuroModel.SdPcdbCdiInUa import SdPcdbCdiInUa
 
 
 class SdPcdbCdiInDa(SdPcdbCdiInUa):
