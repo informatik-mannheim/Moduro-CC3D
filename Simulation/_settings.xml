@@ -1,10 +1,10 @@
-<PlayerSettings version="3.7.5">
+<PlayerSettings version="3.7.4">
    <Settings Type="bytearray">
-      <e Name="PlayerSizes" Type="bytearray">0,0,0,255,0,0,0,0,253,0,0,0,3,0,0,0,0,0,0,1,75,0,0,2,71,252,2,0,0,0,3,251,0,0,0,22,0,77,0,111,0,100,0,101,0,108,0,69,0,100,0,105,0,116,0,111,0,114,0,0,0,0,49,0,0,2,71,0,0,0,91,0,255,255,255,251,0,0,0,30,0,76,0,97,0,116,0,116,0,105,0,99,0,101,0,68,0,97,0,116,0,97,0,68,0,111,0,99,0,107,0,0,0,0,46,0,0,2,169,0,0,0,0,0,0,0,0,251,0,0,0,32,0,71,0,114,0,97,0,112,0,104,0,105,0,110,0,99,0,115,0,32,0,87,0,105,0,110,0,100,0,111,0,119,2,0,0,0,129,0,0,0,123,0,0,1,0,0,0,1,250,0,0,0,2,0,0,4,195,0,0,0,212,252,1,0,0,0,1,251,0,0,0,22,0,76,0,97,0,116,0,116,0,105,0,99,0,101,0,68,0,97,0,116,0,97,0,0,0,0,0,255,255,255,255,0,0,0,80,0,255,255,255,0,0,0,3,0,0,3,176,0,0,1,90,252,1,0,0,0,2,251,0,0,0,14,0,67,0,111,0,110,0,115,0,111,0,108,0,101,1,0,0,0,0,0,0,3,176,0,0,0,127,0,255,255,255,252,0,0,0,0,0,0,4,188,0,0,0,0,0,255,255,255,250,0,0,0,0,2,0,0,0,1,251,0,0,0,30,0,77,0,111,0,100,0,101,0,108,0,69,0,100,0,105,0,116,0,111,0,114,0,68,0,111,0,99,0,107,3,0,0,5,85,0,0,1,89,0,0,1,0,0,0,1,190,0,0,3,176,0,0,2,71,0,0,0,1,0,0,0,4,0,0,0,8,0,0,0,8,252,0,0,0,1,0,0,0,2,0,0,0,4,0,0,0,20,0,83,0,105,0,109,0,84,0,111,0,111,0,108,0,98,0,97,0,114,1,0,0,0,0,255,255,255,255,0,0,0,0,0,0,0,0,0,0,0,22,0,70,0,105,0,108,0,101,0,84,0,111,0,111,0,108,0,98,0,97,0,114,1,0,0,0,120,255,255,255,255,0,0,0,0,0,0,0,0,0,0,0,26,0,87,0,105,0,110,0,100,0,111,0,119,0,84,0,111,0,111,0,108,0,98,0,97,0,114,1,0,0,0,213,255,255,255,255,0,0,0,0,0,0,0,0,0,0,0,40,0,86,0,105,0,115,0,117,0,97,0,108,0,105,0,122,0,97,0,116,0,105,0,111,0,110,0,84,0,111,0,111,0,108,0,98,0,97,0,114,1,0,0,0,252,255,255,255,255,0,0,0,0,0,0,0,0</e>
-      <e Name="PlayerSizesFloating" Type="bytearray">0,0,0,255,0,0,0,0,253,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,252,2,0,0,0,2,251,0,0,0,22,0,77,0,111,0,100,0,101,0,108,0,69,0,100,0,105,0,116,0,111,0,114,3,0,0,0,38,0,0,0,137,0,0,1,0,0,0,0,192,251,0,0,0,22,0,76,0,97,0,116,0,116,0,105,0,99,0,101,0,68,0,97,0,116,0,97,2,0,0,0,69,0,0,0,158,0,0,1,0,0,0,0,192,0,0,0,3,0,0,0,0,0,0,0,0,252,1,0,0,0,1,251,0,0,0,14,0,67,0,111,0,110,0,115,0,111,0,108,0,101,3,0,0,1,45,0,0,3,0,0,0,3,145,0,0,0,106,0,0,3,61,0,0,0,0,0,0,0,1,0,0,0,4,0,0,0,8,0,0,0,8,252,0,0,0,1,0,0,0,2,0,0,0,3,0,0,0,20,0,83,0,105,0,109,0,84,0,111,0,111,0,108,0,98,0,97,0,114,1,0,0,0,0,255,255,255,255,0,0,0,0,0,0,0,0,0,0,0,22,0,70,0,105,0,108,0,101,0,84,0,111,0,111,0,108,0,98,0,97,0,114,1,0,0,0,122,255,255,255,255,0,0,0,0,0,0,0,0,0,0,0,26,0,87,0,105,0,110,0,100,0,111,0,119,0,84,0,111,0,111,0,108,0,98,0,97,0,114,1,0,0,0,217,255,255,255,255,0,0,0,0,0,0,0,0</e>
+      <e Name="PlayerSizes" Type="bytearray">0,0,0,255,0,0,0,0,253,0,0,0,3,0,0,0,0,0,0,1,221,0,0,3,117,252,2,0,0,0,3,251,0,0,0,22,0,77,0,111,0,100,0,101,0,108,0,69,0,100,0,105,0,116,0,111,0,114,1,0,0,0,55,0,0,3,117,0,0,0,120,0,255,255,255,251,0,0,0,30,0,76,0,97,0,116,0,116,0,105,0,99,0,101,0,68,0,97,0,116,0,97,0,68,0,111,0,99,0,107,0,0,0,0,46,0,0,2,169,0,0,0,0,0,0,0,0,251,0,0,0,32,0,71,0,114,0,97,0,112,0,104,0,105,0,110,0,99,0,115,0,32,0,87,0,105,0,110,0,100,0,111,0,119,2,0,0,0,129,0,0,0,123,0,0,1,0,0,0,1,250,0,0,0,2,0,0,4,195,0,0,0,212,252,1,0,0,0,1,251,0,0,0,22,0,76,0,97,0,116,0,116,0,105,0,99,0,101,0,68,0,97,0,116,0,97,0,0,0,0,0,255,255,255,255,0,0,0,93,0,255,255,255,0,0,0,3,0,0,5,86,0,0,0,143,252,1,0,0,0,2,251,0,0,0,14,0,67,0,111,0,110,0,115,0,111,0,108,0,101,0,0,0,0,0,0,0,5,86,0,0,0,137,0,255,255,255,252,0,0,0,0,0,0,4,188,0,0,0,0,0,255,255,255,250,0,0,0,0,2,0,0,0,1,251,0,0,0,30,0,77,0,111,0,100,0,101,0,108,0,69,0,100,0,105,0,116,0,111,0,114,0,68,0,111,0,99,0,107,3,0,0,5,85,0,0,1,89,0,0,1,0,0,0,1,190,0,0,4,174,0,0,3,117,0,0,0,1,0,0,0,4,0,0,0,8,0,0,0,8,252,0,0,0,1,0,0,0,2,0,0,0,4,0,0,0,20,0,83,0,105,0,109,0,84,0,111,0,111,0,108,0,98,0,97,0,114,1,0,0,0,0,255,255,255,255,0,0,0,0,0,0,0,0,0,0,0,22,0,70,0,105,0,108,0,101,0,84,0,111,0,111,0,108,0,98,0,97,0,114,1,0,0,0,122,255,255,255,255,0,0,0,0,0,0,0,0,0,0,0,26,0,87,0,105,0,110,0,100,0,111,0,119,0,84,0,111,0,111,0,108,0,98,0,97,0,114,1,0,0,0,217,255,255,255,255,0,0,0,0,0,0,0,0,0,0,0,40,0,86,0,105,0,115,0,117,0,97,0,108,0,105,0,122,0,97,0,116,0,105,0,111,0,110,0,84,0,111,0,111,0,108,0,98,0,97,0,114,1,0,0,1,2,255,255,255,255,0,0,0,0,0,0,0,0</e>
+      <e Name="PlayerSizesFloating" Type="bytearray">0,0,0,255,0,0,0,0,253,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,252,2,0,0,0,2,251,0,0,0,22,0,77,0,111,0,100,0,101,0,108,0,69,0,100,0,105,0,116,0,111,0,114,3,0,0,0,38,0,0,0,137,0,0,1,0,0,0,0,192,251,0,0,0,22,0,76,0,97,0,116,0,116,0,105,0,99,0,101,0,68,0,97,0,116,0,97,2,0,0,0,69,0,0,0,158,0,0,1,0,0,0,0,192,0,0,0,3,0,0,0,0,0,0,0,0,252,1,0,0,0,1,251,0,0,0,14,0,67,0,111,0,110,0,115,0,111,0,108,0,101,3,0,0,1,45,0,0,2,150,0,0,3,145,0,0,0,143,0,0,3,61,0,0,0,0,0,0,0,1,0,0,0,4,0,0,0,8,0,0,0,8,252,0,0,0,1,0,0,0,2,0,0,0,4,0,0,0,20,0,83,0,105,0,109,0,84,0,111,0,111,0,108,0,98,0,97,0,114,1,0,0,0,0,255,255,255,255,0,0,0,0,0,0,0,0,0,0,0,22,0,70,0,105,0,108,0,101,0,84,0,111,0,111,0,108,0,98,0,97,0,114,1,0,0,0,122,255,255,255,255,0,0,0,0,0,0,0,0,0,0,0,26,0,87,0,105,0,110,0,100,0,111,0,119,0,84,0,111,0,111,0,108,0,98,0,97,0,114,1,0,0,0,217,255,255,255,255,0,0,0,0,0,0,0,0,0,0,0,40,0,86,0,105,0,115,0,117,0,97,0,108,0,105,0,122,0,97,0,116,0,105,0,111,0,110,0,84,0,111,0,111,0,108,0,98,0,97,0,114,1,0,0,1,2,255,255,255,255,0,0,0,0,0,0,0,0</e>
    </Settings>
    <Settings Type="point">
-      <e Name="MainWindowPosition" Type="point">953,0</e>
+      <e Name="MainWindowPosition" Type="point">-9,-9</e>
       <e Name="MainWindowPositionFloating" Type="point">351,34</e>
    </Settings>
    <Settings Type="int">
@@ -13,17 +13,17 @@
       <e Name="FieldIndex" Type="int">0</e>
       <e Name="GraphicsWinHeight" Type="int">400</e>
       <e Name="GraphicsWinWidth" Type="int">400</e>
-      <e Name="NumberAccuracy" Type="int">2</e>
+      <e Name="NumberAccuracy" Type="int">3</e>
       <e Name="NumberOfContourLines" Type="int">3</e>
-      <e Name="NumberOfLegendBoxes" Type="int">6</e>
+      <e Name="NumberOfLegendBoxes" Type="int">20</e>
       <e Name="NumberOfRecentSimulations" Type="int">3</e>
       <e Name="Projection" Type="int">0</e>
-      <e Name="SaveImageFrequency" Type="int">1440</e>
+      <e Name="SaveImageFrequency" Type="int">100</e>
       <e Name="SaveLatticeFrequency" Type="int">100</e>
       <e Name="ScreenUpdateFrequency" Type="int">10</e>
       <e Name="Screenshot_X" Type="int">600</e>
       <e Name="Screenshot_Y" Type="int">600</e>
-      <e Name="TabIndex" Type="int">3</e>
+      <e Name="TabIndex" Type="int">0</e>
    </Settings>
    <Settings Type="float">
       <e Name="ArrowLength" Type="float">1.0</e>
@@ -34,9 +34,8 @@
    </Settings>
    <Settings Type="color">
       <e Name="ArrowColor" Type="color">#ffffff</e>
-      <e Name="AxesColor" Type="color">#ffffff</e>
       <e Name="BorderColor" Type="color">#ffff00</e>
-      <e Name="BoundingBoxColor" Type="color">#ffffff</e>
+      <e Name="BoundingBoxColor" Type="color">#3d3d3d</e>
       <e Name="BrushColor" Type="color">#ffffff</e>
       <e Name="ClusterBorderColor" Type="color">#0000ff</e>
       <e Name="ContourColor" Type="color">#ffffff</e>
@@ -47,11 +46,11 @@
       <e Name="FieldParams" Type="dict"/>
       <e Name="TypeColorMap" Type="dict">
          <e Name="0" Type="color">#000000</e>
-         <e Name="1" Type="color">#aaaa00</e>
+         <e Name="1" Type="color">#aa0000</e>
          <e Name="10" Type="color">#ffffff</e>
          <e Name="2" Type="color">#0000ff</e>
          <e Name="3" Type="color">#ff0000</e>
-         <e Name="4" Type="color">#007d00</e>
+         <e Name="4" Type="color">#808000</e>
          <e Name="5" Type="color">#c0c0c0</e>
          <e Name="6" Type="color">#ff00ff</e>
          <e Name="7" Type="color">#000080</e>
@@ -60,9 +59,9 @@
       </e>
       <e Name="WindowsLayout" Type="dict">
          <e Name="0" Type="dict">
-            <e Name="cameraClippingRange" Type="floatlist">316.02973228,324.010281075</e>
-            <e Name="cameraFocalPoint" Type="floatlist">224.14300236,42.8524685042,0.0</e>
-            <e Name="cameraPosition" Type="floatlist">224.14300236,42.8524685042,319.221951798</e>
+            <e Name="cameraClippingRange" Type="floatlist">1060.46653347,1087.24599139</e>
+            <e Name="cameraFocalPoint" Type="floatlist">200.0,60.0,0.0</e>
+            <e Name="cameraPosition" Type="floatlist">200.0,60.0,1071.17831664</e>
             <e Name="cameraViewUp" Type="floatlist">0.0,1.0,0.0</e>
             <e Name="is3D" Type="bool">False</e>
             <e Name="planeName" Type="str">XY</e>
@@ -70,18 +69,18 @@
             <e Name="sceneName" Type="str">Cell_Field</e>
             <e Name="sceneType" Type="str">CellField</e>
             <e Name="winPosition" Type="point">0,0</e>
-            <e Name="winSize" Type="size">1585,599</e>
+            <e Name="winSize" Type="size">838,875</e>
             <e Name="winType" Type="str">Graphics</e>
          </e>
       </e>
    </Settings>
    <Settings Type="str">
-      <e Name="LastVersionCheckDate" Type="str">20160208</e>
-      <e Name="OutputLocation" Type="str">D:\_Julian Debatin\Daten_Simulation</e>
+      <e Name="LastVersionCheckDate" Type="str">20161013</e>
+      <e Name="OutputLocation" Type="str">c:\Users\Markus\CC3DWorkspace2\</e>
       <e Name="ProjectLocation" Type="str"/>
-      <e Name="RecentFile" Type="str">C:\Moduro\SdCdbCdiInDa.cc3d</e>
+      <e Name="RecentFile" Type="str">C:\Users\Markus\Local-Docs\src\cc3d\Moduro-CC3D\SpaPcdbCdiInDa.cc3d</e>
       <e Name="ScalarIsoValues" Type="str"/>
-      <e Name="Types3DInvisible" Type="str">0</e>
+      <e Name="Types3DInvisible" Type="str">0,1,3,4</e>
    </Settings>
    <Settings Type="bool">
       <e Name="BoundingBoxOn" Type="bool">True</e>
@@ -94,8 +93,7 @@
       <e Name="ClusterBordersOn" Type="bool">False</e>
       <e Name="ConcentrationLimitsOn" Type="bool">True</e>
       <e Name="ContoursOn" Type="bool">False</e>
-      <e Name="DebugOutputPlayer" Type="bool">False</e>
-      <e Name="DisplayConsole" Type="bool">True</e>
+      <e Name="DisplayConsole" Type="bool">False</e>
       <e Name="DisplayLatticeData" Type="bool">False</e>
       <e Name="DisplayModelEditor" Type="bool">True</e>
       <e Name="FPPLinksColorOn" Type="bool">False</e>
@@ -105,27 +103,24 @@
       <e Name="ImageOutputOn" Type="bool">True</e>
       <e Name="LatticeOutputOn" Type="bool">False</e>
       <e Name="LegendEnable" Type="bool">True</e>
-      <e Name="MaxRangeFixed" Type="bool">True</e>
+      <e Name="MaxRangeFixed" Type="bool">False</e>
       <e Name="MinRangeFixed" Type="bool">False</e>
       <e Name="OutputToProjectOn" Type="bool">False</e>
       <e Name="OverlayVectorsOn" Type="bool">False</e>
       <e Name="PixelizedScalarField" Type="bool">False</e>
       <e Name="ScaleArrowsOn" Type="bool">False</e>
-      <e Name="ShowAxes" Type="bool">True</e>
-      <e Name="ShowHorizontalAxesLabels" Type="bool">True</e>
-      <e Name="ShowVerticalAxesLabels" Type="bool">True</e>
       <e Name="UseInternalConsole" Type="bool">False</e>
       <e Name="WindowColorSameAsMedium" Type="bool">True</e>
    </Settings>
    <Settings Type="strlist">
       <e Name="RecentSimulations" Type="strlist">
-         <e Name="e" Type="str">D:\_Julian Debatin\Moduro\PASCMInDa.cc3d</e>
-         <e Name="e" Type="str">C:\CompuCell3D\Demos\Moduro\cc3d\CC3D\PAS\PAS-NU-DAE\PAS-NU-DAE.cc3d</e>
-         <e Name="e" Type="str">C:\CompuCell3D\Demos\Moduro\cc3d\CC3D\PAS\PAS-IN-RA\PAS-IN-RA.cc3d</e>
+         <e Name="e" Type="str">C:\Users\Markus\Local-Docs\src\cc3d\Moduro-CC3D\SpaCdbCdiInDa.cc3d</e>
+         <e Name="e" Type="str">C:\Users\Markus\Local-Docs\src\jvm\MSM\tissue\src\main\cc3d\Checkerboard\Checkerboard.cc3d</e>
+         <e Name="e" Type="str">C:\Users\Markus\Local-Docs\src\jvm\MSM\tissue\src\main\cc3d\Invasion\Invasion.cc3d</e>
       </e>
    </Settings>
    <Settings Type="size">
-      <e Name="MainWindowSize" Type="size">944,1002</e>
-      <e Name="MainWindowSizeFloating" Type="size">829,64</e>
+      <e Name="MainWindowSize" Type="size">1680,966</e>
+      <e Name="MainWindowSizeFloating" Type="size">829,79</e>
    </Settings>
 </PlayerSettings>
