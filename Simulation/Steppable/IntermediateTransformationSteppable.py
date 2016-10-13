@@ -12,7 +12,7 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-__author__ = "Angelo Torelli, Markus Gumbel"
+__author__ = "Julian Debatin"
 __copyright__ = "The authors"
 __license__ = "Apache 2"
 __email__ = "m.gumbel@hs-mannheim.de"
@@ -21,16 +21,14 @@ __status__ = "Production"
 from Steppable.ModuroSteppable import ModuroSteppable
 from Steppable.TransformationSteppable import TransformationSteppable
 
-class CMTransformationSteppable(TransformationSteppable):
+class IntermediateTransformationSteppable(TransformationSteppable):
     def __init__(self, _simulator, model, _frequency=1):
         TransformationSteppable.__init__(self, _simulator, model, _frequency)
 
 
     def moduroStep(self, mcs):
         for cell in self.cellList:
-            if cell.type == self.BASAL and not self.hasCertainNeighbor(cell, self.BASALMEMBRANE):
-                self.transformInto(cell, self.INTERMEDIATE, mcs)
-            elif cell.type == self.INTERMEDIATE and self.hasCertainNeighbor(cell, self.MEDIUM):
+            if cell.type == self.INTERMEDIATE and self.hasCertainNeighbor(cell, self.MEDIUM):
                 self.transformInto(cell, self.UMBRELLA, mcs)
             elif (cell.type == self.STEM or cell.type == self.UMBRELLA) and self.hasCertainNeighbor(cell, self.MEDIUM):
                 self.setInhibitionFlag(cell, False)

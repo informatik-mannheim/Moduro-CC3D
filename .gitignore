@@ -1,3 +1,4 @@
 *.pyc
 Simulation/CellsInit.piff
 Simulation/_settings.xml
+.idea
