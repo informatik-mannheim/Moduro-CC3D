@@ -10,14 +10,17 @@ class ParameterDumpToObjectsConverter:
     def getStemCell(self, parameterdumppath):
         # todo  - parse parameterdump StemCell values
         stem = CellType.Stemcell
-        # todo - call getter and set values for stemcell
+
+        #stem.setGrowthVolumePerDayRelVolume(parsedValue)
+
+        # todo - call setters and set values for stemcell
         return stem
 
     def getMedium(self, parameterdumppath):
         # todo: parse
         medium = CellType.Medium
 
-        # todo: call getters of medium set values
+        # todo: call setters of medium set values
         return medium
 
     def getBasalmembrane(self, parameterdumppath):

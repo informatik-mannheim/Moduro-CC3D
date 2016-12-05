@@ -45,7 +45,7 @@ class ParsedModelUa(ModelConfig):
 
     def _initModel(self):
             paramDumpConverter = ParameterDumpToObjectsConverter()
-
+            #todo: name klären (1zu1 aus parameterDump? Oder mit Präfix? Suffix?)
             # self.name = "parsedModel"
             self.name = paramDumpConverter.getNameOfModel(self.parameterDumpPath)
             self.cellTypes = self._createCellTypes()
@@ -53,20 +53,21 @@ class ParsedModelUa(ModelConfig):
             self._run()  # Must be the last statement.
 
     def _createCellTypes(self):
-                paramDumpConverter = ParameterDumpToObjectsConverter()
+               # paramDumpConverter = ParameterDumpToObjectsConverter()
+
                 cellTypes = []
                 stem = Stemcell
-                stem.setGrowthVolumePerDayRelVolume(0.13)
-                # todo: darauf achten, dass hier auch lokale variablen gesetzt werden und das nicht vom
-                # todo: parameterConverter gemacht werden kann / soll
+                stem.setGrowthVolumePerDayRelVolume()
+
+                # todo: wird das verwendet?
                 self.stemNecrosisProb = stem.necrosisProb = 0
 
-                # todo: WIRD DURCH DEN PARAMETERDATTOOBJECTCONV ausgetauscht!!!
-                stem = paramDumpConverter.getStemCell(self.parameterDumpPath)
-                basal = paramDumpConverter.getBasalcell(self.parameterDumpPath)
-                umbrella = paramDumpConverter.getUmbrellacell(self.parameterDumpPath)
-                paramDumpConverter.get
-
+               # todo: WIRD DURCH DEN PARAMETERDATTOOBJECTCONV ausgetauscht!!!
+               # stemCell = paramDumpConverter.getStemCell(self.parameterDumpPath)
+               # basalCell = paramDumpConverter.getBasalcell(self.parameterDumpPath)
+               # umbrellaCell = paramDumpConverter.getUmbrellacell(self.parameterDumpPath)
+               # basalMembrane = paramDumpConverter.getBasalmembrane(self.parameterDumpPath)
+               # ...
 
                 basal = Basalcell
                 basal.setGrowthVolumePerDayRelVolume(0.12)
@@ -83,6 +84,9 @@ class ParsedModelUa(ModelConfig):
                 umbrella.apoptosisTimeInDays = 100000000000.0
                 self.umbrellaNecrosisProb = umbrella.necrosisProb = 0.00005
 
+                # todo kann nicht im converter gesetzt werden
+                # todo: auf reihenfolge beim Anlegen der Klassen achten!
+                # CellType setzt ID lokal (counter im construktor)
                 stem.setDescendants(0.90, [stem.id, basal.id])
                 stem.setDescendants(0.05, [stem.id, stem.id])
                 stem.setDescendants(0.05, [basal.id, basal.id])
