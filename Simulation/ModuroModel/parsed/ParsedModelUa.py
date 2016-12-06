@@ -42,7 +42,6 @@ class ParsedModelUa(ModelConfig):
             self.parameterDumpPath = parameter_dump_path
             ModelConfig.__init__(self, sim, simthread)
 
-
     def _initModel(self):
             paramDumpConverter = ParameterDumpToObjectsConverter()
             #todo: name klären (1zu1 aus parameterDump? Oder mit Präfix? Suffix?)
@@ -53,7 +52,7 @@ class ParsedModelUa(ModelConfig):
             self._run()  # Must be the last statement.
 
     def _createCellTypes(self):
-               # paramDumpConverter = ParameterDumpToObjectsConverter()
+                #pramDumpConverter = ParameterDumpToObjectsConverter()
 
                 cellTypes = []
                 stem = Stemcell
@@ -86,7 +85,7 @@ class ParsedModelUa(ModelConfig):
 
                 # todo kann nicht im converter gesetzt werden
                 # todo: auf reihenfolge beim Anlegen der Klassen achten!
-                # CellType setzt ID lokal (counter im construktor)
+                # CellType setzt ID lokal (counter im konstruktor)
                 stem.setDescendants(0.90, [stem.id, basal.id])
                 stem.setDescendants(0.05, [stem.id, stem.id])
                 stem.setDescendants(0.05, [basal.id, basal.id])

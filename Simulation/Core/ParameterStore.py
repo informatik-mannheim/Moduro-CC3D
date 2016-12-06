@@ -76,13 +76,47 @@ class ParameterStore(object):
             self.__fileHandle.write("In '{0}', '{1}' is set to: '{2}' \n".format(x[0], x[1], x[2]))
         self.__fileHandle.close()
 
-    def readParameterfile(self, filename):
+    def readParameterfile(self, paramDumpPath):
         """
         Reads parameters from a file.
-        :param filename:
-        :return:
+        :param paramDumpPath: directory of optimized ParameterDump.dat
+        :return: dictionary of unique key value pairs
         """
-        return None
+        exeConfig = 'exeConfig_ '
+        modelParams = 'modelParams_'
+        mediumParams = 'mediumParams_'
+        basalMembraneParams = 'basalMembraneParams_'
+        stemParams = 'stemParams_'
+        basalParams = 'basalParams_'
+        intermediateParams = 'intermediateParams_'
+        umbrellaParams = 'umbrellaParams_'
+
+        with open('ParameterDump.dat', 'r') as f:
+            if True:
+                for num, line in enumerate(f, 1):
+                    words = line.split(':')
+                    if num >= 1 and num <= 23:
+                        words[0] = exeConfig + words[0]
+                    elif num >= 23 and num <= 34:
+                        words[0] = modelParams + words[0]
+                    elif num >= 35 and num <= 53:
+                        words[0] = mediumParams + words[0]
+                    elif num >= 54 and num <= 71:
+                        words[0] = basalMembraneParams + words[0]
+                    elif num >= 72 and num <= 89:
+                        words[0] = stemParams + words[0]
+                    elif num >= 90 and num <= 107:
+                        words[0] = basalParams + words[0]
+                    elif num >= 108 and num <= 125:
+                        words[0] = intermediateParams + words[0]
+                    elif num >= 126 and num <= 143:
+                        words[0] = umbrellaParams + words[0]
+                    if line == '\n':
+                        continue
+                    self.params.append(words)
+                    print words
+        print self.params
+        print ('-------------------')
 
     def saveAllObjs(self, filename):
         self.__openParameterfile(filename)
