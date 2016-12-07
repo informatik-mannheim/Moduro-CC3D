@@ -19,11 +19,14 @@ __email__ = "m.gumbel@hs-mannheim.de"
 __status__ = "Production"
 
 import datetime
+from collections import defaultdict
 
 class ParameterStore(object):
     """
     Saves and restores parameter for simulations.
     """
+
+    paramDumpPath = 'ParameterDump.dat'
 
     def __init__(self):
         self.params = []
@@ -91,13 +94,13 @@ class ParameterStore(object):
         intermediateParams = 'intermediateParams_'
         umbrellaParams = 'umbrellaParams_'
 
-        with open('ParameterDump.dat', 'r') as f:
+        with open(paramDumpPath, 'r') as f:
             if True:
                 for num, line in enumerate(f, 1):
                     words = line.split(':')
                     if num >= 1 and num <= 23:
                         words[0] = exeConfig + words[0]
-                    elif num >= 23 and num <= 34:
+                    elif num >= 24 and num <= 34:
                         words[0] = modelParams + words[0]
                     elif num >= 35 and num <= 53:
                         words[0] = mediumParams + words[0]
@@ -113,10 +116,14 @@ class ParameterStore(object):
                         words[0] = umbrellaParams + words[0]
                     if line == '\n':
                         continue
+                    # isMasterKey(f, words)
                     self.params.append(words)
                     print words
         print self.params
-        print ('-------------------')
+        dictParams = defaultdict(list)
+        for key, value in self.params:
+            dictParams[key].append(value)
+        return dictParams
 
     def saveAllObjs(self, filename):
         self.__openParameterfile(filename)

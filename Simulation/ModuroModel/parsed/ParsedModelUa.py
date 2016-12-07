@@ -24,6 +24,7 @@ from Core.ExecConfig import ExecConfig
 from Core.ModelConfig import ModelConfig
 from ParameterDatToObjectConverter import ParameterDumpToObjectsConverter
 
+from Steppable.IntermediateTransformationSteppable import IntermediateTransformationSteppable
 from Steppable.InitializerSteppable import InitializerSteppable
 from Steppable.DeathSteppable import DeathSteppable
 from Steppable.GrowthMitosisSteppable import GrowthMitosisSteppable
@@ -38,59 +39,83 @@ from Steppable.MutationSteppable import MutationSteppable
 
 
 class ParsedModelUa(ModelConfig):
-    def __init__(self, sim, simthread, parameter_dump_path):
-            self.parameterDumpPath = parameter_dump_path
+
+    paramDumpPath = 'ParameterDump.dat'
+
+    def __init__(self, sim, simthread, paramDumpPath):
+            self.parameterDumpPath = paramDumpPath
             ModelConfig.__init__(self, sim, simthread)
 
     def _initModel(self):
             paramDumpConverter = ParameterDumpToObjectsConverter()
-            #todo: name klären (1zu1 aus parameterDump? Oder mit Präfix? Suffix?)
-            # self.name = "parsedModel"
+            self.name = "parsedModel_Test"
             self.name = paramDumpConverter.getNameOfModel(self.parameterDumpPath)
             self.cellTypes = self._createCellTypes()
             self.energyMatrix = self._createEnergyMatrix()
             self._run()  # Must be the last statement.
 
     def _createCellTypes(self):
-                #pramDumpConverter = ParameterDumpToObjectsConverter()
+            paramDumpConverter = ParameterDumpToObjectsConverter()
 
-                cellTypes = []
-                stem = Stemcell
-                stem.setGrowthVolumePerDayRelVolume()
+            cellTypes = []
+            stem = Stemcell
+            # todo: wird das verwendet?
+            self.necrosisProbStem = stem.necrosisProb = 0
 
-                # todo: wird das verwendet?
-                self.stemNecrosisProb = stem.necrosisProb = 0
-
-               # todo: WIRD DURCH DEN PARAMETERDATTOOBJECTCONV ausgetauscht!!!
-               # stemCell = paramDumpConverter.getStemCell(self.parameterDumpPath)
+            # todo: WIRD DURCH DEN ParameterDatToObjectConv ausgetauscht!!!
+            stem = paramDumpConverter.getStemCell(self.parameterDumpPath)
                # basalCell = paramDumpConverter.getBasalcell(self.parameterDumpPath)
                # umbrellaCell = paramDumpConverter.getUmbrellacell(self.parameterDumpPath)
                # basalMembrane = paramDumpConverter.getBasalmembrane(self.parameterDumpPath)
                # ...
 
-                basal = Basalcell
-                basal.setGrowthVolumePerDayRelVolume(0.12)
-                basal.apoptosisTimeInDays = 8000000000.0
-                self.basalNecrosisProb = basal.necrosisProb = 0.00001
+            basal = Basalcell
+            basal.setGrowthVolumePerDayRelVolume(0.12)
+            basal.apoptosisTimeInDays = 8000000000.0
+            self.basalNecrosisProb = basal.necrosisProb = 0.00001
 
-                intermediate = Intermediatecell
-                intermediate.setGrowthVolumePerDayRelVolume(0.11)
-                intermediate.apoptosisTimeInDays = 20000000000.0
-                self.intermediateNecrosisProb = intermediate.necrosisProb = 0.00003
+            intermediate = Intermediatecell
+            intermediate.setGrowthVolumePerDayRelVolume(0.11)
+            intermediate.apoptosisTimeInDays = 20000000000.0
+            self.intermediateNecrosisProb = intermediate.necrosisProb = 0.00003
 
-                umbrella = Umbrellacell
-                umbrella.setGrowthVolumePerDayRelVolume(0.09)
-                umbrella.apoptosisTimeInDays = 100000000000.0
-                self.umbrellaNecrosisProb = umbrella.necrosisProb = 0.00005
+            umbrella = Umbrellacell
+            umbrella.setGrowthVolumePerDayRelVolume(0.09)
+            umbrella.apoptosisTimeInDays = 100000000000.0
+            self.umbrellaNecrosisProb = umbrella.necrosisProb = 0.00005
 
-                # todo kann nicht im converter gesetzt werden
-                # todo: auf reihenfolge beim Anlegen der Klassen achten!
-                # CellType setzt ID lokal (counter im konstruktor)
-                stem.setDescendants(0.90, [stem.id, basal.id])
-                stem.setDescendants(0.05, [stem.id, stem.id])
-                stem.setDescendants(0.05, [basal.id, basal.id])
-                basal.setDescendants(1.0, [basal.id, intermediate.id])
+            # todo kann nicht im converter gesetzt werden
+            # todo: auf reihenfolge beim Anlegen der Klassen achten!
+            # CellType setzt ID lokal (counter im konstruktor)
+            # ist das immer gleich?
+            stem.setDescendants(0.90, [stem.id, basal.id])
+            stem.setDescendants(0.05, [stem.id, stem.id])
+            stem.setDescendants(0.05, [basal.id, basal.id])
+            basal.setDescendants(1.0, [basal.id, intermediate.id])
 
-                cellTypes.extend((Medium, Basalmembrane, stem, basal, intermediate, umbrella))
+            cellTypes.extend((Medium, Basalmembrane, stem, basal, intermediate, umbrella))
 
-                return cellTypes
+            return cellTypes
+    def _getSteppables(self):
+        steppableList = []
+        steppableList.append(ColonySteppable(self.sim, self))
+        steppableList.append(InitializerSteppable(self.sim, self))
+        steppableList.append(GrowthSteppable(self.sim, self))
+        steppableList.append(GrowthMitosisSteppable(self.sim, self))
+        steppableList.append(IntermediateTransformationSteppable(self.sim, self))
+        # steppableList.append(CMTransformationSteppable(self.sim, self))
+        steppableList.append(UrinationSteppable(self.sim, self, prop=0.02))
+        steppableList.append(DeathSteppable(self.sim, self))
+        # steppableList.append(OptimumSearchSteppable(self.sim, self))
+        steppableList.append(VolumeFitnessSteppable(self.sim, self))
+        steppableList.append(ArrangementFitnessSteppable(self.sim, self))
+        steppableList.append(DummyFitnessSteppable(self.sim, self))
+        steppableList.append(MutationSteppable(self.sim, self, self.necrosisProbStem, self.necrosisProbBasal,
+                                               self.necrosisProbIntermediate, self.necrosisProbUmbrella))
+        # was ist damit -> ?
+
+        return steppableList
+
+    def _createExecConfig(self):
+        return ExecConfig(MCSperDay=500,  # SEED=10,
+                          xLength=500, yLength=150, zLength=0, voxelDensity=.8)
