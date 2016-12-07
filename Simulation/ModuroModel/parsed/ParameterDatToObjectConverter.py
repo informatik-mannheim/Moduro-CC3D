@@ -7,20 +7,15 @@ from Core.ParameterStore import ParameterStore
 class ParameterDumpToObjectsConverter:
 
     paramDumpPath = 'ParameterDump.dat'
-    # paramStore = ParameterStore()
+    paramStore = ParameterStore()
 
     def __init__(self):
         return
 
     def getStemCell(self, paramDumpPath, paramStore):
         # todo  - parse parameterdump StemCell values
-        paramStore = ParameterStore()
         stem = CellType.Stemcell
-
         stem.apoptosisTimeInDays = paramStore.readParameterfile(paramDumpPath).get('stem_apoptosisTimeInDays')
-        self.necrosisProbStem = stem.necrosisProb = 0.0
-
-
         return stem
 
     def getMedium(self, paramDumpPath):

@@ -56,14 +56,13 @@ class ParsedModelUa(ModelConfig):
 
     def _createCellTypes(self):
             paramDumpConverter = ParameterDumpToObjectsConverter()
-
             cellTypes = []
-            stem = Stemcell
-            # todo: wird das verwendet?
-            self.necrosisProbStem = stem.necrosisProb = 0
 
             # todo: WIRD DURCH DEN ParameterDatToObjectConv ausgetauscht!!!
             stem = paramDumpConverter.getStemCell(self.parameterDumpPath)
+            # todo: wird das verwendet?
+            self.necrosisProbStem = stem.necrosisProb = 0
+
                # basalCell = paramDumpConverter.getBasalcell(self.parameterDumpPath)
                # umbrellaCell = paramDumpConverter.getUmbrellacell(self.parameterDumpPath)
                # basalMembrane = paramDumpConverter.getBasalmembrane(self.parameterDumpPath)
@@ -71,18 +70,23 @@ class ParsedModelUa(ModelConfig):
 
             basal = Basalcell
             basal.setGrowthVolumePerDayRelVolume(0.12)
-            basal.apoptosisTimeInDays = 8000000000.0
-            self.basalNecrosisProb = basal.necrosisProb = 0.00001
+            basal.apoptosisTimeInDays = 180000.0
+            self.necrosisProbBasal = basal.necrosisProb = 0.000008
 
             intermediate = Intermediatecell
             intermediate.setGrowthVolumePerDayRelVolume(0.11)
-            intermediate.apoptosisTimeInDays = 20000000000.0
-            self.intermediateNecrosisProb = intermediate.necrosisProb = 0.00003
+            intermediate.apoptosisTimeInDays = 180000.0
+            self.necrosisProbIntermediate = intermediate.necrosisProb = 0.00003
 
             umbrella = Umbrellacell
-            umbrella.setGrowthVolumePerDayRelVolume(0.09)
-            umbrella.apoptosisTimeInDays = 100000000000.0
-            self.umbrellaNecrosisProb = umbrella.necrosisProb = 0.00005
+            umbrella.setGrowthVolumePerDayRelVolume(0.1)
+            umbrella.apoptosisTimeInDays = 180000.0
+            self.necrosisProbUmbrella = umbrella.necrosisProb = 0.000035
+
+            stem.setDescendants(1.0, [stem.id, basal.id])
+            basal.setDescendants(0.96, [basal.id, intermediate.id])
+            basal.setDescendants(0.02, [basal.id, basal.id])
+            basal.setDescendants(0.02, [intermediate.id, intermediate.id])
 
             # todo kann nicht im converter gesetzt werden
             # todo: auf reihenfolge beim Anlegen der Klassen achten!
