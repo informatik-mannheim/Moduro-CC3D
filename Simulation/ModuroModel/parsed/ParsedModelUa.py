@@ -92,6 +92,7 @@ class ParsedModelUa(ModelConfig):
             # todo: auf reihenfolge beim Anlegen der Klassen achten!
             # CellType setzt ID lokal (counter im konstruktor)
             # ist das immer gleich?
+            # Nachfolgerzelle (Tochterzelle) wird bestimmt mit Wahrscheinlichkeiten
             stem.setDescendants(0.90, [stem.id, basal.id])
             stem.setDescendants(0.05, [stem.id, stem.id])
             stem.setDescendants(0.05, [basal.id, basal.id])

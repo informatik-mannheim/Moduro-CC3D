@@ -23,10 +23,10 @@
       <e Name="ScreenUpdateFrequency" Type="int">10</e>
       <e Name="Screenshot_X" Type="int">600</e>
       <e Name="Screenshot_Y" Type="int">600</e>
-      <e Name="TabIndex" Type="int">3</e>
+      <e Name="TabIndex" Type="int">0</e>
    </Settings>
    <Settings Type="float">
-      <e Name="ArrowLength" Type="float">1.0</e>
+      <e Name="ArrowLength" Type="float">1</e>
       <e Name="CellGlyphScale" Type="float">1.0</e>
       <e Name="MaxRange" Type="float">1.0</e>
       <e Name="MinRange" Type="float">0.0</e>
@@ -48,7 +48,7 @@
       <e Name="FieldParams" Type="dict">
          <e Name="ColonyField" Type="dict">
             <e Name="ArrowColor" Type="color">#ffffff</e>
-            <e Name="ArrowLength" Type="float">1.0</e>
+            <e Name="ArrowLength" Type="float">1</e>
             <e Name="ContoursOn" Type="bool">False</e>
             <e Name="FixedArrowColorOn" Type="bool">False</e>
             <e Name="LegendEnable" Type="bool">True</e>
@@ -98,7 +98,7 @@
       <e Name="LastVersionCheckDate" Type="str">20161013</e>
       <e Name="OutputLocation" Type="str">\\THESTATION\Users\Station\CC3DWorkspace</e>
       <e Name="ProjectLocation" Type="str"/>
-      <e Name="RecentFile" Type="str">\\THESTATION\Users\Station\PycharmProjects\Moduro-CC3D\SdBpaCdiInDa.cc3d</e>
+      <e Name="RecentFile" Type="str">\\THESTATION\Users\Station\PycharmProjects\Moduro-CC3D\SdSdbCdiInDa.cc3d</e>
       <e Name="ScalarIsoValues" Type="str"/>
       <e Name="Types3DInvisible" Type="str">0,1,3,4</e>
    </Settings>
