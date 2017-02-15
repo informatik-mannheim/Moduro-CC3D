@@ -24,9 +24,6 @@ class JsonBasedModelUa(ModelConfig):
         self.name = "JsonBasedModelUa"
         self.CellType = self._createCellTypes()
         self.energyMatrix = self._createEnergyMatrix()
-        # TODO: wann wird das aufgerufen? In jedem [x]UA.py ist die methode _initModel() ausimplementiert,
-        # TODO: teilweise mit Schreibfehler (initMOdel()).
-        # TODO: wann kommen wir hier hin?
         self._run()  # Must be the last statement.
 
     def createCellTypesByJson(self, parsedJson):

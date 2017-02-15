@@ -88,7 +88,6 @@ class JsonBasedModelDa(JsonBasedModelUa):
         with open(constantRunJsonCc3DConfigJsonFileName) as configJson:
             runJsonBasedModelConfigJson = json.load(configJson)
             # print "config:", runJsonBasedModelConfigJson
-            # todo: validate json scheme before loading
             targetJsonFilePath = runJsonBasedModelConfigJson['RunJsonCc3DConfig']['targetJsonModelPath']
 
         if not targetJsonFilePath.endswith(".json"):
