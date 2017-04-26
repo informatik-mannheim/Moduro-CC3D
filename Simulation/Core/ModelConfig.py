@@ -186,7 +186,9 @@ class ModelConfig(object):
         :return:
         '''
         # Adds the basal membrane:
-        self._addCubicCell(1, 0, 0, 0, self.execConfig.xLength, 2, self.execConfig.zLength, steppable)
+        membraneHeight = 40
+        self._addCubicCell(1, 0, 0, 0,
+                           self.execConfig.xLength, membraneHeight, self.execConfig.zLength, steppable)
         # Adds the stem cells throughout the basal membrane:
         cellDiameter = self.cellTypes[2].getAvgDiameter()
         stemCellFactor = 8 * cellDiameter
@@ -199,7 +201,7 @@ class ModelConfig(object):
             xPos = random.uniform(cellDiameter, self.execConfig.xLength - cellDiameter)
             zPos = random.uniform(cellDiameter, self.execConfig.zLength - cellDiameter)
             if self.execConfig.dimensions == 2:
-                self._addCubicCell(2, xPos, 2, 0, cellDiameter, cellDiameter, 0, steppable)
+                self._addCubicCell(2, xPos, membraneHeight, 0, cellDiameter, cellDiameter, 0, steppable)
             else:
-                self._addCubicCell(2, xPos, 2, zPos, cellDiameter,
+                self._addCubicCell(2, xPos, membraneHeight, zPos, cellDiameter,
                                    cellDiameter, cellDiameter, steppable)
