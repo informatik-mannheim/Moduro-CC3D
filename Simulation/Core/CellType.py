@@ -103,7 +103,7 @@ Medium = CellType(name="Medium", frozen=True, minDiameter=0, maxDiameter=0,
                   growthVolumePerDay=0, nutrientRequirement=0, apoptosisTimeInDays=0,
                   volFit=1.0, surFit=1.0)
 
-Basalmembrane = CellType(name="BasalMembrane", frozen=True, minDiameter=0, maxDiameter=0,
+Basalmembrane = CellType(name="BasalMembrane", frozen=False, minDiameter=0, maxDiameter=0,
                          growthVolumePerDay=0, nutrientRequirement=0, apoptosisTimeInDays=180000,
                          volFit=1.0, surFit=1.0)
 
