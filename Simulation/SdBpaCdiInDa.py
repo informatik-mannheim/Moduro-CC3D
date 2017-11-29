@@ -11,7 +11,7 @@
 #   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
-
+'Test command for new branch'
 __author__ = "Julian Debatin"
 __copyright__ = "The authors"
 __license__ = "Apache 2"
