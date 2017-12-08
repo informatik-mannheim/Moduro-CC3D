@@ -37,15 +37,18 @@ from Steppable.MutationSteppable import MutationSteppable
 
 class SdBpaCdiInUa(ModelConfig):
     def __init__(self, sim, simthread):
+        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Konstruktor SdBpaCdiInUa'
         ModelConfig.__init__(self, sim, simthread)
 
     def _initMOdel(self):
+        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function _initMOdel (************Ua)'
         self.name = "SdBpaCdiInUa"
         self.CellType = self._createCellTypes()
         self.energyMatrix = self._createEnergyMatrix()
         self._run() # Must be the last statement.
 
     def _createCellTypes(self):
+        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function _createCellTypes(************Ua)'
         cellTypes = []
         stem = Stemcell
         stem.setGrowthVolumePerDayRelVolume(0.13)
@@ -73,8 +76,8 @@ class SdBpaCdiInUa(ModelConfig):
         basal.setDescendants(0.02, [intermediate.id, intermediate.id])
 
 
-        cellTypes.extend((Medium, Basalmembrane, stem, basal, intermediate, umbrella))
-
+        cellTypes.extend((Medium, Basalmembrane, stem, basal, intermediate, umbrella))  #it will stay one list and not
+                                                                                        #become a nested list
         return cellTypes
 
     def _getSteppables(self):
@@ -97,5 +100,6 @@ class SdBpaCdiInUa(ModelConfig):
         return steppableList
 
     def _createExecConfig(self):
+        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function _createExecConfig (***********Ua)'
         return ExecConfig(MCSperDay=500,  # SEED=10,
                           xLength=500, yLength=150, zLength=100, voxelDensity=.8)

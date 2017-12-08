@@ -23,9 +23,11 @@ from ModuroModel.Sd.SdBpaCdiInUa import SdBpaCdiInUa
 
 class SdBpaCdiInDa(SdBpaCdiInUa):
     def __init__(self, sim, simthread):
+        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Konstruktor SdBpaCdiInDa'
         SdBpaCdiInUa.__init__(self, sim, simthread)
 
     def _initModel(self):
+        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function _initModel (************Da)'
         self.name = "SdBpaCdiInDa"
         self.adhFactor = 0.25
         self.cellTypes = self._createCellTypes()
@@ -34,6 +36,7 @@ class SdBpaCdiInDa(SdBpaCdiInUa):
 
 
     def _createEnergyMatrix(self):
+        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function createEnergyMatrix (************Da)'
         energyMatrix = [[0, 14, 14, 14, 14, 4],
                         [0, -1, 1, 3, 12, 12],
                         [0, 0, 6, 4, 8, 14],

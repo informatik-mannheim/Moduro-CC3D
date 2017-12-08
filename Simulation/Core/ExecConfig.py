@@ -38,6 +38,8 @@ class ExecConfig(object):
                  boundary_x="Periodic",
                  debugOutputFrequency=50000,
                  SEED=-1):
+        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Konstruktor ExecConfig'
+
         """
 
         :param xLength:
@@ -81,6 +83,8 @@ class ExecConfig(object):
         self.parameterStore.addObj(self)
 
     def initPotts(self):
+        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ExecConfig.initPotts'
+
         self.__cc3d = ElementCC3D("CompuCell3D", {"version": "3.7.3"})
         potts = self.__cc3d.ElementCC3D("Potts")
         potts.ElementCC3D("Dimensions", {"x": self.xDimension, "y": self.yDimension, "z": self.zDimension})
@@ -93,6 +97,8 @@ class ExecConfig(object):
         potts.ElementCC3D("RandomSeed", {}, self.SEED)
 
     def initCellTypes(self, cellTypes):
+        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ExecConfig.initCellTypes'
+
         PluginElmnt = self.__cc3d.ElementCC3D("Plugin", {"Name": "CellType"})
         for i in range(cellTypes.__len__()):
             if cellTypes[i].frozen:
@@ -104,6 +110,8 @@ class ExecConfig(object):
                                                      "TypeName": cellTypes[i].name})
 
     def initEnergyMatrix(self, cellTypes, energyMatrix, adhFactor):
+        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ExecConfig.initEnergyMatrix'
+
         contact = self.__cc3d.ElementCC3D("Plugin", {"Name": "Contact"})
         for i in range(cellTypes.__len__()):
             for j in range(i, cellTypes.__len__()):
@@ -112,10 +120,14 @@ class ExecConfig(object):
                                     adhFactor * energyMatrix[i][j])
 
     def initPlugins(self, *args):
+        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ExecConfig.initPlugins'
+
         for a in args:
             self.__cc3d.ElementCC3D("Plugin", {"Name": a})
 
     def initDiffusion(self, cellType, secretionRateNutr, decayConstantNutr):
+        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ExecConfig.initDiffusion'
+
         SteppableElmnt = self.__cc3d.ElementCC3D("Steppable", {"Type": "FlexibleDiffusionSolverFE"})
         DiffusionFieldElmnt = SteppableElmnt.ElementCC3D("DiffusionField")
         DiffusionDataElmnt = DiffusionFieldElmnt.ElementCC3D("DiffusionData")
@@ -158,6 +170,8 @@ class ExecConfig(object):
         return self.__truncate(self.voxelDensity * mum)
 
     def calculateVolume(self, diameter):
+        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ExecConfig.calculateVolume'
+
         if self.dimensions == 2:
             return PI * (diameter / 2.0) ** 2  # Area
         else:

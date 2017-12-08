@@ -34,6 +34,8 @@ class CellType(object):
     def __init__(self, name="CellType", frozen=False, minDiameter=10, maxDiameter=10,
                  growthVolumePerDay=500, nutrientRequirement=1.0, apoptosisTimeInDays=180000,
                  volFit=1.0, surFit=0.0, necrosisProb=0.0):
+        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Konstruktor CellType'
+
         """
 
         :param name:
@@ -66,6 +68,7 @@ class CellType(object):
         CellType.__typeCount += 1
 
     def setGrowthVolumePerDayRelVolume(self, multiple):
+        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function CellType.setGrowthVolumePerDayRelVolume'
         '''
         Set the growth volume per day relative to the maximum cell volume.
         :param multiple: Factor for the daily growth.
@@ -126,3 +129,4 @@ Umbrellacell = CellType(name="Umbrella", minDiameter=15, maxDiameter=19,
                         growthVolumePerDay=1 * Math.calcSphereVolumeFromDiameter(19),
                         nutrientRequirement=1.0, apoptosisTimeInDays=2,
                         volFit=0.9, surFit=0.1)
+print '!!!!!!!!!!!!!!!!!!!!!!!!!! Created all CellTypes'

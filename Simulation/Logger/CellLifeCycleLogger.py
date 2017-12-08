@@ -24,6 +24,7 @@ class CellLifeCycleLogger(object):
     cells = {} # For plausibility check.
 
     def __init__(self, model, fileName):
+        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Konstruktor CellLifeCycleLogger'
         self.model = model
         self.execConfig = model.execConfig
         self._fileName = fileName

@@ -37,6 +37,7 @@ class ModelConfig(object):
     cellID = 1
 
     def __init__(self, sim, simthread):
+        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Konstruktor ModelConfig'
         '''
         :param sim:
         :param simthread:
@@ -52,15 +53,20 @@ class ModelConfig(object):
         self.name = ""
         random.seed(self.execConfig.SEED)
         self.cellLifeCycleLogger = CellLifeCycleLogger(self, "Celltimes.daz")
+        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Konstruktor ModelConfig - will call self._initModel()'
         self._initModel()
+        print '!!!!!!!!!!!!!!!!!!!!!!!!!! End of Konstruktor ModelConfig'
 
     def _initModel(self):
+        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ModelConfig._initModel'
+
         self.cellTypes = self._createCellTypes()
         self.energyMatrix = self._createEnergyMatrix()
         self.name = "ModelName"
         self._run()
 
     def _run(self):
+        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ModelConfig._run'
         """
         Start the simulation.
         """
@@ -82,6 +88,7 @@ class ModelConfig(object):
 
     # TODO move configure stuff to ExecConfig?
     def _configureSimulation(self):
+        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ModelConfig._configureSimulation'
         self.execConfig.initPotts()
         self.execConfig.initCellTypes(self.cellTypes)
         # TODO why 15 * ...
@@ -98,6 +105,7 @@ class ModelConfig(object):
         return None
 
     def _createEnergyMatrix(self):
+        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ModelConfig._createEnergyMatrix'
         """
         Creates a uniform energy matrix of adhFac numbers only.
         :param adhEnergy: The energy.
@@ -105,15 +113,18 @@ class ModelConfig(object):
         """
         energyMatrix = [[self.adhEnergy for x in range(self.cellTypes.__len__())]
                         for x in range(self.cellTypes.__len__())]
+        print energyMatrix
         return energyMatrix
 
     def _createExecConfig(self):
+        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ModelConfig._createExecConfig'
         return ExecConfig(self)
 
     def calcVolume(self, diameter):
         return 4.0 / 3.0 * PI * (diameter / 2.0) ** 3
 
     def initCellAttributes(self, cell, cellDict):
+        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ModelConfig.initCellAttributes'
         cellType = self.cellTypes[cell.type]
         expLiveTime = self.execConfig.calcMCSfromDays(cellType.apoptosisTimeInDays)
         cellDict['exp_life_time'] = random.gauss(expLiveTime, expLiveTime / 10.0)
@@ -124,6 +135,7 @@ class ModelConfig(object):
         self.setCellAttributes(cellDict, cell, 0)
 
     def setCellAttributes(self, cellDict, cell, lifeTimeParent):
+        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ModelConfig.setCellAttributes'
         """
         Set attributes for a cell's dictionary.
         :param cellDict:
@@ -154,6 +166,7 @@ class ModelConfig(object):
         cell.lambdaSurface = self.execConfig.calcSurLambdaFromSurFit(cellType.surFit)
 
     def _addCubicCell(self, typename, xPos, yPos, zPos, xLength, yLength, zLength, steppable):
+        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ModelConfig._addCubicCell'
         '''
         Adds a cubic (rectangle or cube) cell. All values are in micro m.
         :param typename:  Type of the cell.
@@ -179,6 +192,7 @@ class ModelConfig(object):
         zPosDim:zPosDim + zLengthDim - 1] = cell
 
     def _initCells(self, steppable):
+        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ModelConfig._initCells'
         '''
         Initialize the tissue with cells etc. Here a urothelium with a basal membrane
         and some stem cells is created.

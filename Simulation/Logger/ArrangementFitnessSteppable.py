@@ -26,7 +26,7 @@ class ArrangementFitnessSteppable(TissueFitnessSteppable):
         TissueFitnessSteppable.__init__(self, simulator, model,
                                         "FitnessArrangement.dat", _frequency)
 
-'''The method step implements the Arrangement fitness function -> see published paper section 4.3.1'''
+    #The method step implements the Arrangement fitness function -> see published paper section 4.3.1
     # step is overwritten
     # TODO sizes do not scale yet!
     def step(self, mcs):
@@ -62,9 +62,8 @@ class ArrangementFitnessSteppable(TissueFitnessSteppable):
                     if layers == 0:
                         fitness_a = 0
                     else:
-                        '''
-                        firstLayer & lastLayer are Boolean with the value 1 (true) and 0 (false)
-                        '''
+                        #firstLayer & lastLayer are Boolean with the value 1 (true) and 0 (false)
+
                         optimumLayers = 1 if layers <= 7 and layers >= 3 else 0
                         if cells_in_order[layers - 1].type == self.UMBRELLA:
                             lastLayer = 1
@@ -91,7 +90,7 @@ class ArrangementFitnessSteppable(TissueFitnessSteppable):
 
             fitness_a = sum(sumFitness_a) / len(sumFitness_a)
             self._addLine(mcs, fitness_a)
-            print "!!!!!!!!!!!!!!!!! x: ", x, " steps: ", " fitness_a: ", fitness_a
+            #print "!!!!!!!!!!!!!!!!! x: ", x, " steps: ", " fitness_a: ", fitness_a
 
 
     def mode(self, IDs):
