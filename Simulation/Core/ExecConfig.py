@@ -26,7 +26,7 @@ from Core.ParameterStore import ParameterStore
 
 class ExecConfig(object):
     def __init__(self,
-                 xLength=150, yLength=200, zLength=1,
+                 xLength=150, yLength=200, zLength=50,
                  voxelDensity=1,
                  initNutrientDiffusion = False,
                  MCSperDay=500,
