@@ -136,6 +136,7 @@ class ModelConfig(object):
 
     def setCellAttributes(self, cellDict, cell, lifeTimeParent):
         print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ModelConfig.setCellAttributes'
+
         """
         Set attributes for a cell's dictionary.
         :param cellDict:
@@ -159,7 +160,8 @@ class ModelConfig(object):
         cellDict['growth_factor'] = []  # really needed?
         cellDict['life_time'] = lifeTimeParent  # How many MCS is this cell alive?
 
-        cell.targetVolume = cell.volume + 1  # At the beginning, the target is the actual size.
+        cell.targetVolume = cell.volume + 1  # At the beginning, the target is the actual size -- we increase it that
+                                             # the simulation still will run .
         # cell.targetVolume = cellDict['normal_volume'] # At the beginning, the target is the actual size.
         cell.targetSurface = self.execConfig.calcVoxelSurfaceFromVoxelVolume(cell.targetVolume)
         cell.lambdaVolume = self.execConfig.calcVolLambdaFromVolFit(cellType.volFit)
@@ -187,9 +189,10 @@ class ModelConfig(object):
         yLengthDim = self.execConfig.calcPixelFromMuMeter(yLength)
         zLengthDim = self.execConfig.calcPixelFromMuMeter(zLength)
         # size of cell will be SIZExSIZEx1
-        steppable.cellField[xPosDim:xPosDim + xLengthDim - 1,
-        yPosDim:yPosDim + yLengthDim - 1,
-        zPosDim:zPosDim + zLengthDim - 1] = cell
+        steppable.cellField[
+            xPosDim:xPosDim + xLengthDim - 1,
+            yPosDim:yPosDim + yLengthDim - 1,
+            zPosDim:zPosDim + zLengthDim - 1] = cell
 
     def _initCells(self, steppable):
         print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ModelConfig._initCells'
@@ -204,16 +207,23 @@ class ModelConfig(object):
         # Adds the stem cells throughout the basal membrane:
         cellDiameter = self.cellTypes[2].getAvgDiameter()
         stemCellFactor = 8 * cellDiameter
-        if self.execConfig.dimensions == 2:
-            noStemCells = int(self.execConfig.xLength / stemCellFactor)
-        else:
-            noStemCells = int(self.execConfig.xLength * self.execConfig.yLength /
+        '''calculate the amount of stem cells on the basal membrane
+           noStemCells means the amount of stem cells'''
+        #if self.execConfig.dimensions == 2:
+        #    noStemCells = int(self.execConfig.xLength / stemCellFactor)
+        #else:
+
+        noStemCells = int(self.execConfig.xLength * self.execConfig.yLength /
                               (stemCellFactor * stemCellFactor))
+
+        '''generates a random position between the cellDiameter and the ((xLength-cellDiameter)-1)
+           for each stem cell
+           keep some distance to the edges of the simulation field, otherwise the cell will be only half in the simulation'''
         for s in range(1, noStemCells + 1, 1):
             xPos = random.uniform(cellDiameter, self.execConfig.xLength - cellDiameter)
             zPos = random.uniform(cellDiameter, self.execConfig.zLength - cellDiameter)
-            if self.execConfig.dimensions == 2:
-                self._addCubicCell(2, xPos, 2, 0, cellDiameter, cellDiameter, 0, steppable)
-            else:
-                self._addCubicCell(2, xPos, 2, zPos, cellDiameter,
+           # if self.execConfig.dimensions == 2:
+          #      self._addCubicCell(2, xPos, 2, 0, cellDiameter, cellDiameter, 0, steppable)
+         #   else:
+            self._addCubicCell(2, xPos, 2, zPos, cellDiameter,
                                    cellDiameter, cellDiameter, steppable)
