@@ -23,6 +23,7 @@ from Logger.TissueFitnessSteppable import TissueFitnessSteppable
 
 class DummyFitnessSteppable(TissueFitnessSteppable):
     def __init__(self, simulator, model, _frequency=1):
+        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Konstruktor DummyFitnessSteppable'
         TissueFitnessSteppable.__init__(self, simulator, model, "FitnessPlot.dat", _frequency)
         yDim = self.execConfig.calcPixelFromMuMeterMin1(85)
         self.idealVol = self.execConfig.xDimension * yDim * self.execConfig.zDimension

@@ -143,8 +143,9 @@ class ExecConfig(object):
     def calculateLatticeSize(self):
         return self.xDimension * self.yDimension * self.zDimension
 
-    def interuptMCS(self, mcs):
-        return (mcs == 0) or (mcs % self.sampleIntervalInMCS == 0)
+        #cause the structure this function returns a boolean
+    def interuptMCS(self, mcs): # see https://docs.python.org/release/2.7.3/library/stdtypes.html#boolean-operations-and-or-not
+        return (mcs == 0) or (mcs % self.sampleIntervalInMCS == 0) # only evaluates the second argumend if the first is false
 
     def addParameter(self, key, value):
         # TODO: ghj

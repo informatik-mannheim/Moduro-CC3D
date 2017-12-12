@@ -35,6 +35,7 @@ class GrowthSteppable(ModuroSteppable):
             cellDict['life_time'] += 1
             if cellDict['life_time'] >= cellDict['exp_life_time']:
                 cellDict['necrosis'] = True
+                #if cellType.divides is false than second part otherwise cellType.divides
             elif cellType.divides or cell.targetVolume <= cellDict['normal_volume']:
                 # print "! ! ! ! tSurf=", cell.targetSurface
                 # Growth (mu m^3 ) per MCS:
@@ -44,10 +45,10 @@ class GrowthSteppable(ModuroSteppable):
                     growthVolPerDay = cellType.growthVolumePerDay
                 else:
                     growthVolPerDay = cellType.growthVolumePerDay * self.contactInhibitedFactor
-                deltaVolDimPerDay = self.execConfig.calcVoxelVolumeFromVolume(growthVolPerDay)
-                deltaVolDimPerMCS = 1.0 * deltaVolDimPerDay / self.execConfig.MCSperDay
-                if deltaVolDimPerMCS < 1.0: # The change may be too small for one MCS.
-                    deltaVolDimPerMCS = 1 if deltaVolDimPerMCS >= random.random() else 0
+                    deltaVolDimPerDay = self.execConfig.calcVoxelVolumeFromVolume(growthVolPerDay)
+                    deltaVolDimPerMCS = 1.0 * deltaVolDimPerDay / self.execConfig.MCSperDay
+                    if deltaVolDimPerMCS < 1.0: # The change may be too small for one MCS.
+                        deltaVolDimPerMCS = 1 if deltaVolDimPerMCS >= random.random() else 0
 
                 #print "!!::!::!:!:! deltaVol=", deltaVolPerMCS, ", deltaVolDimPerDay=",\
                 #    deltaVolDimPerDay, ", deltaVolDimPerMCS=", deltaVolDimPerMCS

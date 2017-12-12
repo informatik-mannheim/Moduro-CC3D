@@ -22,19 +22,19 @@ from Steppable.ModuroSteppable import ModuroSteppable
 
 class InitializerSteppable(ModuroSteppable):
     def __init__(self, simulator, model, _frequency=1):
+        print'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! in Konstruktor von InitializerSteppable'
         ModuroSteppable.__init__(self, simulator, model, _frequency)
 
     def start(self):
         """
-        Initialize all cells.
+        Initialize all cells after the simulation has been initialized.
         :return:
         """
         # Required here! Otherwise CC3D will not create the file.
         #self.execConfig.parameterStore.saveParameterfile("ParameterDump.dat")
         self.execConfig.parameterStore.saveAllObjs("ParameterDump.dat")
-
+        print'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! in InitializerSteppable.start()'
         self.model._initCells(self)
-
 
         for cell in self.cellList:
             # cellDict needs to be retrieved in a steppable:

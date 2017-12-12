@@ -22,7 +22,6 @@ from Steppable.ModuroSteppable import ModuroSteppable
 
 class TransformationSteppable(ModuroSteppable):
     def __init__(self, _simulator, model, _frequency=1):
-
         ModuroSteppable.__init__(self, _simulator, model, _frequency)
 
 
@@ -47,7 +46,7 @@ class TransformationSteppable(ModuroSteppable):
                 if neighborType == 0:
                     hasCertainNeighbor = True
                 if hasCertainNeighbor:
-                    break
+                    break       #stop foreach loop
         if totalMediumArea == 0:
             self.setInhibitionFlag(cell, True)
         else:

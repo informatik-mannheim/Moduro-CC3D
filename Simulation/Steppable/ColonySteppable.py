@@ -41,6 +41,7 @@ class ColonySteppable(ModuroSteppable):
     def moduroStep(self, mcs):
         # TODO: when interupt is a multiple of colonytag interval than it does not go into the if statement therefor +1
         if self.colonyTagInMCS + 1 == mcs:
+            #give every stem cell their own colonyID
             cellNr = self.cellList.__len__()
             stemNr = 0
             for cell in self.cellList:
@@ -54,6 +55,7 @@ class ColonySteppable(ModuroSteppable):
                     stemNr -= 1
                 else:
                     cellDict['colony'] = cell.id
+
         elif mcs > self.colonyTagInMCS + 1:
             self.scalarCLField.clear()
             for cell in self.cellList:

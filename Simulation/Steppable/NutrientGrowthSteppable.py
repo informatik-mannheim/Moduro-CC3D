@@ -36,6 +36,7 @@ class NutrientGrowthSteppable(GrowthSteppable):
             if cellDict['life_time'] >= apoptosisMCS:
                 cellDict['necrosis'] = [True]
             totalNutrients = 0
+            #why frozen -> it only checks that cellType is not the membrane
             if not cellType.frozen:
                 pixelList = self.getCellPixelList(cell)
                 for pixelTrackerData in pixelList:
@@ -51,6 +52,12 @@ class NutrientGrowthSteppable(GrowthSteppable):
                         self.scalarField[pixelTrackerData.pixel.x,
                                          pixelTrackerData.pixel.y,
                                          pixelTrackerData.pixel.z] = 0
+
+            print '!!!!!!!!!!!!!!!!!!!!!!!!!!NutrientGrowthSteppable -> cellType.divdes or cell.targetVolume'
+            print cellType.divides
+            print cell.targetVolume
+            print cellDict['normal_volume']
+
             if cellType.divides or cell.targetVolume <= cellDict['normal_volume']:
                 cell.targetSurface = self.execConfig.calcVoxelSurfaceFromVoxelVolume(cell.volume)
                 #TODO: necrosis trigger if to little nutrients
