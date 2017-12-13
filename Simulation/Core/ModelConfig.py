@@ -80,10 +80,10 @@ class ModelConfig(object):
 
         CompuCellSetup.mainLoop(self.sim, self.simthread, steppableRegistry)
 
-        def calcVolume(self, diameter):
+    def calcVolume(self, diameter):
             return 4.0 / 3.0 * PI * (diameter / 2.0) ** 3
 
-        def initCellAttributes(self, cell, cellDict):
+    def initCellAttributes(self, cell, cellDict):
             print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ModelConfig.initCellAttributes'
             cellType = self.cellTypes[cell.type]
             expLiveTime = self.execConfig.calcMCSfromDays(cellType.apoptosisTimeInDays)
@@ -94,7 +94,7 @@ class ModelConfig(object):
             cellDict['colony'] = -1  # Default colony id.
             self.setCellAttributes(cellDict, cell, 0)
 
-        def setCellAttributes(self, cellDict, cell, lifeTimeParent):
+    def setCellAttributes(self, cellDict, cell, lifeTimeParent):
             print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ModelConfig.setCellAttributes'
 
             """
@@ -127,7 +127,7 @@ class ModelConfig(object):
             cell.lambdaVolume = self.execConfig.calcVolLambdaFromVolFit(cellType.volFit)
             cell.lambdaSurface = self.execConfig.calcSurLambdaFromSurFit(cellType.surFit)
 
-        def _addCubicCell(self, typename, xPos, yPos, zPos, xLength, yLength, zLength, steppable):
+    def _addCubicCell(self, typename, xPos, yPos, zPos, xLength, yLength, zLength, steppable):
             print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ModelConfig._addCubicCell'
             '''
             Adds a cubic (rectangle or cube) cell. All values are in micro m.
@@ -154,7 +154,7 @@ class ModelConfig(object):
             yPosDim:yPosDim + yLengthDim - 1,
             zPosDim:zPosDim + zLengthDim - 1] = cell
 
-        def _initCells(self, steppable):
+    def _initCells(self, steppable):
             print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ModelConfig._initCells'
             '''
             Initialize the tissue with cells etc. Here a urothelium with a basal membrane
