@@ -26,7 +26,6 @@ class MutationSteppable(ModuroSteppable):
     def __init__(self, _simulator,  model, probStem=0.00, probBasal=0.00, probIntermediate=0.00, probUmbrella=0.00, _frequency=1):
         ModuroSteppable.__init__(self, _simulator, model, _frequency)
         self.mutationMCS = self.execConfig.calcMCSfromDays(1) # every day.
-        self.mutationMCS = self.execConfig.calcMCSfromDays(1)
         self.probStem = probStem
         self.probBasal = probBasal
         self.probIntermediate = probIntermediate
@@ -39,7 +38,7 @@ class MutationSteppable(ModuroSteppable):
     def _removeCells(self):
         for cell in self.cellList:
             if cell.type == self.STEM:
-                if random.random() < self.probStem:
+                if random.random() < self.probStem:  # Random float x, 0.0 <= x < 1.0
                     cellDict = self.getDictionaryAttribute(cell)
                     cellDict['necrosis'] = True
             elif cell.type == self.BASAL:
