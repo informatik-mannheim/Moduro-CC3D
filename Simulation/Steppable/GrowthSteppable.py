@@ -45,10 +45,10 @@ class GrowthSteppable(ModuroSteppable):
                     growthVolPerDay = cellType.growthVolumePerDay
                 else:
                     growthVolPerDay = cellType.growthVolumePerDay * self.contactInhibitedFactor
-                    deltaVolDimPerDay = self.execConfig.calcVoxelVolumeFromVolume(growthVolPerDay)
-                    deltaVolDimPerMCS = 1.0 * deltaVolDimPerDay / self.execConfig.MCSperDay
-                    if deltaVolDimPerMCS < 1.0: # The change may be too small for one MCS.
-                        deltaVolDimPerMCS = 1 if deltaVolDimPerMCS >= random.random() else 0
+                deltaVolDimPerDay = self.execConfig.calcVoxelVolumeFromVolume(growthVolPerDay)
+                deltaVolDimPerMCS = 1.0 * deltaVolDimPerDay / self.execConfig.MCSperDay
+                if deltaVolDimPerMCS < 1.0: # The change may be too small for one MCS.
+                    deltaVolDimPerMCS = 1 if deltaVolDimPerMCS >= random.random() else 0
 
                 #print "!!::!::!:!:! deltaVol=", deltaVolPerMCS, ", deltaVolDimPerDay=",\
                 #    deltaVolDimPerDay, ", deltaVolDimPerMCS=", deltaVolDimPerMCS
