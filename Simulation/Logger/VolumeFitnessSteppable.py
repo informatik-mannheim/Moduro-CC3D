@@ -25,6 +25,7 @@ class VolumeFitnessSteppable(TissueFitnessSteppable):
     def __init__(self, simulator, model, _frequency=1):
         print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Konstruktor VolumeFitnessSteppable'
         TissueFitnessSteppable.__init__(self, simulator, model, "FitnessVolume.dat", _frequency)
+        #why from 85
         yDim = self.execConfig.calcPixelFromMuMeterMin1(85)
         self.idealVol = self.execConfig.xDimension * yDim * self.execConfig.zDimension
         self.idealBasalStemCellsVol = 0.10 * self.idealVol
@@ -38,11 +39,14 @@ class VolumeFitnessSteppable(TissueFitnessSteppable):
             umbrellaVolume = 0
             intermediateVolume = 0
             basalStemVolume = 0
+
+            #create mediumVolume and reduce it for each cell, including the basal membrane
             mediumVolume = self.latticeSize
             for cell in self.cellList:
                 if cell.type == self.BASALMEMBRANE:
                     mediumVolume -= cell.volume
                 if cell.type > self.BASALMEMBRANE:
+                    #create a totalVolume of a cells, increase it for each cell excluding the basal membrane
                     totalVolume += cell.volume
                     if cell.type == self.UMBRELLA:
                         umbrellaVolume += cell.volume
@@ -53,12 +57,13 @@ class VolumeFitnessSteppable(TissueFitnessSteppable):
                     else:
                         basalStemVolume += cell.volume
                         mediumVolume -= cell.volume
+            #check if there are no cells or there is an overflow of cells
             if totalVolume == 0 or mediumVolume == 0:
                 fitness_v = 0.0
-                # print "No more cell in simulation"
+                # print "No more cell in simulation or an overload of cells"
                 self.stopSimulation()
             else:
-
+                #calculates the fitness of the current model
                 fitness_B = self._fit(self.idealBasalStemCellsVol, basalStemVolume)
                 fitness_I = self._fit(self.idealIntermediateCellsVol, intermediateVolume)
                 fitness_U = self._fit(self.idealUmbrellaCellsVol, umbrellaVolume)
