@@ -40,12 +40,6 @@ class SdBpaCdiInUa(ModelConfig):
         print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Konstruktor SdBpaCdiInUa'
         ModelConfig.__init__(self, sim, simthread)
 
-    def _initMOdel(self):
-        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function _initMOdel (************Ua)'
-        self.name = "SdBpaCdiInUa"
-        self.CellType = self._createCellTypes()
-        self.energyMatrix = self._createEnergyMatrix()
-        self._run() # Must be the last statement.
 
     def _createCellTypes(self):
         print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function _createCellTypes(************Ua)'
@@ -103,3 +97,11 @@ class SdBpaCdiInUa(ModelConfig):
         print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function _createExecConfig (***********Ua)'
         return ExecConfig(MCSperDay=500,  # SEED=10,
                           xLength=500, yLength=150, zLength=100, voxelDensity=.8)
+
+    #TODO shoudl be abstract
+    def _initMOdel(self):
+        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function _initMOdel (************Ua)'
+        self.name = "SdBpaCdiInUa"
+        self.CellType = self._createCellTypes()
+        self.energyMatrix = self._createEnergyMatrix()
+        self._run() # Must be the last statement.
