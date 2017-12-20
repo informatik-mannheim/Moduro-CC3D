@@ -31,12 +31,9 @@ class ModuroMitosisSteppable(MitosisSteppableBase):
         self.timeMCS = 0
 
     def step(self, mcs):
-        print'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! in ModuroMitosisSteppable.step()'
         self.timeMCS = mcs # We need the time later for the _cellLifeCycleBirth/Death function
-        print self.execConfig.interuptMCS(mcs)
         if not self.execConfig.interuptMCS(mcs):
             self.moduroStep(mcs) # better: not MCS but time!
-        print'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! END OF ModuroMitosisSteppable.step()'
 
     # Abstract method:
     def moduroStep(self, mcs):
@@ -44,11 +41,9 @@ class ModuroMitosisSteppable(MitosisSteppableBase):
 
     # Methods are required to have the timeMCS available.
     def _cellLifeCycleBirth(self, cell):
-        print'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! in ModuroMitosisSteppable._cellLifeCycleBirth()'
         cellDict = self.getDictionaryAttribute(cell)
         self.model.cellLifeCycleLogger.cellLifeCycleBirth(self.timeMCS, cell, cellDict)
 
     def _cellLifeCycleDeath(self, cell):
-        print'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! in ModuroMitosisSteppable._cellLifeCycleDeath()'
         cellDict = self.getDictionaryAttribute(cell)
         self.model.cellLifeCycleLogger.cellLifeCycleDeath(self.timeMCS, cell, cellDict)

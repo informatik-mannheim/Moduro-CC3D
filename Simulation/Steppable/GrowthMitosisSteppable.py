@@ -28,7 +28,6 @@ class GrowthMitosisSteppable(ModuroMitosisSteppable):
         ModuroMitosisSteppable.__init__(self, _simulator, model, _frequency)
 
     def moduroStep(self, mcs):
-        print'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! in GrowthMitosisStepable.moduroStep()'
         cells_to_divide = []
         for cell in self.cellList:
             cellDict = self.getDictionaryAttribute(cell)
@@ -44,7 +43,6 @@ class GrowthMitosisSteppable(ModuroMitosisSteppable):
 
 
     def updateAttributes(self):
-        print'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! in GrowthMitosisStepable.updateAttributes()'
         parentCell = self.mitosisSteppable.parentCell
         childCell = self.mitosisSteppable.childCell
 

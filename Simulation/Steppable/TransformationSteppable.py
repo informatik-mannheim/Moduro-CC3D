@@ -25,6 +25,7 @@ class TransformationSteppable(ModuroSteppable):
         ModuroSteppable.__init__(self, _simulator, model, _frequency)
 
 
+#TODO moduroStep has to be an abstract method
  #   def moduroStep(self, mcs):
  #       for cell in self.cellList:
  #           if cell.type == self.BASAL and not self.hasCertainNeighbor(cell, self.BASALMEMBRANE) and not self.onlyIntermediate:

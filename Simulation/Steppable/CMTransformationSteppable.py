@@ -28,10 +28,13 @@ class CMTransformationSteppable(TransformationSteppable):
 
     def moduroStep(self, mcs):
         for cell in self.cellList:
+            #if a basal cell looses contact to the membrane
             if cell.type == self.BASAL and not self.hasCertainNeighbor(cell, self.BASALMEMBRANE):
                 self.transformInto(cell, self.INTERMEDIATE, mcs)
+            #if a intermediate cell
             elif cell.type == self.INTERMEDIATE and self.hasCertainNeighbor(cell, self.MEDIUM):
                 self.transformInto(cell, self.UMBRELLA, mcs)
+
             elif (cell.type == self.STEM or cell.type == self.UMBRELLA) and self.hasCertainNeighbor(cell, self.MEDIUM):
                 self.setInhibitionFlag(cell, False)
 
