@@ -25,8 +25,7 @@ class VolumeFitnessSteppable(TissueFitnessSteppable):
     def __init__(self, simulator, model, _frequency=1):
         print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Konstruktor VolumeFitnessSteppable'
         TissueFitnessSteppable.__init__(self, simulator, model, "FitnessVolume.dat", _frequency)
-        #why from 85
-        yDim = self.execConfig.calcPixelFromMuMeterMin1(85)
+        yDim = self.execConfig.calcPixelFromMuMeterMin1(85) #avg urothelium thickness in micro meter
         self.idealVol = self.execConfig.xDimension * yDim * self.execConfig.zDimension
         self.idealBasalStemCellsVol = 0.10 * self.idealVol
         self.idealIntermediateCellsVol = 0.67 * self.idealVol

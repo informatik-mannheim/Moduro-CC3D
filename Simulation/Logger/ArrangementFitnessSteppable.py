@@ -31,8 +31,8 @@ class ArrangementFitnessSteppable(TissueFitnessSteppable):
     # TODO sizes do not scale yet!
     def step(self, mcs):
         if self.execConfig.interuptMCS(mcs):
-            deltaXPx = self.execConfig.calcPixelFromMuMeterMin1(20)  # 20 mu m.
-            deltaZPx = deltaXPx
+            deltaXPx = self.execConfig.calcPixelFromMuMeterMin1(20)  # 20 mu m. equals to 16px
+            deltaZPx = deltaXPx #will be 16
             sumFitness_a = []
             avgStemCellDiameterPx = \
                 self.execConfig.calcPixelFromMuMeterMin1(self.model.cellTypes[2].getAvgDiameter())
@@ -47,9 +47,11 @@ class ArrangementFitnessSteppable(TissueFitnessSteppable):
                             for height in xrange(0, 2, 1):
                                 depthRange = [0] if zRange.__len__() == 1 else range(0, 2, 1)
                                 for depth in depthRange:
+                                    #if there is something
                                     if self.cellField[x + width, y + height, z + depth] is not None:
                                         mode_of_cellIDs.append(self.cellField[x + width, y + height, z + depth].id)
                         # If mode ID exists and in not already in cell_in_order list it will be added
+                        #TODO clear the ID of mode_of_cellIDs after the ID is added to the list cell_in_order
                         if len(mode_of_cellIDs) > 0:
                             cellToCheck = self.attemptFetchingCellById(self.mode(mode_of_cellIDs))
                             exist = False
@@ -63,7 +65,6 @@ class ArrangementFitnessSteppable(TissueFitnessSteppable):
                         fitness_a = 0
                     else:
                         #firstLayer & lastLayer are Boolean with the value 1 (true) and 0 (false)
-
                         optimumLayers = 1 if layers <= 7 and layers >= 3 else 0
                         if cells_in_order[layers - 1].type == self.UMBRELLA:
                             lastLayer = 1
