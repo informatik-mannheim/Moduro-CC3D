@@ -120,9 +120,14 @@ class ModelConfig(object):
             print cell.volume
             # the simulation still will run .
             # cell.targetVolume = cellDict['normal_volume'] # At the beginning, the target is the actual size.
+
             cell.targetSurface = self.execConfig.calcVoxelSurfaceFromVoxelVolume(cell.targetVolume)
-            cell.lambdaVolume = self.execConfig.calcVolLambdaFromVolFit(cellType.volFit)
-            cell.lambdaSurface = self.execConfig.calcSurLambdaFromSurFit(cellType.surFit)
+            #cell.lambdaVolume = self.execConfig.calcVolLambdaFromVolFit(cellType.volFit)
+            #cell.lambdaSurface = self.execConfig.calcSurLambdaFromSurFit(cellType.surFit)
+
+            cell.lambdaVolume = 1.0
+            cell.lambdaSurface = 10.0
+
 
     def _addCubicCell(self, typename, xPos, yPos, zPos, xLength, yLength, zLength, steppable):
             print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ModelConfig._addCubicCell'
@@ -160,21 +165,9 @@ class ModelConfig(object):
         zStart = self.execConfig.calcPixelFromMuMeter(p_zPos - (p_diameter / 2))
         zEnde = self.execConfig.calcPixelFromMuMeter(p_zPos + (p_diameter / 2))
 
-        #xPos = self.execConfig.calcPixelFromMuMeter(p_xPos)
-        #yPos = self.execConfig.calcPixelFromMuMeter(p_yPos)
-        #zPos = self.execConfig.calcPixelFromMuMeter(p_zPos)
-        #xLength = self.execConfig.calcPixelFromMuMeter(p_xLength)
-        #yLength = self.execConfig.calcPixelFromMuMeter(p_yLength)
-        #zLength = self.execConfig.calcPixelFromMuMeter(p_zLength)
-
         steppable.cellField[xStart: xEnde,
                             yStart: yEnde,
                             zStart: zEnde] = cell
-
-
-        #cell.targetVolume = self.execConfig.calculateVolume(12) #diameter in micro m
-        #cell.lambdaVolume = 10
-        #cell.lambdaSurface = 1000
 
 
 
@@ -212,8 +205,10 @@ class ModelConfig(object):
                 # if self.execConfig.dimensions == 2:
                 #      self._addCubicCell(2, xPos, 2, 0, cellDiameter, cellDiameter, 0, steppable)
                 #   else:
-                #self._addCubicCell(2, xPos, 2, zPos, cellDiameter, cellDiameter, cellDiameter, steppable)
-                self._add3DCell(2, xPos, 2, zPos, 5, steppable)
+
+
+                self._addCubicCell(2, xPos, 2, zPos, cellDiameter, cellDiameter, cellDiameter, steppable)
+                #self._add3DCell(2, xPos, 2, zPos, 5, steppable)
 
     # TODO move configure stuff to ExecConfig?
     def _configureSimulation(self):

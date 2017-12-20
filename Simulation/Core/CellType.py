@@ -33,7 +33,8 @@ class CellType(object):
     # TODO explain parameter
     def __init__(self, name="CellType", frozen=False, minDiameter=10, maxDiameter=10,
                  growthVolumePerDay=500, nutrientRequirement=1.0, apoptosisTimeInDays=180000,
-                 volFit=1.0, surFit=0.0, necrosisProb=0.0):
+                 #volFit=1.0, surFit=0.0,
+                 necrosisProb=0.0):
         print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Konstruktor CellType'
 
         """
@@ -60,8 +61,8 @@ class CellType(object):
         self.growthVolumePerDay = growthVolumePerDay
         self.nutrientRequirement = nutrientRequirement
         self.apoptosisTimeInDays = apoptosisTimeInDays
-        self.volFit = volFit
-        self.surFit = surFit
+        #self.volFit = volFit
+        #self.surFit = surFit
         self.divides = False
         self.descendants = []
         self.necrosisProb = necrosisProb
@@ -103,30 +104,30 @@ class CellType(object):
 # Some frequently reused objects:
 
 Medium = CellType(name="Medium", frozen=True, minDiameter=0, maxDiameter=0,
-                  growthVolumePerDay=0, nutrientRequirement=0, apoptosisTimeInDays=0,
-                  volFit=1.0, surFit=1.0)
+                  growthVolumePerDay=0, nutrientRequirement=0, apoptosisTimeInDays=0)
+                  #volFit=1.0, surFit=1.0
 
 Basalmembrane = CellType(name="BasalMembrane", frozen=True, minDiameter=0, maxDiameter=0,
-                         growthVolumePerDay=0, nutrientRequirement=0, apoptosisTimeInDays=180000,
-                         volFit=1.0, surFit=1.0)
+                         growthVolumePerDay=0, nutrientRequirement=0, apoptosisTimeInDays=180000)
+                         #volFit=1.0, surFit=1.0)
 
 Stemcell = CellType(name="Stem", minDiameter=8, maxDiameter=10,
                     growthVolumePerDay=1 * Math.calcSphereVolumeFromDiameter(10),
-                    nutrientRequirement=1.0, apoptosisTimeInDays=180000,
-                    volFit=0.9, surFit=0.5)
+                    nutrientRequirement=1.0, apoptosisTimeInDays=180000)
+                    #volFit=0.9, surFit=0.5)
 
 Basalcell = CellType(name="Basal", minDiameter=9, maxDiameter=10,
                      growthVolumePerDay=1 * Math.calcSphereVolumeFromDiameter(10),
-                     nutrientRequirement=1.0, apoptosisTimeInDays=80,
-                     volFit=0.9, surFit=0.5)
+                     nutrientRequirement=1.0, apoptosisTimeInDays=80)
+                     #volFit=0.9, surFit=0.5)
 
 Intermediatecell = CellType(name="Intermediate", minDiameter=12, maxDiameter=15,
                             growthVolumePerDay=1 * Math.calcSphereVolumeFromDiameter(15),
-                            nutrientRequirement=1.0, apoptosisTimeInDays=2,
-                            volFit=0.9, surFit=0.1)
+                            nutrientRequirement=1.0, apoptosisTimeInDays=2)
+                            #volFit=0.9, surFit=0.1)
 
 Umbrellacell = CellType(name="Umbrella", minDiameter=15, maxDiameter=19,
                         growthVolumePerDay=1 * Math.calcSphereVolumeFromDiameter(19),
-                        nutrientRequirement=1.0, apoptosisTimeInDays=2,
-                        volFit=0.9, surFit=0.1)
-print '!!!!!!!!!!!!!!!!!!!!!!!!!! Created all CellTypes'
+                        nutrientRequirement=1.0, apoptosisTimeInDays=2)
+                        #volFit=0.9, surFit=0.1)
+
