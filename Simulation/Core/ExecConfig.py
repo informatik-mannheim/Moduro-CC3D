@@ -247,7 +247,7 @@ class ExecConfig(object):
         return mcs / (1.0 * self.MCSperDay) * 24.0
 
     def calcSurLambdaFromSurFit(self, surFit):
-        return 0.05 * surFit
+        return 100.0 * surFit
 
     def calcVolLambdaFromVolFit(self, volFit):
         return 1.0 * volFit

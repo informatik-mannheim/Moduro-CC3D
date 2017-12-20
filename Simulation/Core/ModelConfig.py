@@ -46,16 +46,14 @@ class ModelConfig(object):
         self.sim = sim
         self.simthread = simthread
         self.adhFactor = 0.25  # Average adhesion strength compared to vol./surf. fits.
-        self.adhEnergy = 2.0  # Some reference value.
+        self.adhEnergy = 0.5  # Some reference value.
         self.cellTypes = []
         self.energyMatrix = []
         self.execConfig = self._createExecConfig()
         self.name = ""
         random.seed(self.execConfig.SEED)
         self.cellLifeCycleLogger = CellLifeCycleLogger(self, "Celltimes.daz")
-        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Konstruktor ModelConfig - will call self._initModel()'
         self._initModel()
-        print '!!!!!!!!!!!!!!!!!!!!!!!!!! End of Konstruktor ModelConfig'
 
 
 
@@ -84,7 +82,6 @@ class ModelConfig(object):
             return 4.0 / 3.0 * PI * (diameter / 2.0) ** 3
 
     def initCellAttributes(self, cell, cellDict):
-            print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ModelConfig.initCellAttributes'
             cellType = self.cellTypes[cell.type]
             expLiveTime = self.execConfig.calcMCSfromDays(cellType.apoptosisTimeInDays)
             cellDict['exp_life_time'] = random.gauss(expLiveTime, expLiveTime / 10.0)
@@ -95,8 +92,6 @@ class ModelConfig(object):
             self.setCellAttributes(cellDict, cell, 0)
 
     def setCellAttributes(self, cellDict, cell, lifeTimeParent):
-            print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ModelConfig.setCellAttributes'
-
             """
             Set attributes for a cell's dictionary.
             :param cellDict:
@@ -121,6 +116,8 @@ class ModelConfig(object):
             cellDict['life_time'] = lifeTimeParent  # How many MCS is this cell alive?
 
             cell.targetVolume = cell.volume + 1  # At the beginning, the target is the actual size -- we increase it that
+            print '!!!!!!!!!!!!!!!!!!!!!!!! Cell.Volume'
+            print cell.volume
             # the simulation still will run .
             # cell.targetVolume = cellDict['normal_volume'] # At the beginning, the target is the actual size.
             cell.targetSurface = self.execConfig.calcVoxelSurfaceFromVoxelVolume(cell.targetVolume)
@@ -154,6 +151,34 @@ class ModelConfig(object):
             yPosDim:yPosDim + yLengthDim - 1,
             zPosDim:zPosDim + zLengthDim - 1] = cell
 
+    def _add3DCell(self, typename, p_xPos, p_yPos, p_zPos, p_diameter, steppable):
+        cell = steppable.newCell(typename)
+        xStart = self.execConfig.calcPixelFromMuMeter(p_xPos-(p_diameter/2))
+        xEnde = self.execConfig.calcPixelFromMuMeter(p_xPos + (p_diameter / 2))
+        yStart = self.execConfig.calcPixelFromMuMeter(p_yPos)
+        yEnde = self.execConfig.calcPixelFromMuMeter(p_yPos + (1 / 2))
+        zStart = self.execConfig.calcPixelFromMuMeter(p_zPos - (p_diameter / 2))
+        zEnde = self.execConfig.calcPixelFromMuMeter(p_zPos + (p_diameter / 2))
+
+        #xPos = self.execConfig.calcPixelFromMuMeter(p_xPos)
+        #yPos = self.execConfig.calcPixelFromMuMeter(p_yPos)
+        #zPos = self.execConfig.calcPixelFromMuMeter(p_zPos)
+        #xLength = self.execConfig.calcPixelFromMuMeter(p_xLength)
+        #yLength = self.execConfig.calcPixelFromMuMeter(p_yLength)
+        #zLength = self.execConfig.calcPixelFromMuMeter(p_zLength)
+
+        steppable.cellField[xStart: xEnde,
+                            yStart: yEnde,
+                            zStart: zEnde] = cell
+
+
+        #cell.targetVolume = self.execConfig.calculateVolume(12) #diameter in micro m
+        #cell.lambdaVolume = 10
+        #cell.lambdaSurface = 1000
+
+
+
+
     def _initCells(self, steppable):
             print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ModelConfig._initCells'
             '''
@@ -167,6 +192,8 @@ class ModelConfig(object):
             # Adds the stem cells throughout the basal membrane:
             cellDiameter = self.cellTypes[2].getAvgDiameter()
             stemCellFactor = 8 * cellDiameter
+            print '!!!!!!!!!!!!!!!! cellDiameter'
+            print cellDiameter
             '''calculate the amount of stem cells on the basal membrane
                noStemCells means the amount of stem cells'''
             # if self.execConfig.dimensions == 2:
@@ -185,8 +212,8 @@ class ModelConfig(object):
                 # if self.execConfig.dimensions == 2:
                 #      self._addCubicCell(2, xPos, 2, 0, cellDiameter, cellDiameter, 0, steppable)
                 #   else:
-                self._addCubicCell(2, xPos, 2, zPos, cellDiameter,
-                                   cellDiameter, cellDiameter, steppable)
+                #self._addCubicCell(2, xPos, 2, zPos, cellDiameter, cellDiameter, cellDiameter, steppable)
+                self._add3DCell(2, xPos, 2, zPos, 5, steppable)
 
     # TODO move configure stuff to ExecConfig?
     def _configureSimulation(self):
