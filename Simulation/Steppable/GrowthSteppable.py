@@ -53,6 +53,7 @@ class GrowthSteppable(ModuroSteppable):
 
                 #print "!!::!::!:!:! deltaVol=", deltaVolPerMCS, ", deltaVolDimPerDay=",\
                 #    deltaVolDimPerDay, ", deltaVolDimPerMCS=", deltaVolDimPerMCS
+                #TODO try not to cast
                 cell.targetVolume += int(deltaVolDimPerMCS)
                 cell.targetSurface = self.execConfig.calcVoxelSurfaceFromVoxelVolume(cell.targetVolume)
                 #if cell.type == self.STEM:
