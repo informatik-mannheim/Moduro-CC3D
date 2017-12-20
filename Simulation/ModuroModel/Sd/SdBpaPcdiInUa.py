@@ -98,4 +98,4 @@ class SdBpaPcdiInUa(ModelConfig):
 
     def _createExecConfig(self):
         return ExecConfig(MCSperDay=500, #SEED=10,
-                          xLength=500, yLength=150, zLength=0, voxelDensity=.8)
+                          xLength=200, yLength=100, zLength=50, voxelDensity=2.0)

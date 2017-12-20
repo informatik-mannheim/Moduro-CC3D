@@ -75,16 +75,21 @@ class SdBpaCdiInUa(ModelConfig):
         return cellTypes
 
     def _getSteppables(self):
+        '''
+        # commented by myself
+        ## was already commented
+        :return:
+        '''
         steppableList = []
         steppableList.append(ColonySteppable(self.sim, self))
         steppableList.append(InitializerSteppable(self.sim, self))
         steppableList.append(GrowthSteppable(self.sim, self))
         steppableList.append(GrowthMitosisSteppable(self.sim, self))
         steppableList.append(IntermediateTransformationSteppable(self.sim, self))
-        #steppableList.append(CMTransformationSteppable(self.sim, self))
+        ##steppableList.append(CMTransformationSteppable(self.sim, self))
         steppableList.append(UrinationSteppable(self.sim, self, prop=0.02))
         steppableList.append(DeathSteppable(self.sim, self))
-        # steppableList.append(OptimumSearchSteppable(self.sim, self))
+        ## steppableList.append(OptimumSearchSteppable(self.sim, self))
         steppableList.append(VolumeFitnessSteppable(self.sim, self))
         steppableList.append(ArrangementFitnessSteppable(self.sim, self))
         steppableList.append(DummyFitnessSteppable(self.sim, self))
@@ -96,7 +101,7 @@ class SdBpaCdiInUa(ModelConfig):
     def _createExecConfig(self):
         print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function _createExecConfig (***********Ua)'
         return ExecConfig(MCSperDay=500,  # SEED=10,
-                          xLength=500, yLength=150, zLength=100, voxelDensity=.8)
+                          xLength=500, yLength=150, zLength=100, voxelDensity=.5)
 
     #TODO shoudl be abstract
     def _initMOdel(self):
