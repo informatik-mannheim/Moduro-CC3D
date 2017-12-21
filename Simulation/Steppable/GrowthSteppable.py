@@ -30,7 +30,8 @@ class GrowthSteppable(ModuroSteppable):
         for cell in self.cellList:
             cellDict = self.getDictionaryAttribute(cell)
             cellType = self.model.cellTypes[cell.type]
-            # print "!!!!!! cell.tvol=", cell.targetVolume, "<=type.tVol=", cellDict['normal_volume']
+
+            print "!!!!!! cell.tvol=", cell.targetVolume, "<=type.tVol=", cellDict['normal_volume']
 
             cellDict['life_time'] += 1
             if cellDict['life_time'] >= cellDict['exp_life_time']:
