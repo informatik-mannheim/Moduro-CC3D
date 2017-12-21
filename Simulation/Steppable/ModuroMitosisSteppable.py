@@ -42,6 +42,9 @@ class ModuroMitosisSteppable(MitosisSteppableBase):
     # Methods are required to have the timeMCS available.
     def _cellLifeCycleBirth(self, cell):
         cellDict = self.getDictionaryAttribute(cell)
+        print 'cellID {} - cellType {} - cellVolume {} - cellTargetVolume {}'.format(cellDict['id'], cell.type,
+                                                                                     cell.volume,
+                                                                                     cell.targetVolume)
         self.model.cellLifeCycleLogger.cellLifeCycleBirth(self.timeMCS, cell, cellDict)
 
     def _cellLifeCycleDeath(self, cell):

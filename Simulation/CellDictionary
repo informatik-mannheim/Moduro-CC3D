@@ -1,5 +1,5 @@
 exp_life_time
-necrosis
+necrosis                            used in GrowthMitosisSteppable
 DNA
 TurnOver
 colony
@@ -7,6 +7,6 @@ id
 removed
 inhibited
 min_max_volume
-normal_volume
+normal_volume                       used in GrowthMitosisSteppable
 growth_factor
 life_time

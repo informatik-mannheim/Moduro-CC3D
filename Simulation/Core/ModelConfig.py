@@ -116,8 +116,7 @@ class ModelConfig(object):
             cellDict['life_time'] = lifeTimeParent  # How many MCS is this cell alive?
 
             cell.targetVolume = cell.volume + 1  # At the beginning, the target is the actual size -- we increase it that
-            print '!!!!!!!!!!!!!!!!!!!!!!!! Cell.Volume'
-            print cell.volume
+            print '!!!!!!!!!!!!!!!!!!!!!!!! Cell.Volume in Voxel {}'.format(cell.volume)
             # the simulation still will run .
             # cell.targetVolume = cellDict['normal_volume'] # At the beginning, the target is the actual size.
 

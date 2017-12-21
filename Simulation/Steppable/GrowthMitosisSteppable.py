@@ -23,7 +23,7 @@ from Steppable.ModuroMitosisSteppable import ModuroMitosisSteppable
 
 class GrowthMitosisSteppable(ModuroMitosisSteppable):
     def __init__(self, _simulator, model, splitPercentage=1.95,_frequency=1):
-        print'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! in Konstruktor von GrowthMitosisStepable'
+        print'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! in Konstruktor von GrowthMitosisStepable - splitPercentage {}'.format(splitPercentage)
         self.splitPercentage = splitPercentage
         ModuroMitosisSteppable.__init__(self, _simulator, model, _frequency)
 
@@ -36,6 +36,11 @@ class GrowthMitosisSteppable(ModuroMitosisSteppable):
             if cellType.divides and \
                     cell.volume >= self.splitPercentage * cellDict['normal_volume'] and \
                     not cellDict['necrosis']:
+                print '!!!!!!!!!!!!!!!!!!!!!!!!! cellDivision'
+                print cellDict['normal_volume']
+                print 'cellID {} - cellType {} - cellVolume {} - cellTargetVolume {}'.format(cellDict['id'], cell.type,
+                                                                                             cell.volume,
+                                                                                              cell.targetVolume)
                 # Register death
                 self._cellLifeCycleDeath(cell)
                 cells_to_divide.append(cell)
@@ -63,6 +68,8 @@ class GrowthMitosisSteppable(ModuroMitosisSteppable):
         childCell.targetVolume = newVol
 
         # Register events
+        print '!!!!!!!!!!!!!!!!!!!!!!!!! parentCell'
         self._cellLifeCycleBirth(parentCell)
+        print '!!!!!!!!!!!!!!!!!!!!!!!!! childCell'
         self._cellLifeCycleBirth(childCell)
         cellDictChild['colony'] = cellDictParent['colony']

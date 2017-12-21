@@ -185,6 +185,8 @@ class ExecConfig(object):
             return 4 * PI * (diameter / 2.0) ** 2  # Surface
 
     def calcVoxelVolumeFromVolume(self, volume):
+        #TODO calculate the volume directly from the radius+-
+
         """
         Calculates the voxel volume from a physical volume. The results
         depends on the dimension of the simulation (2D or 3D).
