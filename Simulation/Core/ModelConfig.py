@@ -110,11 +110,11 @@ class ModelConfig(object):
             cellDict['removed'] = False
             cellDict['inhibited'] = True
 
-            print'!!!!!!!!ModelConfig - cellType {} - cellID {}'.format(cell.type, cellType.id)
-            #cellDict['min_max_volume'] = [self.execConfig.calcVoxelVolumeFromVolume(cellType.minVol),
-            #                              self.execConfig.calcVoxelVolumeFromVolume(cellType.maxVol)]
-            cellDict['min_max_volume'] = [self.execConfig.calcVoxelVolumeFromVolume(cellType.minDiameter),
-                                          self.execConfig.calcVoxelVolumeFromVolume(cellType.maxDiameter)]
+            #print'!!!!!!!!ModelConfig - cellType {} - cellID {}'.format(cell.type, cellType.id)
+            cellDict['min_max_volume'] = [self.execConfig.calcVoxelVolumeFromVolume(cellType.minVol),
+                                          self.execConfig.calcVoxelVolumeFromVolume(cellType.maxVol)]
+            #cellDict['min_max_volume'] = [self.execConfig.calcVoxelVolumeFromVolume(cellType.minDiameter),
+            #                              self.execConfig.calcVoxelVolumeFromVolume(cellType.maxDiameter)]
             cellDict['normal_volume'] = random.uniform(cellDict['min_max_volume'][0],
                                                        cellDict['min_max_volume'][1])
 
@@ -122,7 +122,7 @@ class ModelConfig(object):
             cellDict['life_time'] = lifeTimeParent  # How many MCS is this cell alive?
 
             cell.targetVolume = cell.volume + 1  # At the beginning, the target is the actual size -- we increase it that
-            print '!!!!!!!!!!!!!!!!!!!!!!!! Cell.Volume in Voxel {} - TargetVolume {}'.format(cell.volume,cell.targetVolume)
+            #print '!!!!!!!!!!!!!!!!!!!!!!!! Cell.Volume in Voxel {} - TargetVolume {}'.format(cell.volume,cell.targetVolume)
             # the simulation still will run .
             # cell.targetVolume = cellDict['normal_volume'] # At the beginning, the target is the actual size.
 
@@ -212,8 +212,8 @@ class ModelConfig(object):
                 #   else:
 
 
-                self._addCubicCell(2, xPos, 2, zPos, cellDiameter, cellDiameter, cellDiameter, steppable)
-                #self._add3DCell(2, xPos, 2, zPos, 5, steppable)
+                #self._addCubicCell(2, xPos, 2, zPos, cellDiameter, cellDiameter, cellDiameter, steppable)
+                self._add3DCell(2, xPos, 2, zPos, 5, steppable)
 
     # TODO move configure stuff to ExecConfig?
     def _configureSimulation(self):

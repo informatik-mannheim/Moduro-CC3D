@@ -163,9 +163,9 @@ class ExecConfig(object):
         Therfore, check if float is larger .5 -> if so increase amount of px by 1
         It is still an approximation error, but better than just to cast the float to int'''
 
-        print'!!!!!!!!!!calcPixelFromMuMeter - param {} - voxelDensity {} - result {}'.format(mum, self.voxelDensity, self.voxelDensity*mum)
+        #print'!!!!!!!!!!calcPixelFromMuMeter - param {} - voxelDensity {} - result {}'.format(mum, self.voxelDensity, self.voxelDensity*mum)
         pxInFloat = self.voxelDensity * mum
-        print'!!!!!!!!!!if mod 1 > 0.5 ----- px {} - px%1 {}'.format(pxInFloat, pxInFloat%1)
+        #print'!!!!!!!!!!if mod 1 > 0.5 ----- px {} - px%1 {}'.format(pxInFloat, pxInFloat%1)
         if pxInFloat % 1.0 > 0.5:
             pxInFloat +=1
 
@@ -196,9 +196,7 @@ class ExecConfig(object):
         else:
             return 4 * PI * (diameter / 2.0) ** 2  # Surface
 
-    def calcVoxelVolumeFromVolume(self, diameter):
-        #TODO calculate the volume directly from the radius+-
-
+    def calcVoxelVolumeFromVolume(self, volume):
         """
         Calculates the voxel volume from a physical volume. The results
         depends on the dimension of the simulation (2D or 3D).
@@ -208,20 +206,23 @@ class ExecConfig(object):
         """
 
         #def calcVoxelVolumeFromVolume(self, diameter):
-        amountPx = self.calcPixelFromMuMeter(diameter / 2)
-        print '!!!!!!!!calcVoxelVolumeFromVolume - diameter {} - amountPx {} - result {}'.format(diameter, amountPx, 4.0 / 3.0 * PI * (amountPx ** 3))
-        return 4.0 / 3.0 * PI * (amountPx ** 3)
+        #amountPx = self.calcPixelFromMuMeter(diameter / 2)
+        #print '!!!!!!!!calcVoxelVolumeFromVolume - diameter {} - amountPx {} - result {}'.format(diameter, amountPx, 4.0 / 3.0 * PI * (amountPx ** 3))
+        #return 4.0 / 3.0 * PI * (amountPx ** 3)
 
-        #r = (3 * volume / (4.0 * PI)) ** (1.0 / 3.0)  # Radius of a sphere with known volume.
-        #rDimension = self.calcPixelFromMuMeter(r)  # Convert it to a pixel unit.
-        #if self.dimensions == 2:
+        r = (3 * volume / (4.0 * PI)) ** (1.0 / 3.0)  # Radius of a sphere with known volume.
+        print' r {}'.format(r)
+        rDimension = self.calcPixelFromMuMeter(r)  # Convert it to a pixel unit.
+        if self.dimensions == 2:
             # a = self.__truncateToVoxel(PI * (rDimension ** 2))
             # if volume > 0:
             #    print "volume=", volume, ", rDim=", rDimension, ", r=", r, ", A=", a
-        #    return self.__truncate(PI * (rDimension ** 2))  # Area of a circle.
-        #else:
+            return self.__truncate(PI * (rDimension ** 2))  # Area of a circle.
+        else:
         #    print '!!!!!!!!!calcVoxelVolumeFromVolume(volume): result {}'.format(4.0 / 3.0 * PI * (rDimension ** 3))
-        #    return self.__truncate(4.0 / 3.0 * PI * (rDimension ** 3))  # Volume of a sphere.
+            print'rDimension {}'.format(rDimension)
+            return 4.0 / 3.0 * PI * (rDimension ** 3)
+            #return self.__truncate(4.0 / 3.0 * PI * (rDimension ** 3))  # Volume of a sphere.
 
     def calcVoxelSurfaceFromVoxelVolume(self, voxelVolume):
         """

@@ -31,7 +31,11 @@ class GrowthSteppable(ModuroSteppable):
             cellDict = self.getDictionaryAttribute(cell)
             cellType = self.model.cellTypes[cell.type]
 
-            print "!!!!!! cell.tvol=", cell.targetVolume, "<=type.tVol=", cellDict['normal_volume'], " VOL: ", cell.volume
+            print''
+            print''
+            print''
+            print '!!!!!! GrowthSteppable'
+            print "!!!!!! cell.targetVol=", cell.targetVolume, "<=type.tVol=", cellDict['normal_volume'], " VOL: ", cell.volume
 
             cellDict['life_time'] += 1
             if cellDict['life_time'] >= cellDict['exp_life_time']:
@@ -46,15 +50,27 @@ class GrowthSteppable(ModuroSteppable):
                     growthVolPerDay = cellType.growthVolumePerDay
                 else:
                     growthVolPerDay = cellType.growthVolumePerDay * self.contactInhibitedFactor
+
+                print '---------GrowthSteppable'
+                print 'volume {}'.format(cell.volume)
+                print 'growthVolumePerDay {}'.format(growthVolPerDay)
                 deltaVolDimPerDay = self.execConfig.calcVoxelVolumeFromVolume(growthVolPerDay)
+                print'deltaPerDay {}'.format(deltaVolDimPerDay)
                 deltaVolDimPerMCS = 1.0 * deltaVolDimPerDay / self.execConfig.MCSperDay
+
+                print'deltaVolPerMCS {}'.format(deltaVolDimPerMCS)
+
                 #if the growth is to small, take a random number between 0 and 1 -> maybe add the pixel or not
                 if deltaVolDimPerMCS < 1.0: # The change may be too small for one MCS.
                     deltaVolDimPerMCS = 1 if deltaVolDimPerMCS >= random.random() else 0
 
                 #print "!!::!::!:!:! deltaVol=", deltaVolPerMCS, ", deltaVolDimPerDay=",\
                 #    deltaVolDimPerDay, ", deltaVolDimPerMCS=", deltaVolDimPerMCS
-                #TODO try not to cast
+
+                #reduce the approximation error
+                if deltaVolDimPerMCS % 1.0 > 0.5:
+                    deltaVolDimPerMCS += 1
+
                 cell.targetVolume += int(deltaVolDimPerMCS)
                 cell.targetSurface = self.execConfig.calcVoxelSurfaceFromVoxelVolume(cell.targetVolume)
                 #if cell.type == self.STEM:

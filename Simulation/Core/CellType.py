@@ -69,7 +69,8 @@ class CellType(object):
         CellType.__typeCount += 1
 
     def setGrowthVolumePerDayRelVolume(self, multiple):
-        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function CellType.setGrowthVolumePerDayRelVolume'
+        print '------------------------------------------------------------------ In Function CellType.setGrowthVolumePerDayRelVolume'
+        print'!!!! maxDiameter {}'.format(self.maxDiameter)
         '''
         Set the growth volume per day relative to the maximum cell volume.
         :param multiple: Factor for the daily growth.
