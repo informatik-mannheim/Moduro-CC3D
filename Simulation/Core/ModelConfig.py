@@ -89,9 +89,12 @@ class ModelConfig(object):
             cellDict['DNA'] = 100
             cellDict['TurnOver'] = False
             cellDict['colony'] = -1  # Default colony id.
+            print'!!!!!!!!!!!!initCellAttributes cellType {} - cellId {}'.format(cell.type, cell.id)
+            print cell.lambdaSurface
             self.setCellAttributes(cellDict, cell, 0)
 
     def setCellAttributes(self, cellDict, cell, lifeTimeParent):
+        #TODO clarify how CC3D calculates a volume of 5832 for StemCells (i.e. it should between 2144 and 4188 - for SdBpaPcdiInUa)
             """
             Set attributes for a cell's dictionary.
             :param cellDict:
@@ -99,7 +102,7 @@ class ModelConfig(object):
             :param lifeTimeParent:
             :return:
             """
-            # cellDict = cell.getDictionaryAttribute(cell)
+            #cellDict = cell.getDictionaryAttribute(cell)
             cellType = self.cellTypes[cell.type]
             # Assign a new cell ID.
             cellDict['id'] = ModelConfig.cellID
@@ -107,8 +110,11 @@ class ModelConfig(object):
             cellDict['removed'] = False
             cellDict['inhibited'] = True
 
-            cellDict['min_max_volume'] = [self.execConfig.calcVoxelVolumeFromVolume(cellType.minVol),
-                                          self.execConfig.calcVoxelVolumeFromVolume(cellType.maxVol)]
+            print'!!!!!!!!ModelConfig - cellType {} - cellID {}'.format(cell.type, cellType.id)
+            #cellDict['min_max_volume'] = [self.execConfig.calcVoxelVolumeFromVolume(cellType.minVol),
+            #                              self.execConfig.calcVoxelVolumeFromVolume(cellType.maxVol)]
+            cellDict['min_max_volume'] = [self.execConfig.calcVoxelVolumeFromVolume(cellType.minDiameter),
+                                          self.execConfig.calcVoxelVolumeFromVolume(cellType.maxDiameter)]
             cellDict['normal_volume'] = random.uniform(cellDict['min_max_volume'][0],
                                                        cellDict['min_max_volume'][1])
 
@@ -116,7 +122,7 @@ class ModelConfig(object):
             cellDict['life_time'] = lifeTimeParent  # How many MCS is this cell alive?
 
             cell.targetVolume = cell.volume + 1  # At the beginning, the target is the actual size -- we increase it that
-            print '!!!!!!!!!!!!!!!!!!!!!!!! Cell.Volume in Voxel {}'.format(cell.volume)
+            print '!!!!!!!!!!!!!!!!!!!!!!!! Cell.Volume in Voxel {} - TargetVolume {}'.format(cell.volume,cell.targetVolume)
             # the simulation still will run .
             # cell.targetVolume = cellDict['normal_volume'] # At the beginning, the target is the actual size.
 
@@ -184,8 +190,8 @@ class ModelConfig(object):
             # Adds the stem cells throughout the basal membrane:
             cellDiameter = self.cellTypes[2].getAvgDiameter()
             stemCellFactor = 8 * cellDiameter
-            print '!!!!!!!!!!!!!!!! cellDiameter'
-            print cellDiameter
+            print '!!!!!!!!!!!!!!!! ModelConfig._initCells - cellDiameter{}'.format(cellDiameter)
+
             '''calculate the amount of stem cells on the basal membrane
                noStemCells means the amount of stem cells'''
             # if self.execConfig.dimensions == 2:
