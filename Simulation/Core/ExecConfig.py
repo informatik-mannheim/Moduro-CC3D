@@ -159,7 +159,15 @@ class ExecConfig(object):
         :return:
         """
         #python has approximation errors when casted into int with long number of .99999999
-        return int(self.voxelDensity * mum + 0.000001)
+        '''CC3D requires the amount of px in int.
+        Therfore, check if float is larger .5 -> if so increase amount of px by 1
+        It is still an approximation error, but better than just to cast the float to int'''
+        pxInFloat = self.voxelDensity * mum
+        if(pxInFloat % 1 > 0.5):
+            pxInFloat +=1
+
+        return int(pxInFloat)
+        #return int(self.voxelDensity * mum + 0.000001) # is __truncate(+0.000001) important?
 
     def calcPixelFromMuMeterMin1(self, mum):
         """
