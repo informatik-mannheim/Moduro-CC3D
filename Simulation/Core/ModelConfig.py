@@ -19,7 +19,7 @@ __email__ = "m.gumbel@hs-mannheim.de"
 __status__ = "Production"
 
 import random
-from math import pi as PI
+from math import pi as PI, sqrt
 
 import CompuCellSetup
 from ExecConfig import ExecConfig
@@ -46,7 +46,7 @@ class ModelConfig(object):
         self.sim = sim
         self.simthread = simthread
         self.adhFactor = 0.25  # Average adhesion strength compared to vol./surf. fits.
-        self.adhEnergy = 0.5  # Some reference value.
+        self.adhEnergy = 0.1  # Some reference value.
         self.cellTypes = []
         self.energyMatrix = []
         self.execConfig = self._createExecConfig()
@@ -131,7 +131,7 @@ class ModelConfig(object):
             #cell.lambdaSurface = self.execConfig.calcSurLambdaFromSurFit(cellType.surFit)
 
             cell.lambdaVolume = 1.0
-            cell.lambdaSurface = 10.0
+            cell.lambdaSurface = 100.0
 
 
     def _addCubicCell(self, typename, xPos, yPos, zPos, xLength, yLength, zLength, steppable):
@@ -164,15 +164,26 @@ class ModelConfig(object):
     def _add3DCell(self, typename, p_xPos, p_yPos, p_zPos, p_diameter, steppable):
         cell = steppable.newCell(typename)
         xStart = self.execConfig.calcPixelFromMuMeter(p_xPos-(p_diameter/2))
-        xEnde = self.execConfig.calcPixelFromMuMeter(p_xPos + (p_diameter / 2))
+        xEnd = self.execConfig.calcPixelFromMuMeter(p_xPos + (p_diameter / 2))
         yStart = self.execConfig.calcPixelFromMuMeter(p_yPos)
-        yEnde = self.execConfig.calcPixelFromMuMeter(p_yPos + (1 / 2))
+        yEnd = self.execConfig.calcPixelFromMuMeter(p_yPos + p_diameter/2)
         zStart = self.execConfig.calcPixelFromMuMeter(p_zPos - (p_diameter / 2))
-        zEnde = self.execConfig.calcPixelFromMuMeter(p_zPos + (p_diameter / 2))
+        zEnd = self.execConfig.calcPixelFromMuMeter(p_zPos + (p_diameter / 2))
+        # loop over the points to determine boundaries of the circle
+        print '_add3DCell (type {}, xPos {}, yPos{}, zPos {}, diameter {}, steppable {}'.format(typename, p_xPos, p_yPos,
+                                                                                                p_zPos, p_diameter, steppable)
+        for xr in range(xStart, xEnd):
+            print 'xrange {}'.format(xr)
+            for yr in range(yStart, yEnd):
+                print 'yrange {}'.format(yr)
+                for zr in range(zStart, zEnd):
+                    print 'zrange {}'.format(zr)
+                    rd = sqrt((xr - xStart) ** 2 + (yr - yStart) ** 2 + (zr - zStart) ** 2)
+                    print 'rd {} - radius {}'.format(rd, p_diameter/2)
+                    print'rd < p_diameter/2 {}'.format(rd < p_diameter/2)
+                    if (rd < p_diameter/2):
+                        steppable.cellField[xr, yr, zr] = cell
 
-        steppable.cellField[xStart: xEnde,
-                            yStart: yEnde,
-                            zStart: zEnde] = cell
 
 
 
