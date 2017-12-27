@@ -131,7 +131,7 @@ class ModelConfig(object):
             #cell.lambdaSurface = self.execConfig.calcSurLambdaFromSurFit(cellType.surFit)
 
             cell.lambdaVolume = 1.0
-            cell.lambdaSurface = 100.0
+            #cell.lambdaSurface = 1000.0
 
 
     def _addCubicCell(self, typename, xPos, yPos, zPos, xLength, yLength, zLength, steppable):
@@ -165,27 +165,27 @@ class ModelConfig(object):
         cell = steppable.newCell(typename)
         xStart = self.execConfig.calcPixelFromMuMeter(p_xPos-(p_diameter/2))
         xEnd = self.execConfig.calcPixelFromMuMeter(p_xPos + (p_diameter / 2))
-        yStart = self.execConfig.calcPixelFromMuMeter(p_yPos)
+        yStart = self.execConfig.calcPixelFromMuMeter(p_yPos - (p_diameter/2))
         yEnd = self.execConfig.calcPixelFromMuMeter(p_yPos + p_diameter/2)
         zStart = self.execConfig.calcPixelFromMuMeter(p_zPos - (p_diameter / 2))
         zEnd = self.execConfig.calcPixelFromMuMeter(p_zPos + (p_diameter / 2))
         # loop over the points to determine boundaries of the circle
         print '_add3DCell (type {}, xPos {}, yPos{}, zPos {}, diameter {}, steppable {}'.format(typename, p_xPos, p_yPos,
                                                                                                 p_zPos, p_diameter, steppable)
-        for xr in range(xStart, xEnd):
-            print 'xrange {}'.format(xr)
-            for yr in range(yStart, yEnd):
-                print 'yrange {}'.format(yr)
-                for zr in range(zStart, zEnd):
-                    print 'zrange {}'.format(zr)
-                    rd = sqrt((xr - xStart) ** 2 + (yr - yStart) ** 2 + (zr - zStart) ** 2)
-                    print 'rd {} - radius {}'.format(rd, p_diameter/2)
-                    print'rd < p_diameter/2 {}'.format(rd < p_diameter/2)
-                    if (rd < p_diameter/2):
-                        steppable.cellField[xr, yr, zr] = cell
+        print 'in micro m, xStart {} - xEnd {} , yStart {} - yEnd {} , zStart {} - zEnd {}'.format(xStart, xEnd, yStart, yEnd,
+                                                                                              zStart, zEnd)
+        #for xr in range(xStart, xEnd):
+        #    for yr in range(yStart, yEnd):
+        #        for zr in range(zStart, zEnd):
+        #            rd = sqrt((xr - xStart) ** 2 + (yr - yStart) ** 2 + (zr - zStart) ** 2)
+        #            if (rd < p_diameter/2):
+        #                print 'xr {} - yr {} - zr {}'.format(xr, yr, zr)
+        #                steppable.cellField[xr, yr, zr] = cell
 
 
-
+        steppable.cellField[xStart: xEnd,
+                            yStart: yEnd,
+                            zStart: zEnd] = cell
 
 
     def _initCells(self, steppable):
@@ -224,7 +224,7 @@ class ModelConfig(object):
 
 
                 #self._addCubicCell(2, xPos, 2, zPos, cellDiameter, cellDiameter, cellDiameter, steppable)
-                self._add3DCell(2, xPos, 2, zPos, 5, steppable)
+                self._add3DCell(2, xPos, 20, zPos, 6, steppable)
 
     # TODO move configure stuff to ExecConfig?
     def _configureSimulation(self):
@@ -245,7 +245,7 @@ class ModelConfig(object):
     def _createCellTypes(self):
         return None
 
-    #TODO abstract????
+    #TODO abstract - abstract
     def _createEnergyMatrix(self):
         print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ModelConfig._createEnergyMatrix'
         """
