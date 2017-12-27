@@ -66,7 +66,9 @@ class SdBpaPcdiInUa(ModelConfig):
         umbrella.apoptosisTimeInDays = 100000000.0
         self.umbrellaNecrosisProb = umbrella.necrosisProb = 0.00017
 
-        stem.setDescendants(1.0, [stem.id, basal.id])
+        stem.setDescendants(0.9, [stem.id, basal.id])   #added by tmueller
+        stem.setDescendants(0.05, [stem.id, stem.id])   #stem cells can also like the basal cells split into
+        stem.setDescendants(0.05, [basal.id, basal.id]) #stem&stem cells and basal & basal cells
         basal.setDescendants(0.9, [basal.id, intermediate.id])
         basal.setDescendants(0.05, [basal.id, basal.id])
         basal.setDescendants(0.05, [intermediate.id, intermediate.id])
@@ -98,4 +100,4 @@ class SdBpaPcdiInUa(ModelConfig):
 
     def _createExecConfig(self):
         return ExecConfig(MCSperDay=500, #SEED=10,
-                          xLength=200, yLength=100, zLength=50, voxelDensity=2.0)
+                          xLength=200, yLength=100, zLength=50, voxelDensity=1.5)
