@@ -115,6 +115,7 @@ class ExecConfig(object):
         contact = self.__cc3d.ElementCC3D("Plugin", {"Name": "Contact"})
         for i in range(cellTypes.__len__()):
             for j in range(i, cellTypes.__len__()):
+                print 'ExecConfig.initEnergyMatrix - i {} - J {} - VALUE {}'.format(i, j, adhFactor*energyMatrix[i][j])
                 contact.ElementCC3D("Energy", {"Type1": cellTypes[i].name,
                                                "Type2": cellTypes[j].name},
                                     adhFactor * energyMatrix[i][j])
@@ -220,7 +221,7 @@ class ExecConfig(object):
             return self.__truncate(PI * (rDimension ** 2))  # Area of a circle.
         else:
         #    print '!!!!!!!!!calcVoxelVolumeFromVolume(volume): result {}'.format(4.0 / 3.0 * PI * (rDimension ** 3))
-            print'rDimension {}'.format(rDimension)
+            #print'rDimension {}'.format(rDimension)
             return 4.0 / 3.0 * PI * (rDimension ** 3)
             #return self.__truncate(4.0 / 3.0 * PI * (rDimension ** 3))  # Volume of a sphere.
 
@@ -235,7 +236,7 @@ class ExecConfig(object):
             # some fractal factor!
             return self.__truncate(1.5 * 2 * (PI * voxelVolume) ** (1.0 / 2.0))  # Circumference.
         else:
-            return self.__truncate(2.0 * 4 * PI * (3 * voxelVolume / (4 * PI)) ** (2.0 / 3.0))  # Surface.
+            return self.__truncate(2 * 4 * PI * (3 * voxelVolume / (4 * PI)) ** (2.0 / 3.0))  # Surface.
 
     def __truncate(self, value):
         res = int(value + 0.00001)
