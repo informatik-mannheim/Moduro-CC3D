@@ -28,7 +28,7 @@ class CellType(object):
     A cell type.
     """
     __typeCount = 0
-    consumPerCell = 0.003
+    #consumPerCell = 0.003  it is not used in the project...
 
     # TODO explain parameter
     def __init__(self, name="CellType", frozen=False, minDiameter=10, maxDiameter=10,
@@ -95,6 +95,7 @@ class CellType(object):
         else:
             return []
 
+    #TODO rename methode -> the propability of the descendants is set not the descendants itself
     def setDescendants(self, probability, descendants):
         # TODO: check if probability is higher than 1.0 and normalize
         cellLineageOfCellType = [probability, descendants]
