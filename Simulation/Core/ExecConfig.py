@@ -212,7 +212,7 @@ class ExecConfig(object):
         #return 4.0 / 3.0 * PI * (amountPx ** 3)
 
         r = (3 * volume / (4.0 * PI)) ** (1.0 / 3.0)  # Radius of a sphere with known volume.
-        print' r {}'.format(r)
+
         rDimension = self.calcPixelFromMuMeter(r)  # Convert it to a pixel unit.
         if self.dimensions == 2:
             # a = self.__truncateToVoxel(PI * (rDimension ** 2))

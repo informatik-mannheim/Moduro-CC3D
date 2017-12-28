@@ -131,7 +131,7 @@ class ModelConfig(object):
             #cell.lambdaSurface = self.execConfig.calcSurLambdaFromSurFit(cellType.surFit)
 
             cell.lambdaVolume = 1.0
-            #cell.lambdaSurface = 1000.0
+            cell.lambdaSurface = 1000.0
 
 
     def _addCubicCell(self, typename, xPos, yPos, zPos, xLength, yLength, zLength, steppable):
@@ -161,31 +161,39 @@ class ModelConfig(object):
             yPosDim:yPosDim + yLengthDim - 1,
             zPosDim:zPosDim + zLengthDim - 1] = cell
 
-    def _add3DCell(self, typename, p_xPos, p_yPos, p_zPos, p_diameter, steppable):
+    def _add3DCell(self, typename, xPos, yPos, zPos, radius, steppable):
+        '''The parameters are all in micro meter
+        wheras the calculated variables are in px'''
+
         cell = steppable.newCell(typename)
-        xStart = self.execConfig.calcPixelFromMuMeter(p_xPos-(p_diameter/2))
-        xEnd = self.execConfig.calcPixelFromMuMeter(p_xPos + (p_diameter / 2))
-        yStart = self.execConfig.calcPixelFromMuMeter(p_yPos - (p_diameter/2))
-        yEnd = self.execConfig.calcPixelFromMuMeter(p_yPos + p_diameter/2)
-        zStart = self.execConfig.calcPixelFromMuMeter(p_zPos - (p_diameter / 2))
-        zEnd = self.execConfig.calcPixelFromMuMeter(p_zPos + (p_diameter / 2))
+        xStart = self.execConfig.calcPixelFromMuMeter(xPos - radius)
+        x0 = self.execConfig.calcPixelFromMuMeter(xPos)
+        xEnd = self.execConfig.calcPixelFromMuMeter(xPos + radius)
+        yStart = self.execConfig.calcPixelFromMuMeter(yPos - radius)
+        y0 = self.execConfig.calcPixelFromMuMeter(yPos)
+        yEnd = self.execConfig.calcPixelFromMuMeter(yPos + radius)
+        zStart = self.execConfig.calcPixelFromMuMeter(zPos - radius)
+        z0 = self.execConfig.calcPixelFromMuMeter(zPos)
+        zEnd = self.execConfig.calcPixelFromMuMeter(zPos + radius)
+
+        radiusPx = self.execConfig.calcPixelFromMuMeter(radius)
         # loop over the points to determine boundaries of the circle
-        print '_add3DCell (type {}, xPos {}, yPos{}, zPos {}, diameter {}, steppable {}'.format(typename, p_xPos, p_yPos,
-                                                                                                p_zPos, p_diameter, steppable)
-        print 'in micro m, xStart {} - xEnd {} , yStart {} - yEnd {} , zStart {} - zEnd {}'.format(xStart, xEnd, yStart, yEnd,
+        print '_add3DCell in micro m (type {}, xPos {}, yPos{}, zPos {}, diameter {}, steppable {}'.format(typename, xPos, yPos,
+                                                                                                zPos, radius, steppable)
+        print 'in px, xStart {} - xEnd {} , yStart {} - yEnd {} , zStart {} - zEnd {}'.format(xStart, xEnd, yStart, yEnd,
                                                                                               zStart, zEnd)
-        #for xr in range(xStart, xEnd):
-        #    for yr in range(yStart, yEnd):
-        #        for zr in range(zStart, zEnd):
-        #            rd = sqrt((xr - xStart) ** 2 + (yr - yStart) ** 2 + (zr - zStart) ** 2)
-        #            if (rd < p_diameter/2):
-        #                print 'xr {} - yr {} - zr {}'.format(xr, yr, zr)
-        #                steppable.cellField[xr, yr, zr] = cell
+        for xr in range(xStart, xEnd):
+            for yr in range(yStart, yEnd):
+                for zr in range(zStart, zEnd):
+                    rd = sqrt((xr - x0) ** 2 + (yr - y0) ** 2 + (zr - z0) ** 2)
+                    if (rd <= radiusPx):
+                        print 'xr {} - yr {} - zr {}'.format(xr, yr, zr)
+                        steppable.cellField[xr, yr, zr] = cell
 
 
-        steppable.cellField[xStart: xEnd,
-                            yStart: yEnd,
-                            zStart: zEnd] = cell
+        #steppable.cellField[xStart: xEnd,
+        #                    yStart: yEnd,
+        #                    zStart: zEnd] = cell
 
 
     def _initCells(self, steppable):
