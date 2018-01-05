@@ -78,10 +78,11 @@ class ModelConfig(object):
 
         CompuCellSetup.mainLoop(self.sim, self.simthread, steppableRegistry)
 
-    def calcVolume(self, diameter):
-            return 4.0 / 3.0 * PI * (diameter / 2.0) ** 3
+#    def calcVolume(self, diameter):
+#           return 4.0 / 3.0 * PI * (diameter / 2.0) ** 3
 
     def initCellAttributes(self, cell, cellDict):
+            print 'ModelConfig.initCellAttributes()'
             cellType = self.cellTypes[cell.type]
             expLiveTime = self.execConfig.calcMCSfromDays(cellType.apoptosisTimeInDays)
             cellDict['exp_life_time'] = random.gauss(expLiveTime, expLiveTime / 10.0)
@@ -89,19 +90,10 @@ class ModelConfig(object):
             cellDict['DNA'] = 100
             cellDict['TurnOver'] = False
             cellDict['colony'] = -1  # Default colony id.
-            print'!!!!!!!!!!!!initCellAttributes cellType {} - cellId {}'.format(cell.type, cell.id)
-            print cell.lambdaSurface
             self.setCellAttributes(cellDict, cell, 0)
 
     def setCellAttributes(self, cellDict, cell, lifeTimeParent):
-        #TODO clarify how CC3D calculates a volume of 5832 for StemCells (i.e. it should between 2144 and 4188 - for SdBpaPcdiInUa)
-            """
-            Set attributes for a cell's dictionary.
-            :param cellDict:
-            :param cell:
-            :param lifeTimeParent:
-            :return:
-            """
+            print 'ModelConfig.setCellAttributes()'
             #cellDict = cell.getDictionaryAttribute(cell)
             cellType = self.cellTypes[cell.type]
             # Assign a new cell ID.
@@ -110,28 +102,40 @@ class ModelConfig(object):
             cellDict['removed'] = False
             cellDict['inhibited'] = True
 
-            #print'!!!!!!!!ModelConfig - cellType {} - cellID {}'.format(cell.type, cellType.id)
             cellDict['min_max_volume'] = [self.execConfig.calcVoxelVolumeFromVolume(cellType.minVol),
                                           self.execConfig.calcVoxelVolumeFromVolume(cellType.maxVol)]
+            print 'minVol {} - maxVol {}'.format(cellDict['min_max_volume'][0], cellDict['min_max_volume'][1])
             #cellDict['min_max_volume'] = [self.execConfig.calcVoxelVolumeFromVolume(cellType.minDiameter),
             #                              self.execConfig.calcVoxelVolumeFromVolume(cellType.maxDiameter)]
             cellDict['normal_volume'] = random.uniform(cellDict['min_max_volume'][0],
                                                        cellDict['min_max_volume'][1])
+            print 'normal_volume {}'.format(cellDict['normal_volume'])
 
             cellDict['growth_factor'] = []  # really needed?
             cellDict['life_time'] = lifeTimeParent  # How many MCS is this cell alive?
 
-            cell.targetVolume = cell.volume + 1  # At the beginning, the target is the actual size -- we increase it that
-            #print '!!!!!!!!!!!!!!!!!!!!!!!! Cell.Volume in Voxel {} - TargetVolume {}'.format(cell.volume,cell.targetVolume)
+            # check if current volume is already larger than the new targetVolume
+            # if so -> increase the targetVolume until it is larger
+            while cell.volume >= cell.targetVolume:
+                cell.targetVolume += 1
+
+            print '!!!!!!!!!!!!!!!!!!!!!!!! Cell.Volume in Voxel {} - TargetVolume {}'.format(cell.volume, cell.targetVolume)
+
             # the simulation still will run .
             # cell.targetVolume = cellDict['normal_volume'] # At the beginning, the target is the actual size.
 
             cell.targetSurface = self.execConfig.calcVoxelSurfaceFromVoxelVolume(cell.targetVolume)
+            #cell.targetSurface = 1.2 * cell.surface
+            while cell.surface >= cell.targetSurface:
+                cell.targetSurface += 1
+            print '!!!!!!!!!!!!!!!!!!!!!!!! Cell.Surface in Voxel {} - TargetSurface {}'.format(cell.surface,
+                                                                                        cell.targetSurface)
             #cell.lambdaVolume = self.execConfig.calcVolLambdaFromVolFit(cellType.volFit)
             #cell.lambdaSurface = self.execConfig.calcSurLambdaFromSurFit(cellType.surFit)
 
             cell.lambdaVolume = 1.0
-            cell.lambdaSurface = 1000.0
+            cell.lambdaSurface = 2.0
+
 
 
     def _addCubicCell(self, typename, xPos, yPos, zPos, xLength, yLength, zLength, steppable):
@@ -187,9 +191,7 @@ class ModelConfig(object):
                 for zr in range(zStart, zEnd):
                     rd = sqrt((xr - x0) ** 2 + (yr - y0) ** 2 + (zr - z0) ** 2)
                     if (rd <= radiusPx):
-                        print 'xr {} - yr {} - zr {}'.format(xr, yr, zr)
                         steppable.cellField[xr, yr, zr] = cell
-
 
         #steppable.cellField[xStart: xEnd,
         #                    yStart: yEnd,
@@ -232,7 +234,7 @@ class ModelConfig(object):
 
 
                 #self._addCubicCell(2, xPos, 2, zPos, cellDiameter, cellDiameter, cellDiameter, steppable)
-                self._add3DCell(2, xPos, 20, zPos, 6, steppable)
+                self._add3DCell(2, xPos, 4, zPos, 3, steppable)
 
     # TODO move configure stuff to ExecConfig?
     def _configureSimulation(self):
@@ -240,7 +242,7 @@ class ModelConfig(object):
         self.execConfig.initPotts()
         self.execConfig.initCellTypes(self.cellTypes)
         # TODO why 15 * ...
-        self.execConfig.initEnergyMatrix(self.cellTypes, self.energyMatrix, 15 * self.adhFactor)
+        self.execConfig.initEnergyMatrix(self.cellTypes, self.energyMatrix, 0 * self.adhFactor)
         self.execConfig.initPlugins("VolumeFlex", "SurfaceFlex", "PixelTracker", "NeighborTracker",
                                     "ExternalPotential")
         if self.execConfig.initNutrientDiffusion:
