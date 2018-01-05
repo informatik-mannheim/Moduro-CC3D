@@ -1,12 +1,28 @@
-exp_life_time
+exp_life_time                       used in GrowthSteppable
+            calculated in ModelConfig -> Normalverteilungsproblem / Gaussian Distribution
+            were expLivetime is the median and expLiveTime/10 is the deviation
+            ->How much time until apoptosis in MCS
+
+            expLiveTime = self.execConfig.calcMCSfromDays(cellType.apoptosisTimeInDays)
+            cellDict['exp_life_time'] = random.gauss(expLiveTime, expLiveTime / 10.0)
+
+
 necrosis                            used in GrowthMitosisSteppable
 DNA
 TurnOver
 colony
 id
 removed
-inhibited
+inhibited                           used in GrowthSteppable
+            set in ModelConfig.setCellAttributes(true)
+            a cell growths faster if it has not certain neighbors
+
+
 min_max_volume
 normal_volume                       used in GrowthMitosisSteppable
+            calculated in ModelConfig
+            creates a random (random.uniform()) value between the min and the max Volume in micro m
+
+
 growth_factor
-life_time
+life_time                           used in GrowthSteppable
