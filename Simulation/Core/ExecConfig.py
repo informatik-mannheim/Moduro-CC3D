@@ -168,9 +168,8 @@ class ExecConfig(object):
         pxInFloat = self.voxelDensity * mum
         #print'!!!!!!!!!!if mod 1 > 0.5 ----- px {} - px%1 {}'.format(pxInFloat, pxInFloat%1)
         if pxInFloat % 1.0 > 0.5:
-            pxInFloat +=1
+            pxInFloat += 1
 
-        print '!!!!!!!!! caluclated Px{}'.format(pxInFloat)
         return int(pxInFloat)
         #return int(self.voxelDensity * mum + 0.000001) # is __truncate(+0.000001) important?
 
@@ -213,16 +212,21 @@ class ExecConfig(object):
 
         r = (3 * volume / (4.0 * PI)) ** (1.0 / 3.0)  # Radius of a sphere with known volume.
 
-        rDimension = self.calcPixelFromMuMeter(r)  # Convert it to a pixel unit.
+        #rDimension = self.calcPixelFromMuMeter(r)  # Convert it to a pixel unit.
+        rDimension = r * self.voxelDensity
         if self.dimensions == 2:
             # a = self.__truncateToVoxel(PI * (rDimension ** 2))
             # if volume > 0:
             #    print "volume=", volume, ", rDim=", rDimension, ", r=", r, ", A=", a
-            return self.__truncate(PI * (rDimension ** 2))  # Area of a circle.
+            return int(self.__truncate(PI * (rDimension ** 2)))  # Area of a circle.
         else:
         #    print '!!!!!!!!!calcVoxelVolumeFromVolume(volume): result {}'.format(4.0 / 3.0 * PI * (rDimension ** 3))
             #print'rDimension {}'.format(rDimension)
-            return 4.0 / 3.0 * PI * (rDimension ** 3)
+            result = 4.0 / 3.0 * PI * (rDimension ** 3)
+            if result % 1.0 > 0.5:
+                result += 1
+
+            return int(result)
             #return self.__truncate(4.0 / 3.0 * PI * (rDimension ** 3))  # Volume of a sphere.
 
     def calcVoxelSurfaceFromVoxelVolume(self, voxelVolume):
@@ -236,7 +240,7 @@ class ExecConfig(object):
             # some fractal factor!
             return self.__truncate(1.5 * 2 * (PI * voxelVolume) ** (1.0 / 2.0))  # Circumference.
         else:
-            return self.__truncate(2 * 4 * PI * (3 * voxelVolume / (4 * PI)) ** (2.0 / 3.0))  # Surface.
+            return self.__truncate(2 * (4 * PI * (3 * voxelVolume / (4 * PI)) ** (2.0 / 3.0)))  # Surface.
 
     def __truncate(self, value):
         res = int(value + 0.00001)
