@@ -39,7 +39,7 @@ class SdBpaPcdiInUa(ModelConfig):
     def __init__(self, sim, simthread):
         ModelConfig.__init__(self, sim, simthread)
 
-    def _initMOdel(self):
+    def _initModel(self):
         self.name = "SdBpaPcdiInUa"
         self.CellType = self._createCellTypes()
         self.energyMatrix = self._createEnergyMatrix()

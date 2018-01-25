@@ -56,7 +56,7 @@ class SphereTest(ModelConfig):
         cellTypes.append(cell)
         return cellTypes
 
-    def _initCells(self, fileHandle):
+    def _initCells(self, stepable):
         r = self.cellTypes[1].getAvgDiameter() / 2.0
         length = PI ** (1.0 / 2.0) * r if self.execConfig.dimensions == 2 \
             else (4.0 / 3.0 * PI) ** (1.0 / 3.0) * r
@@ -68,14 +68,14 @@ class SphereTest(ModelConfig):
         yl = length
         zl = 1 if self.execConfig.dimensions == 2 else length
 
-        self._addCubicCell(0, "Cell", x, y, z, xl, yl, zl, fileHandle)
+        self._addCubicCell(0, x, y, z, xl, yl, zl, stepable)
 
         x = self.execConfig.xLength * 0.7 - length / 2.0
         y = self.execConfig.yLength * 0.7 - length / 2.0
         z = self.execConfig.zLength * 0.7 - length / 2.0 \
             if self.execConfig.dimensions == 3 else 0
 
-        self._addCubicCell(1, "Cell", x, y, z, xl, yl, zl, fileHandle)
+        self._addCubicCell(1, x, y, z, xl, yl, zl, stepable)
 
     def _getSteppables(self):
         steppableList = []

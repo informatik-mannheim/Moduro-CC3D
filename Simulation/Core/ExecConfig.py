@@ -89,6 +89,7 @@ class ExecConfig(object):
         potts.ElementCC3D("Flip2DimRatio", {}, self.flip2DimRatio)
         potts.ElementCC3D("NeighborOrder", {}, self.neighborOrder)
         potts.ElementCC3D("Boundary_x", {}, self.boundary_x)
+        # potts.ElementCC3D("Boundary_y", {}, self.boundary_x) # Unknown why this?
         potts.ElementCC3D("DebugOutputFrequency", {}, self.debugOutputFrequency)
         potts.ElementCC3D("RandomSeed", {}, self.SEED)
 
@@ -232,7 +233,8 @@ class ExecConfig(object):
         return mcs / (1.0 * self.MCSperDay) * 24.0
 
     def calcSurLambdaFromSurFit(self, surFit):
-        return 0.05 * surFit
+        # return 0.05 * surFit
+        return 1000.0 * surFit
 
     def calcVolLambdaFromVolFit(self, volFit):
         return 1.0 * volFit

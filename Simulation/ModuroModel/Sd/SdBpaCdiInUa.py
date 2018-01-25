@@ -39,7 +39,7 @@ class SdBpaCdiInUa(ModelConfig):
     def __init__(self, sim, simthread):
         ModelConfig.__init__(self, sim, simthread)
 
-    def _initMOdel(self):
+    def _initModel(self):
         self.name = "SdBpaCdiInUa"
         self.CellType = self._createCellTypes()
         self.energyMatrix = self._createEnergyMatrix()
@@ -98,4 +98,4 @@ class SdBpaCdiInUa(ModelConfig):
 
     def _createExecConfig(self):
         return ExecConfig(MCSperDay=500,  # SEED=10,
-                          xLength=500, yLength=150, zLength=0, voxelDensity=.8)
+                          xLength=500, yLength=150, zLength=100, voxelDensity=.5)
