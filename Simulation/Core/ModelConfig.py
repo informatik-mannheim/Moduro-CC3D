@@ -55,8 +55,6 @@ class ModelConfig(object):
         self.cellLifeCycleLogger = CellLifeCycleLogger(self, "Celltimes.daz")
         self._initModel()
 
-
-
     def _run(self):
         print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ModelConfig._run'
         """
@@ -78,97 +76,81 @@ class ModelConfig(object):
 
         CompuCellSetup.mainLoop(self.sim, self.simthread, steppableRegistry)
 
-#    def calcVolume(self, diameter):
-#           return 4.0 / 3.0 * PI * (diameter / 2.0) ** 3
-
     def initCellAttributes(self, cell, cellDict):
-            print 'ModelConfig.initCellAttributes()'
-            cellType = self.cellTypes[cell.type]
-            expLiveTime = self.execConfig.calcMCSfromDays(cellType.apoptosisTimeInDays)
-            cellDict['exp_life_time'] = random.gauss(expLiveTime, expLiveTime / 10.0)
-            cellDict['necrosis'] = False
-            cellDict['DNA'] = 100
-            cellDict['TurnOver'] = False
-            cellDict['colony'] = -1  # Default colony id.
-            self.setCellAttributes(cellDict, cell, 0)
+        #print 'ModelConfig.initCellAttributes()'
+        cellType = self.cellTypes[cell.type]
+        expLiveTime = self.execConfig.calcMCSfromDays(cellType.apoptosisTimeInDays)
+        cellDict['exp_life_time'] = random.gauss(expLiveTime, expLiveTime / 10.0)
+        cellDict['necrosis'] = False
+        cellDict['DNA'] = 100
+        cellDict['TurnOver'] = False
+        cellDict['colony'] = -1  # Default colony id.
+        self.setCellAttributes(cellDict, cell, 0)
 
     def setCellAttributes(self, cellDict, cell, lifeTimeParent):
-            print 'ModelConfig.setCellAttributes()'
-            #cellDict = cell.getDictionaryAttribute(cell)
-            cellType = self.cellTypes[cell.type]
-            # Assign a new cell ID.
-            cellDict['id'] = ModelConfig.cellID
-            ModelConfig.cellID += 1
-            cellDict['removed'] = False
-            cellDict['inhibited'] = True
+        # cellDict = cell.getDictionaryAttribute(cell)
+        cellType = self.cellTypes[cell.type]
 
-            cellDict['min_max_volume'] = [self.execConfig.calcVoxelVolumeFromVolume(cellType.minVol),
-                                          self.execConfig.calcVoxelVolumeFromVolume(cellType.maxVol)]
-            print 'minVol {} - maxVol {}'.format(cellDict['min_max_volume'][0], cellDict['min_max_volume'][1])
-            #cellDict['min_max_volume'] = [self.execConfig.calcVoxelVolumeFromVolume(cellType.minDiameter),
-            #                              self.execConfig.calcVoxelVolumeFromVolume(cellType.maxDiameter)]
-            cellDict['normal_volume'] = random.uniform(cellDict['min_max_volume'][0],
-                                                       cellDict['min_max_volume'][1])
-            print 'normal_volume {}'.format(cellDict['normal_volume'])
+        cellDict['id'] = ModelConfig.cellID
+        ModelConfig.cellID += 1
+        cellDict['removed'] = False
+        cellDict['inhibited'] = True
 
-            cellDict['growth_factor'] = []  # really needed?
-            cellDict['life_time'] = lifeTimeParent  # How many MCS is this cell alive?
+        cellDict['min_max_volume'] = [self.execConfig.calcVoxelVolumeFromVolume(cellType.minVol),
+                                      self.execConfig.calcVoxelVolumeFromVolume(cellType.maxVol)]
 
-            # check if current volume is already larger than the new targetVolume
-            # if so -> increase the targetVolume until it is larger
-            while cell.volume >= cell.targetVolume:
-                cell.targetVolume += 1
+        cellDict['normal_volume'] = random.uniform(cellDict['min_max_volume'][0],
+                                                   cellDict['min_max_volume'][1])
 
-            print '!!!!!!!!!!!!!!!!!!!!!!!! Cell.Volume in Voxel {} - TargetVolume {}'.format(cell.volume, cell.targetVolume)
+        #print 'id {} - normal_volume {}'.format(cell.id, cellDict['normal_volume'])
+        #print 'minVol {} - maxVol {}'.format(cellDict['min_max_volume'][0], cellDict['min_max_volume'][1])
 
-            # the simulation still will run .
-            # cell.targetVolume = cellDict['normal_volume'] # At the beginning, the target is the actual size.
-
-            cell.targetSurface = self.execConfig.calcVoxelSurfaceFromVoxelVolume(cell.targetVolume)
-            #cell.targetSurface = 1.2 * cell.surface
-            while cell.surface >= cell.targetSurface:
-                cell.targetSurface += 1
-            print '!!!!!!!!!!!!!!!!!!!!!!!! Cell.Surface in Voxel {} - TargetSurface {}'.format(cell.surface,
-                                                                                        cell.targetSurface)
-            #cell.lambdaVolume = self.execConfig.calcVolLambdaFromVolFit(cellType.volFit)
-            #cell.lambdaSurface = self.execConfig.calcSurLambdaFromSurFit(cellType.surFit)
-
-            cell.lambdaVolume = 1.0
-            cell.lambdaSurface = 2.0
+        cellDict['growth_factor'] = []  # really needed?
+        cellDict['life_time'] = lifeTimeParent  # How many MCS is this cell alive?
 
 
+        #cell.targetVolume = 268
+        cell.targetVolume = cell.volume + 1
+        print '!!!!!!!!!!!!!!!!!!!!!!!! Cell.Volume in Voxel {} - TargetVolume {}'.format(cell.volume, cell.targetVolume)
+        #cell.targetSurface = 201*1.4
+        #cell.targetSurface = self.execConfig.calcVoxelSurfaceFromVoxelVolume(cell.targetVolume)
+        print '!!!!!!!!!!!!!!!!!!!!!!!! Cell.Surface in Voxel {} - TargetSurface {}'.format(cell.surface, cell.targetSurface)
 
-    def _addCubicCell(self, typename, xPos, yPos, zPos, xLength, yLength, zLength, steppable):
-            print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ModelConfig._addCubicCell'
-            '''
-            Adds a cubic (rectangle or cube) cell. All values are in micro m.
-            :param typename:  Type of the cell.
-            :param xPos: Lower x position of the cube (in micro m).
-            :param yPos: Lower y position of the cube.
-            :param zPos: Lower z position of the cube.
-            :param xLength: Length in x dimension (in micro m).
-            :param yLength: Length in y dimension.
-            :param zLength: Length in z dimension.
-            :param steppable: A steppable required for to add pixels (voxels).
-            :return:
-            '''
-            cell = steppable.newCell(typename)
-            xPosDim = self.execConfig.calcPixelFromMuMeter(xPos)
-            yPosDim = self.execConfig.calcPixelFromMuMeter(yPos)
-            zPosDim = self.execConfig.calcPixelFromMuMeter(zPos)
-            xLengthDim = self.execConfig.calcPixelFromMuMeter(xLength)
-            yLengthDim = self.execConfig.calcPixelFromMuMeter(yLength)
-            zLengthDim = self.execConfig.calcPixelFromMuMeter(zLength)
-            # size of cell will be SIZExSIZEx1
-            steppable.cellField[
-            xPosDim:xPosDim + xLengthDim - 1,
-            yPosDim:yPosDim + yLengthDim - 1,
-            zPosDim:zPosDim + zLengthDim - 1] = cell
+        cell.lambdaVolume = 1
+        cell.lambdaSurface = 3
+
+    def _addMembrane(self, typename, xPos, yPos, zPos, xLength, yLength, zLength, steppable):
+        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ModelConfig._addMembrane'
+        '''
+        Adds a cubic (rectangle or cube) cell. All values are in micro m.
+        :param typename:  Type of the cell.
+        :param xPos: Lower x position of the cube (in micro m).
+        :param yPos: Lower y position of the cube.
+        :param zPos: Lower z position of the cube.
+        :param xLength: Length in x dimension (in micro m).
+        :param yLength: Length in y dimension.
+        :param zLength: Length in z dimension.
+        :param steppable: A steppable required for to add pixels (voxels).
+        :return:
+        '''
+        cell = steppable.newCell(typename)
+        xPosDim = self.execConfig.calcPixelFromMuMeter(xPos)
+        yPosDim = self.execConfig.calcPixelFromMuMeter(yPos)
+        zPosDim = self.execConfig.calcPixelFromMuMeter(zPos)
+        xLengthDim = self.execConfig.calcPixelFromMuMeter(xLength)
+        yLengthDim = self.execConfig.calcPixelFromMuMeter(yLength)
+        zLengthDim = self.execConfig.calcPixelFromMuMeter(zLength)
+        # size of cell will be SIZExSIZEx1
+        steppable.cellField[
+        xPosDim:xPosDim + xLengthDim - 1,
+        yPosDim:yPosDim + yLengthDim - 1,
+        zPosDim:zPosDim + zLengthDim - 1] = cell
 
     def _add3DCell(self, typename, xPos, yPos, zPos, radius, steppable):
         '''The parameters are all in micro meter
         wheras the calculated variables are in px'''
 
+        print 'x:{}, y:{}, z:{} r:{}'.format(xPos, yPos, zPos, radius)
         cell = steppable.newCell(typename)
         xStart = self.execConfig.calcPixelFromMuMeter(xPos - radius)
         x0 = self.execConfig.calcPixelFromMuMeter(xPos)
@@ -180,61 +162,64 @@ class ModelConfig(object):
         z0 = self.execConfig.calcPixelFromMuMeter(zPos)
         zEnd = self.execConfig.calcPixelFromMuMeter(zPos + radius)
 
-        radiusPx = self.execConfig.calcPixelFromMuMeter(radius)
+        i=0
+        radiusPx = self.execConfig.calcFloatPixel(radius)
+        stepLength = 1.0
+        print 'steplength {}, zStart + stepLength/2 {}'.format(stepLength, (zStart+(((zStart+stepLength) - zStart)/2.)))
+        print 'x:{}-{}, y:{}-{}, z:{}-{} radiusPx:{}'.format(xStart, xEnd, yStart, yEnd, zStart, zEnd, radiusPx)
         # loop over the points to determine boundaries of the circle
-        print '_add3DCell in micro m (type {}, xPos {}, yPos{}, zPos {}, diameter {}, steppable {}'.format(typename, xPos, yPos,
-                                                                                                zPos, radius, steppable)
-        print 'in px, xStart {} - xEnd {} , yStart {} - yEnd {} , zStart {} - zEnd {}'.format(xStart, xEnd, yStart, yEnd,
-                                                                                              zStart, zEnd)
-        for xr in range(xStart, xEnd):
-            for yr in range(yStart, yEnd):
-                for zr in range(zStart, zEnd):
-                    rd = sqrt((xr - x0) ** 2 + (yr - y0) ** 2 + (zr - z0) ** 2)
+        for xr in xrange(xStart, xEnd):
+            for yr in xrange(yStart, yEnd):
+                for zr in xrange(zStart, zEnd):
+                    #rd = sqrt((xr - x0) ** 2 + (yr - y0) ** 2 + (zr - z0) ** 2)
+                    rd = sqrt(
+                        ((xr+(((xr+stepLength) - xr)/2.)) - x0) ** 2 +
+                        ((yr+(((yr+stepLength) - yr)/2.)) - y0) ** 2 +
+                        ((zr+(((zr+stepLength) - zr)/2.)) - z0) ** 2)
                     if (rd <= radiusPx):
                         steppable.cellField[xr, yr, zr] = cell
+                        i += 1
 
-        #steppable.cellField[xStart: xEnd,
-        #                    yStart: yEnd,
-        #                    zStart: zEnd] = cell
+        print i
+
 
 
     def _initCells(self, steppable):
-            print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ModelConfig._initCells'
-            '''
-            Initialize the tissue with cells etc. Here a urothelium with a basal membrane
-            and some stem cells is created.
-            :param steppable: Required to add cells dynamically.
-            :return:
-            '''
-            # Adds the basal membrane:
-            self._addCubicCell(1, 0, 0, 0, self.execConfig.xLength, 2, self.execConfig.zLength, steppable)
-            # Adds the stem cells throughout the basal membrane:
-            cellDiameter = self.cellTypes[2].getAvgDiameter()
-            stemCellFactor = 8 * cellDiameter
-            print '!!!!!!!!!!!!!!!! ModelConfig._initCells - cellDiameter{}'.format(cellDiameter)
+        '''
+        Initialize the tissue with cells etc. Here a urothelium with a basal membrane
+        and some stem cells is created.
+        :param steppable: Required to add cells dynamically.
+        :return:
+        '''
+        # Adds the basal membrane:
+        self._addMembrane(1, 0, 0, 0, self.execConfig.xLength, 2, self.execConfig.zLength, steppable)
+        # Adds the stem cells throughout the basal membrane:
 
-            '''calculate the amount of stem cells on the basal membrane
-               noStemCells means the amount of stem cells'''
-            # if self.execConfig.dimensions == 2:
-            #    noStemCells = int(self.execConfig.xLength / stemCellFactor)
-            # else:
+        '''calculate the amount of stem cells on the basal membrane
+           noStemCells is the amount of stem cells'''
+        cellDiameter = self.cellTypes[2].getAvgDiameter()  # cell diameter is of type float
+        if self.execConfig.dimensions == 2:
+            noStemCells = int(self.execConfig.xLength * 0.12 / cellDiameter)
+        else:
+            noStemCells = ((self.execConfig.xLength * self.execConfig.zLength) * 0.12) / (PI * (cellDiameter / 2.) ** 2)
 
-            noStemCells = int(self.execConfig.xLength * self.execConfig.yLength /
-                              (stemCellFactor * stemCellFactor))
+        if noStemCells % 1 > 0.5:
+            noStemCells += 1
 
-            '''generates a random position between the cellDiameter and the ((xLength-cellDiameter)-1)
-               for each stem cell
-               keep some distance to the edges of the simulation field, otherwise the cell will be only half in the simulation'''
-            for s in range(1, noStemCells + 1, 1):
-                xPos = random.uniform(cellDiameter, self.execConfig.xLength - cellDiameter)
-                zPos = random.uniform(cellDiameter, self.execConfig.zLength - cellDiameter)
-                # if self.execConfig.dimensions == 2:
-                #      self._addCubicCell(2, xPos, 2, 0, cellDiameter, cellDiameter, 0, steppable)
-                #   else:
+        noStemCells = int(noStemCells)
+        '''generates a random position between the cellDiameter and the ((xLength-cellDiameter)-1)
+           for each stem cell
+           keep some distance to the edges of the simulation field, otherwise the cell will be only half in the simulation'''
+        for s in range(0, noStemCells, 1):
+            xPos = random.uniform(cellDiameter, self.execConfig.xLength - 2*cellDiameter)
+            zPos = random.uniform(cellDiameter, self.execConfig.zLength - 2*cellDiameter)
+            if self.execConfig.dimensions == 2:
+                self._addMembrane(2, xPos, 2, 0, cellDiameter, cellDiameter, 0, steppable)
+            else:
+                self._add3DCell(2, xPos, 7, zPos, cellDiameter/2. , steppable)
+                #print''
 
-
-                #self._addCubicCell(2, xPos, 2, zPos, cellDiameter, cellDiameter, cellDiameter, steppable)
-                self._add3DCell(2, xPos, 4, zPos, 3, steppable)
+        #self._add3DCell(2, 30, 10, 10, 3, steppable)
 
     # TODO move configure stuff to ExecConfig?
     def _configureSimulation(self):
@@ -251,11 +236,11 @@ class ModelConfig(object):
 
         return self.execConfig.getCC3D()
 
-    #TODO abstract method
+    # TODO abstract method
     def _createCellTypes(self):
         return None
 
-    #TODO abstract - abstract
+    # TODO abstract - abstract
     def _createEnergyMatrix(self):
         print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ModelConfig._createEnergyMatrix'
         """
@@ -268,7 +253,7 @@ class ModelConfig(object):
         print energyMatrix
         return energyMatrix
 
-    #TODO make it an abstract method
+    # TODO make it an abstract method
     def _initModel(self):
         print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ModelConfig._initModel'
         self.cellTypes = self._createCellTypes()
@@ -276,7 +261,9 @@ class ModelConfig(object):
         self.name = "ModelName"
         self._run()
 
-    #TODO abstract method
+    # TODO abstract method
     def _createExecConfig(self):
-        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ModelConfig._createExecConfig'
         return ExecConfig(self)
+
+#   def calcVolume(self, diameter):
+#       return 4.0 / 3.0 * PI * (diameter / 2.0) ** 3
