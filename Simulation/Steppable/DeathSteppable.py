@@ -26,6 +26,7 @@ class DeathSteppable(ModuroSteppable):
         ModuroSteppable.__init__(self, _simulator, model,_frequency)
 
     def moduroStep(self, mcs):
+        #print'DeathSteppable - MCS {}'.format(mcs)
         for cell in self.cellList:
             cellDict = self.getDictionaryAttribute(cell)
             if cellDict['necrosis'] == True:

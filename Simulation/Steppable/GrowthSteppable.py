@@ -26,53 +26,37 @@ class GrowthSteppable(ModuroSteppable):
         ModuroSteppable.__init__(self, simulator, model, _frequency)
         self.contactInhibitedFactor = contactInhibitedFactor    #um wie viel wachsen die zellen schneller
 
+    #def step(self, mcs):
     def moduroStep(self, mcs):
+        #print'GrowthSteppable - MCS {}'.format(mcs)
         for cell in self.cellList:
             cellDict = self.getDictionaryAttribute(cell)
             cellType = self.model.cellTypes[cell.type]
 
-            print''
-            print''
-            print''
-            print '!!!!!! GrowthSteppable'
-            print "!!!!!! cell.targetVol=", cell.targetVolume, "<=type.tVol=", cellDict['normal_volume'], " VOL: ", cell.volume
-
             cellDict['life_time'] += 1
             if cellDict['life_time'] >= cellDict['exp_life_time']:
                 cellDict['necrosis'] = True
+
                 #if cellType.divides is false than second part otherwise cellType.divides
             elif cellType.divides or cell.targetVolume <= cellDict['normal_volume']:
-                # print "! ! ! ! tSurf=", cell.targetSurface
-                # Growth (mu m^3 ) per MCS:
-                # deltaVolPerMCS = 1.0 * cellType.growthVolumePerDay / self.execConfig.MCSperDay
-                # Volume/surface change in voxel per day.
                 if cellDict['inhibited']:   #if there enough other cells around than the inhibited cell will grow normal and not faster
                     growthVolPerDay = cellType.growthVolumePerDay
                 else:
                     growthVolPerDay = cellType.growthVolumePerDay * self.contactInhibitedFactor
 
-                print '---------GrowthSteppable'
-                print 'volume {}'.format(cell.volume)
-                print 'growthVolumePerDay {}'.format(growthVolPerDay)
                 deltaVolDimPerDay = self.execConfig.calcVoxelVolumeFromVolume(growthVolPerDay)
-                print'deltaPerDay {}'.format(deltaVolDimPerDay)
                 deltaVolDimPerMCS = 1.0 * deltaVolDimPerDay / self.execConfig.MCSperDay
-
-                print'deltaVolPerMCS {}'.format(deltaVolDimPerMCS)
 
                 #if the growth is to small, take a random number between 0 and 1 -> maybe add the pixel or not
                 if deltaVolDimPerMCS < 1.0: # The change may be too small for one MCS.
                     deltaVolDimPerMCS = 1 if deltaVolDimPerMCS >= random.random() else 0
-
-                #print "!!::!::!:!:! deltaVol=", deltaVolPerMCS, ", deltaVolDimPerDay=",\
-                #    deltaVolDimPerDay, ", deltaVolDimPerMCS=", deltaVolDimPerMCS
 
                 #reduce the approximation error
                 if deltaVolDimPerMCS % 1.0 > 0.5:
                     deltaVolDimPerMCS += 1
 
                 cell.targetVolume += int(deltaVolDimPerMCS)
-                cell.targetSurface = self.execConfig.calcVoxelSurfaceFromVoxelVolume(cell.targetVolume)
-                #if cell.type == self.STEM:
-                #    print "!!!!!!!!!!!!!!tVOL: ", cell.targetVolume, " VOL: ", cell.volume, " lamVOL: ", cell.lambdaVolume, " tSUR: ", cell.targetSurface, " SUR: ", cell.surface, " lamSUR: ", cell.lambdaSurface
-
+                # TODO TMUELLER fix surface calculation
+                #cell.targetSurface = self.execConfig.calcVoxelSurfaceFromVoxelVolume(cell.targetVolume)
+                print 'volume {} - targetVolume {} - surface {} - targetSurface {} - cluster{}'.format(
+                    cell.volume, cell.targetVolume, cell.surface, cell.targetSurface, cell.clusterId)

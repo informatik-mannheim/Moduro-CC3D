@@ -28,15 +28,11 @@ class CellType(object):
     A cell type.
     """
     __typeCount = 0
-    #consumPerCell = 0.003  it is not used in the project...
 
     # TODO explain parameter
     def __init__(self, name="CellType", frozen=False, minDiameter=10, maxDiameter=10,
                  growthVolumePerDay=500, nutrientRequirement=1.0, apoptosisTimeInDays=180000,
-                 #volFit=1.0, surFit=0.0,
                  necrosisProb=0.0):
-        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Konstruktor CellType'
-
         """
 
         :param name:
@@ -46,8 +42,6 @@ class CellType(object):
         :param growthVolumePerDay: tbd. e.g. growth in percent per h or absolute per h.
         :param nutrientRequirement:
         :param apoptosisTimeInDays:
-        :param volFit:
-        :param surFit:
         :param necrosisProb: propability for a cell to do necrosis
         :return:
         """
@@ -61,16 +55,12 @@ class CellType(object):
         self.growthVolumePerDay = growthVolumePerDay
         self.nutrientRequirement = nutrientRequirement
         self.apoptosisTimeInDays = apoptosisTimeInDays
-        #self.volFit = volFit
-        #self.surFit = surFit
         self.divides = False
         self.descendants = []
         self.necrosisProb = necrosisProb
         CellType.__typeCount += 1
 
     def setGrowthVolumePerDayRelVolume(self, multiple):
-        print '------------------------------------------------------------------ In Function CellType.setGrowthVolumePerDayRelVolume'
-        print'!!!! maxDiameter {}'.format(self.maxDiameter)
         '''
         Set the growth volume per day relative to the maximum cell volume.
         :param multiple: Factor for the daily growth.
@@ -107,29 +97,23 @@ class CellType(object):
 
 Medium = CellType(name="Medium", frozen=True, minDiameter=0, maxDiameter=0,
                   growthVolumePerDay=0, nutrientRequirement=0, apoptosisTimeInDays=0)
-                  #volFit=1.0, surFit=1.0
 
 Basalmembrane = CellType(name="BasalMembrane", frozen=True, minDiameter=0, maxDiameter=0,
                          growthVolumePerDay=0, nutrientRequirement=0, apoptosisTimeInDays=180000)
-                         #volFit=1.0, surFit=1.0)
 
 Stemcell = CellType(name="Stem", minDiameter=8, maxDiameter=10,
-                    growthVolumePerDay=1 * Math.calcSphereVolumeFromDiameter(10),
+                    growthVolumePerDay=2 * Math.calcSphereVolumeFromDiameter(15),
                     nutrientRequirement=1.0, apoptosisTimeInDays=180000)
-                    #volFit=0.9, surFit=0.5)
 
 Basalcell = CellType(name="Basal", minDiameter=9, maxDiameter=10,
-                     growthVolumePerDay=1 * Math.calcSphereVolumeFromDiameter(10),
+                     growthVolumePerDay=2 * Math.calcSphereVolumeFromDiameter(15),
                      nutrientRequirement=1.0, apoptosisTimeInDays=80)
-                     #volFit=0.9, surFit=0.5)
 
 Intermediatecell = CellType(name="Intermediate", minDiameter=12, maxDiameter=15,
-                            growthVolumePerDay=1 * Math.calcSphereVolumeFromDiameter(15),
+                            growthVolumePerDay=2 * Math.calcSphereVolumeFromDiameter(15),
                             nutrientRequirement=1.0, apoptosisTimeInDays=2)
-                            #volFit=0.9, surFit=0.1)
 
 Umbrellacell = CellType(name="Umbrella", minDiameter=15, maxDiameter=19,
-                        growthVolumePerDay=1 * Math.calcSphereVolumeFromDiameter(19),
+                        growthVolumePerDay=2 * Math.calcSphereVolumeFromDiameter(19),
                         nutrientRequirement=1.0, apoptosisTimeInDays=2)
-                        #volFit=0.9, surFit=0.1)
 

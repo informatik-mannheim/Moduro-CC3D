@@ -29,8 +29,8 @@ class UrinationSteppable(ModuroSteppable):
         self.prob = prop
 
     def moduroStep(self, mcs):
+        #TODO why 12 hours
         if mcs > 2 * self.urinationMCS and mcs % self.urinationMCS == 0:
-            # print "URINATION !!!!!!!!!!!!!!!!!!!! at ", mcs
             self._removeCells()
 
     def _removeCells(self):
@@ -42,6 +42,5 @@ class UrinationSteppable(ModuroSteppable):
                     if not neighbor:
                         totalArea += commonSurfaceArea
                 if totalArea > 0:
-                    # print "WEG!!!!!!!!!!!!!!!!!!!"
                     cellDict = self.getDictionaryAttribute(cell)
                     cellDict['necrosis'] = True

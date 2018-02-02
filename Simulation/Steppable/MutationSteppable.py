@@ -32,7 +32,7 @@ class MutationSteppable(ModuroSteppable):
         self.probUmbrella = probUmbrella
 
     def moduroStep(self, mcs):
-        if mcs > 2 * self.mutationMCS: #and mcs % self.mutationMCS == 0:
+        if mcs > 2 * self.mutationMCS: #and mcs % self.mutationMCS == 0: - after 1000 MCS use it
             self._removeCells()
 
     def _removeCells(self):

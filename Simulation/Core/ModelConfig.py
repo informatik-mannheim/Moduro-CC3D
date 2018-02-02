@@ -37,7 +37,6 @@ class ModelConfig(object):
     cellID = 1
 
     def __init__(self, sim, simthread):
-        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Konstruktor ModelConfig'
         '''
         :param sim:
         :param simthread:
@@ -77,7 +76,6 @@ class ModelConfig(object):
         CompuCellSetup.mainLoop(self.sim, self.simthread, steppableRegistry)
 
     def initCellAttributes(self, cell, cellDict):
-        #print 'ModelConfig.initCellAttributes()'
         cellType = self.cellTypes[cell.type]
         expLiveTime = self.execConfig.calcMCSfromDays(cellType.apoptosisTimeInDays)
         cellDict['exp_life_time'] = random.gauss(expLiveTime, expLiveTime / 10.0)
@@ -88,7 +86,6 @@ class ModelConfig(object):
         self.setCellAttributes(cellDict, cell, 0)
 
     def setCellAttributes(self, cellDict, cell, lifeTimeParent):
-        # cellDict = cell.getDictionaryAttribute(cell)
         cellType = self.cellTypes[cell.type]
 
         cellDict['id'] = ModelConfig.cellID
@@ -96,23 +93,19 @@ class ModelConfig(object):
         cellDict['removed'] = False
         cellDict['inhibited'] = True
 
-        cellDict['min_max_volume'] = [self.execConfig.calcVoxelVolumeFromVolume(cellType.minVol),
-                                      self.execConfig.calcVoxelVolumeFromVolume(cellType.maxVol)]
+        cellDict['min_max_volume'] = [self.execConfig.calcVoxelVolumeFromVolume(self.execConfig.voxelDensity*cellType.minVol),
+                                      self.execConfig.calcVoxelVolumeFromVolume(self.execConfig.voxelDensity*cellType.maxVol)]
 
         cellDict['normal_volume'] = random.uniform(cellDict['min_max_volume'][0],
                                                    cellDict['min_max_volume'][1])
-
-        #print 'id {} - normal_volume {}'.format(cell.id, cellDict['normal_volume'])
-        #print 'minVol {} - maxVol {}'.format(cellDict['min_max_volume'][0], cellDict['min_max_volume'][1])
 
         cellDict['growth_factor'] = []  # really needed?
         cellDict['life_time'] = lifeTimeParent  # How many MCS is this cell alive?
 
 
-        #cell.targetVolume = 268
         cell.targetVolume = cell.volume + 1
         print '!!!!!!!!!!!!!!!!!!!!!!!! Cell.Volume in Voxel {} - TargetVolume {}'.format(cell.volume, cell.targetVolume)
-        #cell.targetSurface = 201*1.4
+        # TODO TMUELLER fix surface calculation
         #cell.targetSurface = self.execConfig.calcVoxelSurfaceFromVoxelVolume(cell.targetVolume)
         print '!!!!!!!!!!!!!!!!!!!!!!!! Cell.Surface in Voxel {} - TargetSurface {}'.format(cell.surface, cell.targetSurface)
 
@@ -162,25 +155,21 @@ class ModelConfig(object):
         z0 = self.execConfig.calcPixelFromMuMeter(zPos)
         zEnd = self.execConfig.calcPixelFromMuMeter(zPos + radius)
 
-        i=0
         radiusPx = self.execConfig.calcFloatPixel(radius)
         stepLength = 1.0
         print 'steplength {}, zStart + stepLength/2 {}'.format(stepLength, (zStart+(((zStart+stepLength) - zStart)/2.)))
         print 'x:{}-{}, y:{}-{}, z:{}-{} radiusPx:{}'.format(xStart, xEnd, yStart, yEnd, zStart, zEnd, radiusPx)
-        # loop over the points to determine boundaries of the circle
+        # loop over the center of each pixel to determine boundaries of the circle
         for xr in xrange(xStart, xEnd):
             for yr in xrange(yStart, yEnd):
                 for zr in xrange(zStart, zEnd):
-                    #rd = sqrt((xr - x0) ** 2 + (yr - y0) ** 2 + (zr - z0) ** 2)
                     rd = sqrt(
                         ((xr+(((xr+stepLength) - xr)/2.)) - x0) ** 2 +
                         ((yr+(((yr+stepLength) - yr)/2.)) - y0) ** 2 +
                         ((zr+(((zr+stepLength) - zr)/2.)) - z0) ** 2)
                     if (rd <= radiusPx):
                         steppable.cellField[xr, yr, zr] = cell
-                        i += 1
 
-        print i
 
 
 
@@ -193,8 +182,8 @@ class ModelConfig(object):
         '''
         # Adds the basal membrane:
         self._addMembrane(1, 0, 0, 0, self.execConfig.xLength, 2, self.execConfig.zLength, steppable)
-        # Adds the stem cells throughout the basal membrane:
 
+        # Adds the stem cells throughout the basal membrane:
         '''calculate the amount of stem cells on the basal membrane
            noStemCells is the amount of stem cells'''
         cellDiameter = self.cellTypes[2].getAvgDiameter()  # cell diameter is of type float
@@ -217,9 +206,6 @@ class ModelConfig(object):
                 self._addMembrane(2, xPos, 2, 0, cellDiameter, cellDiameter, 0, steppable)
             else:
                 self._add3DCell(2, xPos, 7, zPos, cellDiameter/2. , steppable)
-                #print''
-
-        #self._add3DCell(2, 30, 10, 10, 3, steppable)
 
     # TODO move configure stuff to ExecConfig?
     def _configureSimulation(self):
@@ -264,6 +250,3 @@ class ModelConfig(object):
     # TODO abstract method
     def _createExecConfig(self):
         return ExecConfig(self)
-
-#   def calcVolume(self, diameter):
-#       return 4.0 / 3.0 * PI * (diameter / 2.0) ** 3

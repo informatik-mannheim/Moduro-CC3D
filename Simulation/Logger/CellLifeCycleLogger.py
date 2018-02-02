@@ -43,7 +43,6 @@ class CellLifeCycleLogger(object):
 
     # cellDict must be passed because the method is not available in this class.
     def cellLifeCycleBirth(self, timeMCS, cell, cellDict):
-        print'!!!!!!!!!!!!!!!!!!!!!!!!!! in CellLifeCycleLogger.cellLifeCycleBirth()'
         fileHandle = self._openFile()
         timeDays = self.execConfig.calcDaysFromMCS(timeMCS)
         id = cellDict['id']

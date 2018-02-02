@@ -27,8 +27,7 @@ class ModuroSteppable(SteppableBasePy):
         self.execConfig = model.execConfig
 
     def step(self, mcs):
-        #self.changeNumberOfWorkNodes(2) #change the number of threads cc3d will use
-        if not self.execConfig.interuptMCS(mcs):
+        if not self.execConfig.interuptMCS(mcs): # is called every 250 MCS
             self.moduroStep(mcs) # better: not MCS but time!
 
     # Abstract method:

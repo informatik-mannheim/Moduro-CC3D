@@ -25,6 +25,7 @@ from Core.ParameterStore import ParameterStore
 
 
 class ExecConfig(object):
+    vD=1
     def __init__(self,
                  xLength=150, yLength=200, zLength=50,
                  voxelDensity=1,
@@ -32,14 +33,13 @@ class ExecConfig(object):
                  MCSperDay=500,
                  simDurationDays=720,
                  sampleIntervalInDays=0.5,
-                 fluctuationAmplitude=10.0,
+                 fluctuationAmplitude=1.0,
                  flip2DimRatio=0.5,
-                 neighborOrder=1,
+                 neighborOrder=6,   #was 1 -> tip of allanswered topic
                  boundary_x="Periodic",
                  debugOutputFrequency=50000,
                  SEED=-1):
-        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Konstruktor ExecConfig'
-
+        ExecConfig.vD = voxelDensity
         """
 
         :param xLength:
@@ -64,7 +64,7 @@ class ExecConfig(object):
         self.dimensions = 2 if zLength <= 0 else 3
         self.xDimension = self.calcPixelFromMuMeter(xLength)
         self.yDimension = self.calcPixelFromMuMeter(yLength)
-        self.zDimension = 1 if self.dimensions == 2 else self.calcPixelFromMuMeterMin1(zLength)
+        self.zDimension = 1 if self.dimensions == 2 else self.calcPixelFromMuMeter(zLength)
         self.latticeSizeInVoxel = self.xDimension * self.yDimension * self.zDimension
         self.MCSperDay = MCSperDay
         self.simDurationDays = simDurationDays
@@ -159,19 +159,24 @@ class ExecConfig(object):
         :param mum:
         :return:
         """
-        #python has approximation errors when casted into int with long number of .99999999
         '''CC3D requires the amount of px in int.
         Therfore, check if float is larger .5 -> if so increase amount of px by 1
         It is still an approximation error, but better than just to cast the float to int'''
 
-        #print'!!!!!!!!!!calcPixelFromMuMeter - param {} - voxelDensity {} - result {}'.format(mum, self.voxelDensity, self.voxelDensity*mum)
         pxInFloat = self.voxelDensity * mum
-        #print'!!!!!!!!!!if mod 1 > 0.5 ----- px {} - px%1 {}'.format(pxInFloat, pxInFloat%1)
+
         if pxInFloat % 1.0 > 0.5:
             pxInFloat += 1
 
+
         return int(pxInFloat)
         #return int(self.voxelDensity * mum + 0.000001) # is __truncate(+0.000001) important?
+
+    def calcFloatPixel(self, mum):
+        if self.voxelDensity == 1:
+            return mum
+        else:
+            return float(self.voxelDensity * mum)
 
     def calcPixelFromMuMeterMin1(self, mum):
         """
@@ -182,19 +187,6 @@ class ExecConfig(object):
         """
         return self.__truncate(self.voxelDensity * mum)
 
-    def calculateVolume(self, diameter):
-        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ExecConfig.calculateVolume'
-
-        if self.dimensions == 2:
-            return PI * (diameter / 2.0) ** 2  # Area
-        else:
-            return 4.0 / 3.0 * PI * (diameter / 2.0) ** 3  # Volume
-
-    def calculateSurface(self, diameter):
-        if self.dimensions == 2:
-            return 2 * PI * (diameter / 2.0)  # Circumference
-        else:
-            return 4 * PI * (diameter / 2.0) ** 2  # Surface
 
     def calcVoxelVolumeFromVolume(self, volume):
         """
@@ -204,31 +196,18 @@ class ExecConfig(object):
         :param volume: physical volume in mu m^3.
         :return: Voxel volume.
         """
-
-        #def calcVoxelVolumeFromVolume(self, diameter):
-        #amountPx = self.calcPixelFromMuMeter(diameter / 2)
-        #print '!!!!!!!!calcVoxelVolumeFromVolume - diameter {} - amountPx {} - result {}'.format(diameter, amountPx, 4.0 / 3.0 * PI * (amountPx ** 3))
-        #return 4.0 / 3.0 * PI * (amountPx ** 3)
-
         r = (3 * volume / (4.0 * PI)) ** (1.0 / 3.0)  # Radius of a sphere with known volume.
 
-        #rDimension = self.calcPixelFromMuMeter(r)  # Convert it to a pixel unit.
         rDimension = r * self.voxelDensity
         if self.dimensions == 2:
-            # a = self.__truncateToVoxel(PI * (rDimension ** 2))
-            # if volume > 0:
-            #    print "volume=", volume, ", rDim=", rDimension, ", r=", r, ", A=", a
             return int(self.__truncate(PI * (rDimension ** 2)))  # Area of a circle.
         else:
-        #    print '!!!!!!!!!calcVoxelVolumeFromVolume(volume): result {}'.format(4.0 / 3.0 * PI * (rDimension ** 3))
-            #print'rDimension {}'.format(rDimension)
             result = 4.0 / 3.0 * PI * (rDimension ** 3)
-            if result % 1.0 > 0.5:
+            if result % 1.0 >= 0.5:
                 result += 1
-
             return int(result)
-            #return self.__truncate(4.0 / 3.0 * PI * (rDimension ** 3))  # Volume of a sphere.
 
+    #TODO TMUELLER fix surface calculation
     def calcVoxelSurfaceFromVoxelVolume(self, voxelVolume):
         """
         Calculates the voxel surface from a voxel volume. The results
@@ -240,7 +219,7 @@ class ExecConfig(object):
             # some fractal factor!
             return self.__truncate(1.5 * 2 * (PI * voxelVolume) ** (1.0 / 2.0))  # Circumference.
         else:
-            return self.__truncate(2 * (4 * PI * (3 * voxelVolume / (4 * PI)) ** (2.0 / 3.0)))  # Surface.
+            return self.__truncate(1.1 * (4 * PI * (3 * voxelVolume / (4 * PI)) ** (2.0 / 3.0)))  # Surface.
 
     def __truncate(self, value):
         res = int(value + 0.00001)
@@ -272,10 +251,6 @@ class ExecConfig(object):
         :return:
         """
         return mcs / (1.0 * self.MCSperDay) * 24.0
-'''
-    def calcSurLambdaFromSurFit(self, surFit):
-        return 100.0 * surFit
 
-    def calcVolLambdaFromVolFit(self, volFit):
-        return 1.0 * volFit
-'''
+    def getVoxelDensity(self):
+        return self.voxelDensity
