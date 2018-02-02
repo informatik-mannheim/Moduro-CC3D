@@ -105,7 +105,7 @@ class SdBpaCdiInUa(ModelConfig):
 
     #TODO shoudl be abstract
     def _initMOdel(self):
-        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function _initMOdel (************Ua)'
+        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function _initModel (************Ua)'
         self.name = "SdBpaCdiInUa"
         self.CellType = self._createCellTypes()
         self.energyMatrix = self._createEnergyMatrix()

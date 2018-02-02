@@ -34,16 +34,16 @@ from Logger.DummyFitnessSteppable import DummyFitnessSteppable
 from Steppable.ColonySteppable import ColonySteppable
 from Steppable.IntermediateTransformationSteppable import IntermediateTransformationSteppable
 from Steppable.MutationSteppable import MutationSteppable
+from abc import ABCMeta, abstractmethod
 
 class SdBpaPcdiInUa(ModelConfig):
+    __metaclass__ = ABCMeta
     def __init__(self, sim, simthread):
         ModelConfig.__init__(self, sim, simthread)
 
-    def _initMOdel(self):
-        self.name = "SdBpaPcdiInUa"
-        self.CellType = self._createCellTypes()
-        self.energyMatrix = self._createEnergyMatrix()
-        self._run() # Must be the last statement.
+    @abstractmethod
+    def _initModel(self):
+        pass
 
     def _createCellTypes(self):
         cellTypes = []
@@ -66,9 +66,7 @@ class SdBpaPcdiInUa(ModelConfig):
         umbrella.apoptosisTimeInDays = 100000000.0
         self.umbrellaNecrosisProb = umbrella.necrosisProb = 0.00017
 
-        stem.setDescendants(0.9, [stem.id, basal.id])   #added by tmueller
-        stem.setDescendants(0.05, [stem.id, stem.id])   #stem cells can also like the basal cells split into
-        stem.setDescendants(0.05, [basal.id, basal.id]) #stem&stem cells and basal & basal cells
+        stem.setDescendants(1.0, [stem.id, basal.id])
         basal.setDescendants(0.9, [basal.id, intermediate.id])
         basal.setDescendants(0.05, [basal.id, basal.id])
         basal.setDescendants(0.05, [intermediate.id, intermediate.id])
@@ -90,7 +88,7 @@ class SdBpaPcdiInUa(ModelConfig):
         steppableList.append(UrinationSteppable(self.sim, self, prop=0.02))
         steppableList.append(DeathSteppable(self.sim, self))
         # steppableList.append(OptimumSearchSteppable(self.sim, self))
-        steppableList.append(VolumeFitnessSteppable(self.sim, self))
+        #steppableList.append(VolumeFitnessSteppable(self.sim, self))
         steppableList.append(ArrangementFitnessSteppable(self.sim, self))
         steppableList.append(DummyFitnessSteppable(self.sim, self))
         steppableList.append(MutationSteppable(self.sim, self, self.stemNecrosisProb, self.basalNecrosisProb,
@@ -100,4 +98,4 @@ class SdBpaPcdiInUa(ModelConfig):
 
     def _createExecConfig(self):
         return ExecConfig(MCSperDay=500, #SEED=10,
-                          xLength=200, yLength=100, zLength=50, voxelDensity=1.5)
+                          xLength=60, yLength=20, zLength=20, voxelDensity=2)

@@ -20,13 +20,14 @@ __status__ = "Production"
 
 import random
 from math import pi as PI, sqrt
-
 import CompuCellSetup
-from ExecConfig import ExecConfig
 from Logger.CellLifeCycleLogger import CellLifeCycleLogger
+from abc import ABCMeta, abstractmethod
 
 
 class ModelConfig(object):
+    __metaclass__ = ABCMeta
+
     '''
     ModelConfig defines a biological simulation model. All properties in this class
     are (as good as possible) independent of the simulation technique (like GGH and CC3D).
@@ -222,11 +223,11 @@ class ModelConfig(object):
 
         return self.execConfig.getCC3D()
 
-    # TODO abstract method
+    @abstractmethod
     def _createCellTypes(self):
-        return None
+        pass
 
-    # TODO abstract - abstract
+    @abstractmethod
     def _createEnergyMatrix(self):
         print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ModelConfig._createEnergyMatrix'
         """
@@ -239,14 +240,11 @@ class ModelConfig(object):
         print energyMatrix
         return energyMatrix
 
-    # TODO make it an abstract method
+    @abstractmethod
     def _initModel(self):
-        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ModelConfig._initModel'
-        self.cellTypes = self._createCellTypes()
-        self.energyMatrix = self._createEnergyMatrix()
-        self.name = "ModelName"
-        self._run()
+        pass
 
-    # TODO abstract method
+
+    @abstractmethod
     def _createExecConfig(self):
-        return ExecConfig(self)
+        pass
