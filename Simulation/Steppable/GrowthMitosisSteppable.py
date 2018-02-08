@@ -23,7 +23,6 @@ from Steppable.ModuroMitosisSteppable import ModuroMitosisSteppable
 
 class GrowthMitosisSteppable(ModuroMitosisSteppable):
     def __init__(self, _simulator, model, splitPercentage=1.95,_frequency=1):
-        print'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! in Konstruktor von GrowthMitosisStepable - splitPercentage {}'.format(splitPercentage)
         self.splitPercentage = splitPercentage
         ModuroMitosisSteppable.__init__(self, _simulator, model, _frequency)
 
@@ -34,13 +33,9 @@ class GrowthMitosisSteppable(ModuroMitosisSteppable):
             cellType = self.model.cellTypes[cell.type]
 
             if cellType.divides and \
+                    cell.volume >= cellDict['normal_volume'] and \
                     cell.volume >= self.splitPercentage * cellDict['normal_volume'] and \
                     not cellDict['necrosis']:
-                print '!!!!!!!!!!!!!!!!!!!!!!!!! cellDivision'
-                print cellDict['normal_volume']
-                print 'cellID {} - cellType {} - cellVolume {} - cellTargetVolume {}'.format(cellDict['id'], cell.type,
-                                                                                             cell.volume,
-                                                                                              cell.targetVolume)
                 # Register death
                 self._cellLifeCycleDeath(cell)
                 cells_to_divide.append(cell)
@@ -51,9 +46,7 @@ class GrowthMitosisSteppable(ModuroMitosisSteppable):
         parentCell = self.mitosisSteppable.parentCell
         childCell = self.mitosisSteppable.childCell
 
-        #Has to be done this way otherwise if cell.volume is chosen than it disappears
-        newVol = parentCell.targetVolume / 2
-
+        # return cell types based on the probability (in ****Ua) two descendents of the current cell
         descendents = self.model.cellTypes[parentCell.type].getDescendants()
         parentCell.type = descendents[0]
         childCell.type = descendents[1]
@@ -64,12 +57,7 @@ class GrowthMitosisSteppable(ModuroMitosisSteppable):
         cellDictParent = self.getDictionaryAttribute(parentCell)
         self.model.initCellAttributes(parentCell, cellDictParent)
 
-        parentCell.targetVolume = newVol
-        childCell.targetVolume = newVol
-
         # Register events
-        print '!!!!!!!!!!!!!!!!!!!!!!!!! parentCell'
         self._cellLifeCycleBirth(parentCell)
-        print '!!!!!!!!!!!!!!!!!!!!!!!!! childCell'
         self._cellLifeCycleBirth(childCell)
         cellDictChild['colony'] = cellDictParent['colony']
