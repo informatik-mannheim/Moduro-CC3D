@@ -20,11 +20,12 @@ __status__ = "Production"
 
 import random
 from PySteppablesExamples import MitosisSteppableBase
+from abc import ABCMeta, abstractmethod
 
 class ModuroMitosisSteppable(MitosisSteppableBase):
+    __metaclass__ = ABCMeta
 
     def __init__(self, simulator, model, _frequency=1):
-        print'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! in Konstruktor von ModuroMitosisSteppable'
         MitosisSteppableBase.__init__(self, simulator, _frequency)
         self.model = model
         self.execConfig = model.execConfig
@@ -35,16 +36,13 @@ class ModuroMitosisSteppable(MitosisSteppableBase):
         if not self.execConfig.interuptMCS(mcs):
             self.moduroStep(mcs) # better: not MCS but time!
 
-    # Abstract method:
+    @abstractmethod
     def moduroStep(self, mcs):
-        return None
+        pass
 
     # Methods are required to have the timeMCS available.
     def _cellLifeCycleBirth(self, cell):
         cellDict = self.getDictionaryAttribute(cell)
-        print 'cellID {} - cellType {} - cellVolume {} - cellTargetVolume {}'.format(cellDict['id'], cell.type,
-                                                                                     cell.volume,
-                                                                                     cell.targetVolume)
         self.model.cellLifeCycleLogger.cellLifeCycleBirth(self.timeMCS, cell, cellDict)
 
     def _cellLifeCycleDeath(self, cell):
