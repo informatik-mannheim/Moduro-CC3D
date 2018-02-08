@@ -21,14 +21,13 @@ __status__ = "Production"
 import random
 from Steppable.ModuroSteppable import ModuroSteppable
 
+
 class GrowthSteppable(ModuroSteppable):
     def __init__(self, simulator, model, contactInhibitedFactor=50.0,_frequency=1):
         ModuroSteppable.__init__(self, simulator, model, _frequency)
         self.contactInhibitedFactor = contactInhibitedFactor    #um wie viel wachsen die zellen schneller
 
-    #def step(self, mcs):
     def moduroStep(self, mcs):
-        #print'GrowthSteppable - MCS {}'.format(mcs)
         for cell in self.cellList:
             cellDict = self.getDictionaryAttribute(cell)
             cellType = self.model.cellTypes[cell.type]
@@ -47,16 +46,13 @@ class GrowthSteppable(ModuroSteppable):
                 deltaVolDimPerDay = self.execConfig.calcVoxelVolumeFromVolume(growthVolPerDay)
                 deltaVolDimPerMCS = 1.0 * deltaVolDimPerDay / self.execConfig.MCSperDay
 
-                #if the growth is to small, take a random number between 0 and 1 -> maybe add the pixel or not
+                # if the growth is to small, take a random number between 0 and 1 -> maybe add the pixel or not
                 if deltaVolDimPerMCS < 1.0: # The change may be too small for one MCS.
                     deltaVolDimPerMCS = 1 if deltaVolDimPerMCS >= random.random() else 0
 
-                #reduce the approximation error
+                # reduce the approximation error
                 if deltaVolDimPerMCS % 1.0 > 0.5:
                     deltaVolDimPerMCS += 1
 
                 cell.targetVolume += int(deltaVolDimPerMCS)
-                # TODO TMUELLER fix surface calculation
-                #cell.targetSurface = self.execConfig.calcVoxelSurfaceFromVoxelVolume(cell.targetVolume)
-                print 'volume {} - targetVolume {} - surface {} - targetSurface {} - cluster{}'.format(
-                    cell.volume, cell.targetVolume, cell.surface, cell.targetSurface, cell.clusterId)
+                cell.targetSurface = self.execConfig.calcVoxelSurfaceFromVoxelVolume(cell.targetVolume)
