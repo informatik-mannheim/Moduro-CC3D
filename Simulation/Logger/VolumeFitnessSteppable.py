@@ -58,7 +58,7 @@ class VolumeFitnessSteppable(TissueFitnessSteppable):
             #check if there are no cells or there is an overflow of cells
             if totalVolume == 0 or mediumVolume == 0:
                 fitness_v = 0.0
-                # print "No more cell in simulation or an overload of cells"
+                print "!!!!!!!!!!!!!!!!!!!!!! No more cell in simulation or an overload of cells"
                 self.stopSimulation()
             else:
                 #calculates the fitness of the current model
