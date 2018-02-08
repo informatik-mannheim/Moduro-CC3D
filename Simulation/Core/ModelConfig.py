@@ -46,7 +46,6 @@ class ModelConfig(object):
         self.sim = sim
         self.simthread = simthread
         self.adhFactor = 0.25  # Average adhesion strength compared to vol./surf. fits.
-        self.adhEnergy = 0.1  # Some reference value.
         self.cellTypes = []
         self.energyMatrix = []
         self.execConfig = self._createExecConfig()
@@ -94,8 +93,8 @@ class ModelConfig(object):
         cellDict['removed'] = False
         cellDict['inhibited'] = True
 
-        cellDict['min_max_volume'] = [self.execConfig.calcVoxelVolumeFromVolume(self.execConfig.voxelDensity*cellType.minVol),
-                                      self.execConfig.calcVoxelVolumeFromVolume(self.execConfig.voxelDensity*cellType.maxVol)]
+        cellDict['min_max_volume'] = [self.execConfig.calcVoxelVolumeFromVolume(cellType.minVol),
+                                      self.execConfig.calcVoxelVolumeFromVolume(cellType.maxVol)]
 
         cellDict['normal_volume'] = random.uniform(cellDict['min_max_volume'][0],
                                                    cellDict['min_max_volume'][1])
@@ -103,11 +102,9 @@ class ModelConfig(object):
         cellDict['growth_factor'] = []  # really needed?
         cellDict['life_time'] = lifeTimeParent  # How many MCS is this cell alive?
 
-
         cell.targetVolume = cell.volume + 1
         print '!!!!!!!!!!!!!!!!!!!!!!!! Cell.Volume in Voxel {} - TargetVolume {}'.format(cell.volume, cell.targetVolume)
-        # TODO TMUELLER fix surface calculation
-        #cell.targetSurface = self.execConfig.calcVoxelSurfaceFromVoxelVolume(cell.targetVolume)
+        cell.targetSurface = self.execConfig.calcVoxelSurfaceFromVoxelVolume(cell.targetVolume)
         print '!!!!!!!!!!!!!!!!!!!!!!!! Cell.Surface in Voxel {} - TargetSurface {}'.format(cell.surface, cell.targetSurface)
 
         cell.lambdaVolume = 1
@@ -157,7 +154,7 @@ class ModelConfig(object):
         zEnd = self.execConfig.calcPixelFromMuMeter(zPos + radius)
 
         radiusPx = self.execConfig.calcFloatPixel(radius)
-        stepLength = 1.0
+        stepLength = self.execConfig.calcFloatPixel(1)
         print 'steplength {}, zStart + stepLength/2 {}'.format(stepLength, (zStart+(((zStart+stepLength) - zStart)/2.)))
         print 'x:{}-{}, y:{}-{}, z:{}-{} radiusPx:{}'.format(xStart, xEnd, yStart, yEnd, zStart, zEnd, radiusPx)
         # loop over the center of each pixel to determine boundaries of the circle
@@ -187,11 +184,13 @@ class ModelConfig(object):
         # Adds the stem cells throughout the basal membrane:
         '''calculate the amount of stem cells on the basal membrane
            noStemCells is the amount of stem cells'''
+        c = 0.12  # the area used of stem cells in percentage
         cellDiameter = self.cellTypes[2].getAvgDiameter()  # cell diameter is of type float
+
         if self.execConfig.dimensions == 2:
-            noStemCells = int(self.execConfig.xLength * 0.12 / cellDiameter)
+            noStemCells = int(self.execConfig.xLength * c / cellDiameter)
         else:
-            noStemCells = ((self.execConfig.xLength * self.execConfig.zLength) * 0.12) / (PI * (cellDiameter / 2.) ** 2)
+            noStemCells = ((self.execConfig.xLength * self.execConfig.zLength) * c) / (PI * (cellDiameter / 2.) ** 2)
 
         if noStemCells % 1 > 0.5:
             noStemCells += 1
@@ -201,19 +200,18 @@ class ModelConfig(object):
            for each stem cell
            keep some distance to the edges of the simulation field, otherwise the cell will be only half in the simulation'''
         for s in range(0, noStemCells, 1):
-            xPos = random.uniform(cellDiameter, self.execConfig.xLength - 2*cellDiameter)
-            zPos = random.uniform(cellDiameter, self.execConfig.zLength - 2*cellDiameter)
+            xPos = random.uniform(cellDiameter, self.execConfig.xLength - cellDiameter)
+            zPos = random.uniform(cellDiameter, self.execConfig.zLength - cellDiameter)
             if self.execConfig.dimensions == 2:
                 self._addMembrane(2, xPos, 2, 0, cellDiameter, cellDiameter, 0, steppable)
             else:
-                self._add3DCell(2, xPos, 7, zPos, cellDiameter/2. , steppable)
+                self._add3DCell(2, xPos, 7, zPos, cellDiameter/2, steppable)
 
     # TODO move configure stuff to ExecConfig?
     def _configureSimulation(self):
-        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ModelConfig._configureSimulation'
         self.execConfig.initPotts()
         self.execConfig.initCellTypes(self.cellTypes)
-        # TODO why 15 * ...
+        #TODO why 15 * ...
         self.execConfig.initEnergyMatrix(self.cellTypes, self.energyMatrix, 0 * self.adhFactor)
         self.execConfig.initPlugins("VolumeFlex", "SurfaceFlex", "PixelTracker", "NeighborTracker",
                                     "ExternalPotential")
@@ -229,16 +227,7 @@ class ModelConfig(object):
 
     @abstractmethod
     def _createEnergyMatrix(self):
-        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ModelConfig._createEnergyMatrix'
-        """
-        Creates a uniform energy matrix of adhFac numbers only.
-        :param adhEnergy: The energy.
-        :return:
-        """
-        energyMatrix = [[self.adhEnergy for x in range(self.cellTypes.__len__())]
-                        for x in range(self.cellTypes.__len__())]
-        print energyMatrix
-        return energyMatrix
+        pass
 
     @abstractmethod
     def _initModel(self):
