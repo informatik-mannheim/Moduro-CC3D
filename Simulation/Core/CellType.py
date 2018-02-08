@@ -102,18 +102,18 @@ Basalmembrane = CellType(name="BasalMembrane", frozen=True, minDiameter=0, maxDi
                          growthVolumePerDay=0, nutrientRequirement=0, apoptosisTimeInDays=180000)
 
 Stemcell = CellType(name="Stem", minDiameter=8, maxDiameter=10,
-                    growthVolumePerDay=2 * Math.calcSphereVolumeFromDiameter(15),
+                    growthVolumePerDay=1 * Math.calcSphereVolumeFromDiameter(10),
                     nutrientRequirement=1.0, apoptosisTimeInDays=180000)
 
 Basalcell = CellType(name="Basal", minDiameter=9, maxDiameter=10,
-                     growthVolumePerDay=2 * Math.calcSphereVolumeFromDiameter(15),
+                     growthVolumePerDay=1 * Math.calcSphereVolumeFromDiameter(10),
                      nutrientRequirement=1.0, apoptosisTimeInDays=80)
 
 Intermediatecell = CellType(name="Intermediate", minDiameter=12, maxDiameter=15,
-                            growthVolumePerDay=2 * Math.calcSphereVolumeFromDiameter(15),
+                            growthVolumePerDay=1 * Math.calcSphereVolumeFromDiameter(15),
                             nutrientRequirement=1.0, apoptosisTimeInDays=2)
 
 Umbrellacell = CellType(name="Umbrella", minDiameter=15, maxDiameter=19,
-                        growthVolumePerDay=2 * Math.calcSphereVolumeFromDiameter(19),
+                        growthVolumePerDay=1 * Math.calcSphereVolumeFromDiameter(19),
                         nutrientRequirement=1.0, apoptosisTimeInDays=2)
 
