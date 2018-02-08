@@ -19,13 +19,12 @@ __email__ = "m.gumbel@hs-mannheim.de"
 __status__ = "Production"
 
 from XMLUtils import ElementCC3D
-from math import pi as PI
+from math import pi as PI, sqrt
 import time
 from Core.ParameterStore import ParameterStore
 
 
 class ExecConfig(object):
-    vD=1
     def __init__(self,
                  xLength=150, yLength=200, zLength=50,
                  voxelDensity=1,
@@ -33,13 +32,12 @@ class ExecConfig(object):
                  MCSperDay=500,
                  simDurationDays=720,
                  sampleIntervalInDays=0.5,
-                 fluctuationAmplitude=1.0,
+                 fluctuationAmplitude=1.0,  #temperature in simulation
                  flip2DimRatio=0.5,
                  neighborOrder=6,   #was 1 -> tip of allanswered topic
                  boundary_x="Periodic",
                  debugOutputFrequency=50000,
                  SEED=-1):
-        ExecConfig.vD = voxelDensity
         """
 
         :param xLength:
@@ -207,7 +205,6 @@ class ExecConfig(object):
                 result += 1
             return int(result)
 
-    #TODO TMUELLER fix surface calculation
     def calcVoxelSurfaceFromVoxelVolume(self, voxelVolume):
         """
         Calculates the voxel surface from a voxel volume. The results
@@ -219,7 +216,7 @@ class ExecConfig(object):
             # some fractal factor!
             return self.__truncate(1.5 * 2 * (PI * voxelVolume) ** (1.0 / 2.0))  # Circumference.
         else:
-            return self.__truncate(1.1 * (4 * PI * (3 * voxelVolume / (4 * PI)) ** (2.0 / 3.0)))  # Surface.
+            return self.__truncate(1.5 * (4 * PI * (3 * voxelVolume / (4 * PI)) ** (2.0 / 3.0)))  # Surface.
 
     def __truncate(self, value):
         res = int(value + 0.00001)
@@ -227,6 +224,74 @@ class ExecConfig(object):
             return 1  # Ensure that size is at least 1.
         else:
             return res
+
+
+    def calcPixelSphereSurface(self, volume):
+        if volume != 0:
+            radius = (3 * volume / (4.0 * PI)) ** (1.0 / 3.0)  # Radius of a sphere with known volume.
+            diameter = 2 * radius
+            if radius % 1 >= 0.5:
+                radius = int(radius+1)
+            amountPixel = int(2*radius)
+            pixelDistance = float(diameter)/float(amountPixel)
+            Matrix = [[[1 for x in range(0, amountPixel / 2)] for z in range(0, amountPixel / 2)] for y in
+                      range(0, amountPixel / 2)]
+            PixelsInSphere = 0
+            VolumeOfVoxel = pixelDistance ** 3
+            SurfaceVoxelSite = pixelDistance ** 2
+
+            # set pixels in the matrix
+            for k in xrange(0, amountPixel / 2):
+                if k == amountPixel / 2:
+                    x1 = 0
+                else:
+                    x1 = k
+                x2 = x1 + pixelDistance
+                for l in xrange(0, amountPixel / 2):
+                    if l == amountPixel / 2:
+                        z1 = 0
+                    else:
+                        z1 = l
+                    z2 = z1 + pixelDistance
+
+                    xzPoint = radius ** 2 - (x1 + ((x2 - x1) / 2.)) ** 2 - (z1 + ((z2 - z1) / 2.)) ** 2
+                    if xzPoint <= 0:
+                        yr = 0
+                    else:
+                        yr = sqrt(xzPoint)
+                    centerOfPixel = pixelDistance / 2.
+
+                    for m in xrange(0, amountPixel / 2):
+                        if centerOfPixel <= yr:
+                            Matrix[k][l][m] = 0
+                        centerOfPixel += pixelDistance
+
+            # count the voxel of the pixel sphere
+            for x in xrange(0, amountPixel / 2):
+                for z in xrange(0, amountPixel / 2):
+                    for y in xrange(0, amountPixel / 2):
+                        if Matrix[x][z][y] == 0:
+                            PixelsInSphere += 1
+
+            # count the surface sites of the voxels at the surface
+            pixelSurface = 0
+            for x in xrange(0, amountPixel / 2):
+                for z in xrange(0, amountPixel / 2):
+                    for y in xrange(0, amountPixel / 2):
+                        if Matrix[x][z][y] == 0:
+                            if y + 1 >= amountPixel / 2 or Matrix[x][z][y + 1] == 1:
+                                pixelSurface += 1
+
+                            if x + 1 >= amountPixel / 2 or Matrix[x + 1][z][y] == 1:
+                                pixelSurface += 1
+
+                            if z + 1 >= amountPixel / 2 or Matrix[x][z + 1][y] == 1:
+                                pixelSurface += 1
+
+            return [int((((PixelsInSphere*2)*2)*2) * VolumeOfVoxel),
+                    int((((pixelSurface*2)*2)*2) * SurfaceVoxelSite)]
+        else:
+            return [1, 1]
 
     def calcMCSfromDays(self, days):
         """
@@ -251,6 +316,3 @@ class ExecConfig(object):
         :return:
         """
         return mcs / (1.0 * self.MCSperDay) * 24.0
-
-    def getVoxelDensity(self):
-        return self.voxelDensity
