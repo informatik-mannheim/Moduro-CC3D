@@ -45,7 +45,7 @@ class ModelConfig(object):
         '''
         self.sim = sim
         self.simthread = simthread
-        self.adhFactor = 0.25  # Average adhesion strength compared to vol./surf. fits.
+        self.adhFactor = 15 * 0.25  # Average adhesion strength compared to vol./surf. fits.  #TODO why 15 * ...
         self.cellTypes = []
         self.energyMatrix = []
         self.execConfig = self._createExecConfig()
@@ -211,8 +211,7 @@ class ModelConfig(object):
     def _configureSimulation(self):
         self.execConfig.initPotts()
         self.execConfig.initCellTypes(self.cellTypes)
-        #TODO why 15 * ...
-        self.execConfig.initEnergyMatrix(self.cellTypes, self.energyMatrix, 0 * self.adhFactor)
+        self.execConfig.initEnergyMatrix(self.cellTypes, self.energyMatrix, self.adhFactor)
         self.execConfig.initPlugins("VolumeFlex", "SurfaceFlex", "PixelTracker", "NeighborTracker",
                                     "ExternalPotential")
         if self.execConfig.initNutrientDiffusion:
