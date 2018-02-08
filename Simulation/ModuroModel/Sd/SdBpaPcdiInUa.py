@@ -38,12 +38,9 @@ from abc import ABCMeta, abstractmethod
 
 class SdBpaPcdiInUa(ModelConfig):
     __metaclass__ = ABCMeta
+
     def __init__(self, sim, simthread):
         ModelConfig.__init__(self, sim, simthread)
-
-    @abstractmethod
-    def _initModel(self):
-        pass
 
     def _createCellTypes(self):
         cellTypes = []
@@ -84,11 +81,11 @@ class SdBpaPcdiInUa(ModelConfig):
         steppableList.append(GrowthSteppable(self.sim, self))
         steppableList.append(GrowthMitosisSteppable(self.sim, self))
         steppableList.append(IntermediateTransformationSteppable(self.sim, self))
-        #steppableList.append(CMTransformationSteppable(self.sim, self, onlyIntermediate=1))
+        # steppableList.append(CMTransformationSteppable(self.sim, self, onlyIntermediate=1))
         steppableList.append(UrinationSteppable(self.sim, self, prop=0.02))
         steppableList.append(DeathSteppable(self.sim, self))
         # steppableList.append(OptimumSearchSteppable(self.sim, self))
-        #steppableList.append(VolumeFitnessSteppable(self.sim, self))
+        steppableList.append(VolumeFitnessSteppable(self.sim, self))
         steppableList.append(ArrangementFitnessSteppable(self.sim, self))
         steppableList.append(DummyFitnessSteppable(self.sim, self))
         steppableList.append(MutationSteppable(self.sim, self, self.stemNecrosisProb, self.basalNecrosisProb,
@@ -98,4 +95,4 @@ class SdBpaPcdiInUa(ModelConfig):
 
     def _createExecConfig(self):
         return ExecConfig(MCSperDay=500, #SEED=10,
-                          xLength=60, yLength=20, zLength=20, voxelDensity=2)
+                          xLength=100, yLength=80, zLength=50, voxelDensity=1)
