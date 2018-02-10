@@ -110,8 +110,8 @@ class ModelConfig(object):
         cell.lambdaVolume = 1
         cell.lambdaSurface = 3
 
-    def _addMembrane(self, typename, xPos, yPos, zPos, xLength, yLength, zLength, steppable):
-        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ModelConfig._addMembrane'
+    def _addCubicCell(self, typename, xPos, yPos, zPos, xLength, yLength, zLength, steppable):
+        print '!!!!!!!!!!!!!!!!!!!!!!!!!! In Function ModelConfig._addCubicCell'
         '''
         Adds a cubic (rectangle or cube) cell. All values are in micro m.
         :param typename:  Type of the cell.
@@ -137,7 +137,7 @@ class ModelConfig(object):
         yPosDim:yPosDim + yLengthDim - 1,
         zPosDim:zPosDim + zLengthDim - 1] = cell
 
-    def _add3DCell(self, typename, xPos, yPos, zPos, radius, steppable):
+    def _addSphereCell(self, typename, xPos, yPos, zPos, radius, steppable):
         '''The parameters are all in micro meter
         wheras the calculated variables are in px'''
 
@@ -179,7 +179,7 @@ class ModelConfig(object):
         :return:
         '''
         # Adds the basal membrane:
-        self._addMembrane(1, 0, 0, 0, self.execConfig.xLength, 2, self.execConfig.zLength, steppable)
+        self._addCubicCell(1, 0, 0, 0, self.execConfig.xLength, 2, self.execConfig.zLength, steppable)
 
         # Adds the stem cells throughout the basal membrane:
         '''calculate the amount of stem cells on the basal membrane
@@ -203,9 +203,9 @@ class ModelConfig(object):
             xPos = random.uniform(cellDiameter, self.execConfig.xLength - cellDiameter)
             zPos = random.uniform(cellDiameter, self.execConfig.zLength - cellDiameter)
             if self.execConfig.dimensions == 2:
-                self._addMembrane(2, xPos, 2, 0, cellDiameter, cellDiameter, 0, steppable)
+                self._addCubicCell(2, xPos, 2, 0, cellDiameter, cellDiameter, 0, steppable)
             else:
-                self._add3DCell(2, xPos, 7, zPos, cellDiameter/2, steppable)
+                self._addSphereCell(2, xPos, 7, zPos, cellDiameter / 2, steppable)
 
     # TODO move configure stuff to ExecConfig?
     def _configureSimulation(self):
@@ -231,7 +231,6 @@ class ModelConfig(object):
     @abstractmethod
     def _initModel(self):
         pass
-
 
     @abstractmethod
     def _createExecConfig(self):
