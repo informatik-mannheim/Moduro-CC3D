@@ -29,8 +29,7 @@ class UrinationSteppable(ModuroSteppable):
         self.prob = prop
 
     def moduroStep(self, mcs):
-        #TODO why 12 hours
-        if mcs > 2 * self.urinationMCS and mcs % self.urinationMCS == 0:
+        if mcs > 2 * self.urinationMCS and mcs % self.urinationMCS == 1:
             self._removeCells()
 
     def _removeCells(self):
