@@ -24,7 +24,6 @@ import random
 
 class InitializerSteppable(ModuroSteppable):
     def __init__(self, simulator, model, _frequency=1):
-        print'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! in Konstruktor von InitializerSteppable'
         ModuroSteppable.__init__(self, simulator, model, _frequency)
 
     def start(self):
@@ -35,9 +34,7 @@ class InitializerSteppable(ModuroSteppable):
         # Required here! Otherwise CC3D will not create the file.
         #self.execConfig.parameterStore.saveParameterfile("ParameterDump.dat")
         self.execConfig.parameterStore.saveAllObjs("ParameterDump.dat")
-        print'!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! in InitializerSteppable.start()'
         self.model._initCells(self)
-        #self._initCells(self)
         for cell in self.cellList:
             # cellDict needs to be retrieved in a steppable:
             cellDict = self.getDictionaryAttribute(cell)
@@ -45,37 +42,3 @@ class InitializerSteppable(ModuroSteppable):
             self.model.cellLifeCycleLogger.cellLifeCycleBirth(0, cell, cellDict)
 
             cellType = self.model.cellTypes[cell.type]
-
-
-
-
-    def _addClusterCell(self, typename, xPos, yPos, zPos, radius, steppable):
-        '''Tryout to create a sphere cell as a cluster of cuboids'''
-        xStart = self.execConfig.calcPixelFromMuMeter(xPos - radius)
-        x0 = self.execConfig.calcPixelFromMuMeter(xPos)
-        xEnd = self.execConfig.calcPixelFromMuMeter(xPos + radius)
-        yStart = self.execConfig.calcPixelFromMuMeter(yPos - radius)
-        y0 = self.execConfig.calcPixelFromMuMeter(yPos)
-        yEnd = self.execConfig.calcPixelFromMuMeter(yPos + radius)
-        zStart = self.execConfig.calcPixelFromMuMeter(zPos - radius)
-        z0 = self.execConfig.calcPixelFromMuMeter(zPos)
-        zEnd = self.execConfig.calcPixelFromMuMeter(zPos + radius)
-        radiusPx = self.execConfig.calcPixelFromMuMeter(radius)
-
-        cellClusterId=1
-
-        stepLength = 1.0
-        for xr in xrange(xStart, xEnd):
-            for yr in xrange(yStart, yEnd):
-                for zr in xrange(zStart, zEnd):
-                    rd = sqrt(
-                        ((xr+(((xr+stepLength) - xr)/2.)) - x0) ** 2 +
-                        ((yr+(((yr+stepLength) - yr)/2.)) - y0) ** 2 +
-                        ((zr+(((zr+stepLength) - zr)/2.)) - z0) ** 2)
-                    if (rd <= radiusPx):
-                        cell = steppable.newCell(typename)
-                        steppable.cellField[xr, yr, zr] = cell
-                        reassignIdFlag = self.inventory.reassignClusterId(cell, 550)
-
-    def _initCells(self, steppable):
-        self._addClusterCell(2, 30, 10, 10, 3, steppable)
