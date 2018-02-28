@@ -208,7 +208,7 @@ class ModelConfig(object):
             else:
                 self._addSphereCell(2, xPos, 7, zPos, cellDiameter / 2, steppable)
 
-    # TODO move configure stuff to ExecConfig?
+    #TODO move configure stuff to ExecConfig?
     def _configureSimulation(self):
         self.execConfig.initPotts()
         self.execConfig.initCellTypes(self.cellTypes)
