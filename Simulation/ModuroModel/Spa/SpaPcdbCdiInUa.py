@@ -95,4 +95,4 @@ class SpaPcdbCdiInUa(ModelConfig):
 
     def _createExecConfig(self):
         return ExecConfig(MCSperDay=500, #SEED=10,
-                          xLength=500, yLength=150, zLength=0, voxelDensity=.8)
+                          xLength=200, yLength=80, zLength=100, voxelDensity=1)
