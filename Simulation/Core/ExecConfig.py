@@ -196,7 +196,7 @@ class ExecConfig(object):
         """
         r = (3 * volume / (4.0 * PI)) ** (1.0 / 3.0)  # Radius of a sphere with known volume.
 
-        rDimension = r * self.voxelDensity
+        rDimension = r * self.voxelDensity  # convert the radius into pixels
         if self.dimensions == 2:
             return int(self.__truncate(PI * (rDimension ** 2)))  # Area of a circle.
         else:

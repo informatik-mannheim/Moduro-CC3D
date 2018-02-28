@@ -45,7 +45,8 @@ class ModelConfig(object):
         '''
         self.sim = sim
         self.simthread = simthread
-        self.adhFactor = 15 * 0.25  # Average adhesion strength compared to vol./surf. fits.  #TODO why 15 * ...
+        #adhFactor is set in the specific model -> *********Da
+        #self.adhFactor = 15 * 0.25  # Average adhesion strength compared to vol./surf. fits.
         self.cellTypes = []
         self.energyMatrix = []
         self.execConfig = self._createExecConfig()
@@ -188,7 +189,7 @@ class ModelConfig(object):
         cellDiameter = self.cellTypes[2].getAvgDiameter()  # cell diameter is of type float
 
         if self.execConfig.dimensions == 2:
-            noStemCells = int(self.execConfig.xLength * c / cellDiameter)
+            noStemCells = int((self.execConfig.xLength * c) / cellDiameter)
         else:
             noStemCells = ((self.execConfig.xLength * self.execConfig.zLength) * c) / (PI * (cellDiameter / 2.) ** 2)
 
